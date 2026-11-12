@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#041E42">
+<title>THE CHASE | McDavid vs. 215</title>
+<meta name="description" content="Live tracker: can Connor McDavid break Wayne Gretzky's 215-point season record? Game-by-game pace, projections and head-to-head comparison.">
+<meta property="og:title" content="THE CHASE | McDavid vs. 215">
+<meta property="og:description" content="Live game-by-game tracker of McDavid's run at Gretzky's 215-point record.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23041E42'/%3E%3Ctext x='32' y='45' font-size='34' font-weight='900' text-anchor='middle' fill='%23FF4C00' font-family='Arial Black,Arial'%3E97%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#041E42;--navy2:#062a5c;--navy3:#0a3a7d;--deep:#020f23;
+  --orange:#FF4C00;--orange2:#ff7a3d;--ice:#d6e9ff;--white:#fff;
+  --muted:#9db3d1;--line:rgba(255,255,255,.12);--card:rgba(255,255,255,.05);
+  --green:#59e3a0;--display:"Barlow Condensed","Arial Narrow",Impact,system-ui,sans-serif;
+  --body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--white);font:15px/1.55 var(--body);background:var(--deep);min-height:100vh;
+  background-image:
+   radial-gradient(900px 520px at 85% -8%,rgba(255,76,0,.22),transparent 60%),
+   radial-gradient(1000px 640px at -10% 8%,rgba(10,58,125,.75),transparent 62%),
+   linear-gradient(180deg,var(--navy) 0,var(--deep) 900px);
+  background-attachment:fixed}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(115deg,transparent 0 46px,rgba(255,255,255,.018) 46px 47px)}
+.wrap{position:relative;max-width:1200px;margin:auto;padding:22px 22px 60px}
+h1,h2,h3{font-family:var(--display);text-transform:uppercase;margin:0}
+a{color:var(--orange2)}
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px;border-radius:6px}
+
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:30px}
+.brand{display:flex;align-items:center;gap:12px;font-family:var(--display);font-weight:800;letter-spacing:.2em;font-size:15px;text-transform:uppercase}
+.brand i{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--orange);color:var(--navy);font-style:normal;font-weight:900;letter-spacing:0;font-size:17px;transform:skew(-8deg)}
+.tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.live{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ice);padding:8px 12px;border:1px solid var(--line);border-radius:99px;background:var(--card)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(89,227,160,.6);animation:pulse 2s infinite}
+.live.stale .dot{background:var(--orange);animation:none;box-shadow:none}
+.live.off .dot{background:#ff5d6c;animation:none;box-shadow:none}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(89,227,160,0)}100%{box-shadow:0 0 0 0 rgba(89,227,160,0)}}
+button{font:inherit;font-weight:700;font-size:13px;color:var(--white);background:rgba(255,255,255,.07);border:1px solid var(--line);padding:9px 14px;border-radius:10px;cursor:pointer;transition:.15s}
+button:hover{background:rgba(255,76,0,.18);border-color:var(--orange)}
+button.primary{background:var(--orange);border-color:var(--orange);color:#fff}
+button.primary:hover{background:var(--orange2)}
+
+/* hero */
+.hero{position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;padding:34px 0 8px}
+.hero:before{content:"215";position:absolute;left:-10px;top:-30px;font:900 clamp(220px,34vw,470px)/.8 var(--display);color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.06);letter-spacing:-.03em;pointer-events:none;z-index:0}
+.hero>*{position:relative;z-index:1}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--orange2);font-weight:700;font-size:12px;letter-spacing:.24em;text-transform:uppercase}
+.eyebrow:before{content:"";width:34px;height:3px;background:var(--orange);border-radius:3px}
+.hero h1{font-size:clamp(64px,11vw,142px);line-height:.84;font-weight:900;letter-spacing:-.01em;margin:16px 0 18px}
+.hero h1 span{display:block;color:var(--orange);text-shadow:0 0 60px rgba(255,76,0,.45)}
+.sub{max-width:520px;color:#c6d6ea;font-size:17px;margin:0 0 22px}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{padding:8px 13px;border:1px solid var(--line);border-radius:99px;background:var(--card);font-size:13px;color:var(--ice)}
+.chip b{color:#fff}
+
+.ring-card{display:grid;place-items:center;padding:26px 22px;border-radius:26px;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.025));border:1px solid var(--line);box-shadow:0 30px 80px #0007,inset 0 1px 0 rgba(255,255,255,.12)}
+.ring{position:relative;width:min(100%,280px);aspect-ratio:1}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .bg{stroke:rgba(255,255,255,.1)}
+.ring .fg{stroke:url(#rg);stroke-linecap:round;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1)}
+.ring-mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring-mid .n{font:900 76px/.9 var(--display)}
+.ring-mid .l{font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-top:6px}
+.ring-foot{text-align:center;margin-top:14px}
+.proj{font:900 44px/1 var(--display);color:#fff}
+.proj small{font-size:16px;color:var(--muted);margin-left:5px}
+.status{display:inline-block;margin-top:8px;padding:6px 12px;border-radius:99px;font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:rgba(89,227,160,.14);color:var(--green)}
+.status.behind{background:rgba(255,76,0,.16);color:var(--orange2)}
+
+/* sections */
+.section{margin-top:54px}
+.sh{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.sh h2{font-size:clamp(30px,4vw,44px);font-weight:800;line-height:1;position:relative;padding-left:16px}
+.sh h2:before{content:"";position:absolute;left:0;top:3px;bottom:3px;width:6px;border-radius:3px;background:linear-gradient(var(--orange),var(--orange2))}
+.sh p{margin:0;color:var(--muted);font-size:13px}
+.card{background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:20px;box-shadow:0 20px 60px #0005}
+
+/* face off */
+.faceoff{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch}
+.player{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:18px;align-items:center}
+.player.g{grid-template-columns:1fr 150px}
+.player.g .portrait{order:2}
+.portrait{margin:0;position:relative;aspect-ratio:4/5;border-radius:16px;overflow:hidden;background:linear-gradient(160deg,var(--navy3),var(--navy));border:1px solid var(--line)}
+.player.m .portrait{box-shadow:0 0 0 2px var(--orange) inset}
+.portrait:after{content:"";position:absolute;left:0;right:0;bottom:0;height:7px;background:repeating-linear-gradient(90deg,var(--orange) 0 14px,var(--navy) 14px 20px)}
+.portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;display:none}
+.portrait.has-img img{display:block}
+.portrait.has-img .mono{display:none}
+.mono{position:absolute;inset:0;display:grid;place-items:center;font:900 92px/1 var(--display);color:rgba(255,255,255,.92)}
+.player.m .mono{color:var(--orange)}
+.portrait figcaption{position:absolute;left:6px;bottom:12px;right:6px;font-size:9px;color:rgba(255,255,255,.7);display:none}
+.portrait.has-img figcaption:not(:empty){display:block}
+.pname{font:800 32px/1 var(--display);text-transform:uppercase}
+.pmeta{color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:5px 0 14px}
+.pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pstats div{background:rgba(0,0,0,.22);border-radius:10px;padding:8px 6px;text-align:center}
+.pstats b{display:block;font:800 24px/1 var(--display)}
+.pstats span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.vs{display:grid;place-content:center;text-align:center;gap:8px;min-width:96px}
+.vs .v{font:900 54px/1 var(--display);color:var(--orange)}
+.vs .d{font-size:11px;color:var(--ice);letter-spacing:.06em;max-width:110px}
+
+/* stats */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stat{padding:20px}
+.label{font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+.value{font:800 52px/1 var(--display);margin-top:8px}
+.hint{color:var(--muted);font-size:12px;margin-top:4px}
+.value.o{color:var(--orange)}
+
+/* scenarios */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.scn{padding:20px;position:relative;overflow:hidden}
+.scn .value{font-size:60px}
+.scn .tag{position:absolute;right:16px;top:16px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:99px;background:rgba(255,255,255,.08);color:var(--ice)}
+.scn.hl{border-color:rgba(255,76,0,.6);box-shadow:0 0 0 1px rgba(255,76,0,.25),0 20px 60px rgba(255,76,0,.12)}
+
+/* milestones */
+.ms{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.mile{padding:18px 14px;text-align:center;border-radius:18px;border:1px solid var(--line);background:var(--card)}
+.mile .n{font:900 44px/1 var(--display)}
+.mile .s{font-size:12px;color:var(--muted);margin-top:6px}
+.mile.done{background:linear-gradient(160deg,rgba(255,76,0,.28),rgba(255,76,0,.08));border-color:rgba(255,76,0,.7)}
+.mile.done .n{color:var(--orange2)}
+.mile.done .s{color:#ffd9c7}
+
+/* chart */
+.chart-card{padding:18px 18px 14px}
+.chart-wrap{position:relative;height:380px}
+canvas{width:100%;height:100%;display:block;touch-action:pan-y}
+.tip{position:absolute;pointer-events:none;background:rgba(2,15,35,.95);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:12px;min-width:150px;display:none;z-index:3}
+.tip b{font-family:var(--display);font-size:16px;letter-spacing:.04em}
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--muted)}
+.key{display:inline-block;width:22px;height:4px;border-radius:3px;vertical-align:middle;margin-right:7px}
+
+/* tables */
+.note{color:var(--muted);font-size:13px;margin:0 0 12px}
+.warn{display:none;margin:0 0 12px;padding:10px 14px;border-radius:12px;background:rgba(255,76,0,.12);border:1px solid rgba(255,76,0,.45);color:#ffd9c7;font-size:13px}
+.table-card{overflow:hidden}
+.ts{overflow:auto;max-height:470px}
+table{width:100%;border-collapse:collapse;min-width:560px}
+.ct{min-width:980px}
+th,td{text-align:right;padding:11px 15px;border-bottom:1px solid rgba(255,255,255,.07);font-variant-numeric:tabular-nums;white-space:nowrap}
+th{position:sticky;top:0;background:var(--navy2);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);z-index:1}
+td:first-child,th:first-child{text-align:left}
+tbody tr:hover{background:rgba(255,255,255,.04)}
+.ct th.gm{color:var(--orange2);text-align:center}.ct th.gg{color:var(--ice);text-align:center}
+.ct td:nth-child(2),.ct td:nth-child(3),.ct td:nth-child(4),.ct td:nth-child(5){color:#ffd2bd}
+.ct td:nth-child(6),.ct td:nth-child(7),.ct td:nth-child(8),.ct td:nth-child(9){color:#cfe6ff}
+.pos{color:var(--green);font-weight:800}.neg{color:var(--orange2);font-weight:800}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;background:rgba(255,76,0,.16);color:var(--orange2);font-size:11px;font-weight:700}
+.empty td{text-align:center!important;color:var(--muted)}
+.footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);color:#7f94b3;font-size:12px;display:grid;gap:8px}
+.footer .row{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+
+@media(max-width:960px){
+ .hero{grid-template-columns:1fr}
+ .faceoff{grid-template-columns:1fr}
+ .vs{grid-auto-flow:column;gap:14px;padding:4px 0}
+ .vs .d{max-width:none}
+ .player.g{grid-template-columns:150px 1fr}.player.g .portrait{order:0}
+ .grid4{grid-template-columns:repeat(2,1fr)}
+ .grid3{grid-template-columns:1fr}
+ .ms{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:520px){
+ .wrap{padding:16px 14px 44px}
+ .player,.player.g{grid-template-columns:104px 1fr;padding:14px;gap:14px}
+ .mono{font-size:60px}.pname{font-size:26px}
+ .pstats b{font-size:20px}
+ .value{font-size:42px}.ms{grid-template-columns:repeat(2,1fr)}
+ .chart-wrap{height:300px}.ring-mid .n{font-size:64px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header class="top">
+  <div class="brand"><i>97</i>The Chase</div>
+  <div class="tools">
+    <div class="live" id="live"><i class="dot"></i><span id="liveText">Connecting to NHL data</span></div>
+    <button id="share" type="button">Share</button>
+    <button id="refresh" class="primary" type="button">↻ Refresh</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">One record. One season. Every point counts.</div>
+    <h1>McDavid<span>vs. 215</span></h1>
+    <p class="sub">The live race to catch Wayne Gretzky's 215-point season, 1985–86. Every game, every point, updated as the NHL posts it.</p>
+    <div class="chips">
+      <span class="chip"><b id="chipGP">—</b> games played</span>
+      <span class="chip"><b id="chipLeft">—</b> games left</span>
+      <span class="chip">Point streak <b id="chipStreak">—</b></span>
+    </div>
+  </div>
+  <div class="card ring-card">
+    <div class="ring">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7a3d"/><stop offset="1" stop-color="#FF4C00"/></linearGradient></defs>
+        <circle class="bg" cx="60" cy="60" r="52" fill="none" stroke-width="9"/>
+        <circle class="fg" id="ringFg" cx="60" cy="60" r="52" fill="none" stroke-width="9" stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+      </svg>
+      <div class="ring-mid"><div class="n" id="points">—</div><div class="l">of 216 to break it</div></div>
+    </div>
+    <div class="ring-foot">
+      <div class="label">Full-season projection</div>
+      <div class="proj" id="projection">— <small>pts</small></div>
+      <div class="status" id="paceStatus">Loading the chase…</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="h-face">
+  <div class="sh"><h2 id="h-face">The Face-Off</h2><p>Gretzky's final line vs McDavid's season so far</p></div>
+  <div class="faceoff">
+    <article class="card player m">
+      <figure class="portrait" id="pMcdavid"><img alt="Connor McDavid" decoding="async"><div class="mono" aria-hidden="true">97</div><figcaption></figcaption></figure>
+      <div>
+        <div class="pname">Connor McDavid</div>
+        <div class="pmeta">Edmonton · 2026–27 · so far</div>
+        <div class="pstats">
+          <div><b id="fmPts">—</b><span>Pts</span></div><div><b id="fmG">—</b><span>Goals</span></div><div><b id="fmA">—</b><span>Assists</span></div><div><b id="fmGP">—</b><span>GP</span></div>
+        </div>
+      </div>
+    </article>
+    <div class="vs"><div class="v">VS</div><div class="d" id="vsNote">Points per game</div></div>
+    <article class="card player g">
+      <div>
+        <div class="pname">Wayne Gretzky</div>
+        <div class="pmeta">Edmonton · 1985–86 · final</div>
+        <div class="pstats">
+          <div><b>215</b><span>Pts</span></div><div><b>52</b><span>Goals</span></div><div><b>163</b><span>Assists</span></div><div><b>80</b><span>GP</span></div>
+        </div>
+      </div>
+      <figure class="portrait" id="pGretzky"><img alt="Wayne Gretzky" decoding="async"><div class="mono" aria-hidden="true">99</div><figcaption></figcaption></figure>
+    </article>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="h-stats">
+  <div class="sh"><h2 id="h-stats">By The Numbers</h2><p id="seasonLabel">84-game regular season</p></div>
+  <div class="grid4">
+    <div class="card stat"><div class="label">Points</div><div class="value o" id="s-points">—</div><div class="hint" id="games">— games played</div></div>
+    <div class="card stat"><div class="label">Goals</div><div class="value" id="goals">—</div><div class="hint">Regular season</div></div>
+    <div class="card stat"><div class="label">Assists</div><div class="value" id="assists">—</div><div class="hint">Regular season</div></div>
+    <div class="card stat"><div class="label">Points / game</div><div class="value" id="ppg">—</div><div class="hint">Gretzky 1985–86: 2.69</div></div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="h-pace">
+  <div class="sh"><h2 id="h-pace">Record Math</h2><p id="requiredRate">Loading required scoring rate…</p></div>
+  <div class="grid3">
+    <div class="card scn"><span class="tag">To tie · 215</span><div class="label">Points needed</div><div class="value" id="needTie">—</div><div class="hint" id="needTieHint">&nbsp;</div></div>
+    <div class="card scn hl"><span class="tag">To break · 216</span><div class="label">Points needed</div><div class="value o" id="needed">—</div><div class="hint" id="needBreakHint">&nbsp;</div></div>
+    <div class="card scn"><span class="tag">Last 10 games</span><div class="label">Pace over a full season</div><div class="value" id="last10">—</div><div class="hint" id="last10Hint">&nbsp;</div></div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="h-ms">
+  <div class="sh"><h2 id="h-ms">Milestones</h2><p>Reached or projected at the current rate</p></div>
+  <div class="ms" id="milestones"></div>
+</section>
+
+<section class="section" aria-labelledby="h-chart">
+  <div class="sh"><h2 id="h-chart">Pace Chart</h2><p>Cumulative points by game number · hover or touch for detail</p></div>
+  <div class="card chart-card">
+    <div class="chart-wrap"><canvas id="chart" role="img" aria-label="Cumulative points chart comparing McDavid with Gretzky's 1985-86 season"></canvas><div class="tip" id="tip"></div></div>
+    <div class="legend">
+      <span><i class="key" style="background:#FF4C00"></i>McDavid</span>
+      <span><i class="key" style="background:repeating-linear-gradient(90deg,#FF4C00 0 6px,transparent 6px 10px)"></i>Projection at current rate</span>
+      <span><i class="key" style="background:#7cc4ff"></i><span id="legG">Gretzky 1985–86</span></span>
+      <span><i class="key" style="background:repeating-linear-gradient(90deg,#fff 0 4px,transparent 4px 8px)"></i>Record line (216)</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="h-h2h">
+  <div class="sh"><h2 id="h-h2h">McJesus vs. The Great One</h2><p>Matched by game number, not calendar date</p></div>
+  <div class="warn" id="gWarn"></div>
+  <p class="note">Each row lines up McDavid's game number with Gretzky's same game from 1985–86. Totals show who was ahead after that game.</p>
+  <div class="card table-card"><div class="ts"><table class="ct">
+    <thead><tr><th rowspan="2">Game</th><th class="gm" colspan="4">Connor McDavid · 2026–27</th><th class="gg" colspan="4">Wayne Gretzky · 1985–86</th><th rowspan="2">McDavid<br>lead / trail</th></tr>
+    <tr><th>Date</th><th>Opp.</th><th>G-A-P</th><th>Total</th><th>Date</th><th>Opp.</th><th>G-A-P</th><th>Total</th></tr></thead>
+    <tbody id="compareLog"><tr class="empty"><td colspan="10">Loading the head-to-head game log…</td></tr></tbody></table></div></div>
+</section>
+
+<section class="section" aria-labelledby="h-log">
+  <div class="sh"><h2 id="h-log">Every Shift In The Chase</h2><p id="tableCount">Game log</p></div>
+  <div class="card table-card"><div class="ts"><table>
+    <thead><tr><th>Game</th><th>Date</th><th>Opponent</th><th>Goals</th><th>Assists</th><th>Points</th><th>Total</th></tr></thead>
+    <tbody id="log"><tr class="empty"><td colspan="7">Waiting for NHL game log…</td></tr></tbody></table></div></div>
+</section>
+
+<div class="warn" id="error" role="status"></div>
+
+<footer class="footer">
+  <div class="row"><span>Data: NHL public web API · refreshes automatically every 5 minutes</span><span id="updated">Not yet updated</span></div>
+  <div>Unofficial fan site. Not affiliated with or endorsed by the NHL, the Edmonton Oilers or any player. Team names and colours belong to their respective owners.</div>
+</footer>
+</main>
+
+<noscript><p style="padding:20px;text-align:center">This tracker needs JavaScript to load live NHL data.</p></noscript>
+
+<script>
+/* ---------- CONFIG ---------- */
+const CFG={
+  PLAYER:8478402, GRETZKY:8447400, SEASON_GAMES:84,
+  RECORD:215, BREAK:216, G_GAMES:80,
+  // Drop licensed photos in an /img folder next to this file, or change these paths.
+  IMAGES:{mcdavid:"img/mcdavid.jpg", gretzky:"img/gretzky.jpg"},
+  // Photo credits shown over the portraits (e.g. "Photo: Name / Agency"). Leave empty for none.
+  CREDITS:{mcdavid:"", gretzky:""}
+};
+// Each feed is tried through our own Cloudflare proxy first (/api/nhl/...), then straight from the NHL.
+const PROXY="/api/nhl/", DIRECT="https://api-web.nhle.com/v1/";
+const urlsFor=path=>[PROXY+path,DIRECT+path];
+const API_M=urlsFor(`player/${CFG.PLAYER}/game-log/now`);
+const API_G=urlsFor(`player/${CFG.GRETZKY}/game-log/19851986/2`);
+const C={orange:"#FF4C00",orange2:"#ff7a3d",ice:"#7cc4ff",muted:"#9db3d1",grid:"rgba(255,255,255,.09)"};
+
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const num=v=>Number(v||0);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+function dateFmt(s){if(!s)return "—";const d=new Date(s+"T12:00:00");return isNaN(d)?"—":d.toLocaleDateString(undefined,{month:"short",day:"numeric"});}
+
+let games=[], gGames=[], gActual=false, lastTip=null, view={};
+
+/* ---------- DATA ---------- */
+async function getJSON(urls,key,cacheFirst){
+  if(cacheFirst){try{const c=JSON.parse(localStorage.getItem(key));if(c&&c.j)return{data:c.j,live:true,t:c.t}}catch(e){}}
+  for(let a=0;a<2;a++){
+    for(const url of urls){
+      try{
+        const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),12000);
+        const r=await fetch(url,{cache:"no-store",signal:ctl.signal});clearTimeout(t);
+        if(!r.ok)throw new Error("HTTP "+r.status);
+        const j=await r.json(); // an HTML fallback page throws here and we move on to the next URL
+        try{localStorage.setItem(key,JSON.stringify({t:Date.now(),j}))}catch(e){}
+        return{data:j,live:true,t:Date.now()};
+      }catch(e){}
+    }
+    if(a===0)await sleep(700);
+  }
+  try{const c=JSON.parse(localStorage.getItem(key));if(c&&c.j)return{data:c.j,live:false,t:c.t}}catch(e){}
+  return null;
+}
+function normalizeLog(data){
+  const raw=(data&&(data.gameLog||data.games||data.gameLogs))||[];
+  return raw.map(g=>({
+    date:g.gameDate||g.game_date||g.date,
+    opp:g.opponentAbbrev||g.opponentTeamAbbrev||g.opponent_abbrev||(g.opponentCommonName&&g.opponentCommonName.default)||g.opponent||"—",
+    home:g.homeRoadFlag,
+    goals:num(g.goals),assists:num(g.assists),
+    points:num(g.points??(num(g.goals)+num(g.assists)))
+  })).sort((a,b)=>(a.date||"").localeCompare(b.date||""));
+}
+function withTotals(a){let t=0;a.forEach(g=>{t+=g.points;g.total=t});return a}
+
+/* ---------- COUNT-UP ---------- */
+const shown={};
+function setNum(id,val,dec=0){
+  const el=$(id);if(!el)return;
+  const from=shown[id]??0;shown[id]=val;
+  if(reduce||from===val){el.textContent=val.toFixed(dec);return}
+  const t0=performance.now(),dur=900;
+  (function step(t){const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3);el.textContent=(from+(val-from)*e).toFixed(dec);if(p<1)requestAnimationFrame(step)})(t0);
+}
+
+/* ---------- PORTRAITS ---------- */
+function loadPortrait(id,src,credit){
+  const fig=$(id),img=fig.querySelector("img");
+  fig.querySelector("figcaption").textContent=credit||"";
+  if(!src)return;
+  const t=new Image();t.onload=()=>{img.src=src;fig.classList.add("has-img")};t.src=src;
+}
+
+/* ---------- RENDER ---------- */
+function render(data){
+  games=withTotals(normalizeLog(data));
+  const gp=games.length,pts=games.reduce((s,g)=>s+g.points,0),goals=games.reduce((s,g)=>s+g.goals,0),assists=games.reduce((s,g)=>s+g.assists,0);
+  const SG=CFG.SEASON_GAMES,ppg=gp?pts/gp:0,projection=Math.round(ppg*SG),remaining=Math.max(0,SG-gp);
+  const needBreak=Math.max(0,CFG.BREAK-pts),needTie=Math.max(0,CFG.RECORD-pts);
+  const l10=games.slice(-10),l10ppg=l10.length?l10.reduce((s,g)=>s+g.points,0)/l10.length:0;
+  let streak=0;for(let i=games.length-1;i>=0&&games[i].points>0;i--)streak++;
+
+  setNum("points",pts);setNum("s-points",pts);setNum("goals",goals);setNum("assists",assists);setNum("ppg",ppg,2);
+  setNum("fmPts",pts);setNum("fmG",goals);setNum("fmA",assists);setNum("fmGP",gp);
+  $("games").textContent=`${gp} of ${SG} games played`;
+  $("chipGP").textContent=gp;$("chipLeft").textContent=remaining;$("chipStreak").textContent=streak?`${streak} game${streak>1?"s":""}`:"—";
+  $("projection").innerHTML=`${projection} <small>pts</small>`;
+  const st=$("paceStatus");
+  if(!gp){st.textContent="Season hasn't started";st.className="status behind"}
+  else if(projection>CFG.RECORD){st.textContent=`On pace · ${projection-CFG.RECORD} above the record`;st.className="status"}
+  else if(projection===CFG.RECORD){st.textContent="On pace to tie the record";st.className="status behind"}
+  else{st.textContent=`${CFG.RECORD-projection} short of record pace`;st.className="status behind"}
+  $("ringFg").style.strokeDashoffset=326.7*(1-Math.min(1,pts/CFG.BREAK));
+  $("needed").textContent=needBreak;$("needTie").textContent=needTie;
+  const req=remaining?needBreak/remaining:0;
+  $("needBreakHint").textContent=remaining?`${req.toFixed(2)} per game over the last ${remaining}`:"Season complete";
+  $("needTieHint").textContent=remaining?`${(needTie/remaining).toFixed(2)} per game over the last ${remaining}`:"Season complete";
+  $("last10").textContent=l10.length?Math.round(l10ppg*SG):"—";
+  $("last10Hint").textContent=l10.length?`${l10ppg.toFixed(2)} pts/game over his last ${l10.length}`:"No games yet";
+  $("requiredRate").textContent=gp>=SG?(pts>=CFG.BREAK?"Record broken. History made.":"Season complete. The record stands."):
+    gp?`Needs ${req.toFixed(2)} points per game from here to reach ${CFG.BREAK}. Current rate: ${ppg.toFixed(2)}.`:"Waiting on opening night.";
+  $("seasonLabel").textContent=`${SG}-game regular season · ${data.seasonId?String(data.seasonId).replace(/^(\d{4})(\d{4})$/,"$1–$2"):"2026–27"}`;
+  const gR=CFG.RECORD/CFG.G_GAMES;
+  $("vsNote").textContent=gp?`${ppg.toFixed(2)} vs ${gR.toFixed(2)} pts/game · ${ppg>=gR?"+":""}${(ppg-gR).toFixed(2)}`:"Points per game";
+  $("tableCount").textContent=`${gp} games logged`;
+
+  $("log").innerHTML=games.length?[...games].map((g,i)=>`<tr><td>${i+1}</td><td>${dateFmt(g.date)}</td><td><span class="pill">${g.home==="R"?"@ ":g.home==="H"?"vs ":""}${esc(g.opp)}</span></td><td>${g.goals}</td><td>${g.assists}</td><td><b>${g.points}</b></td><td>${g.total}</td></tr>`).reverse().join(""):`<tr class="empty"><td colspan="7">No games returned yet.</td></tr>`;
+
+  renderMilestones(pts,gp,ppg);
+  renderCompare();
+  drawChart();
+}
+function gameReached(arr,m){const i=arr.findIndex(g=>g.total>=m);return i<0?null:i+1}
+function renderMilestones(pts,gp,ppg){
+  $("milestones").innerHTML=[50,100,150,200,CFG.BREAK].map(m=>{
+    const at=gameReached(games,m),gAt=gActual?gameReached(gGames,m):null;
+    let s;
+    if(at){s=`Reached in game ${at}`}
+    else if(ppg>0){const n=gp+Math.ceil((m-pts)/ppg);s=n<=CFG.SEASON_GAMES?`Projected: game ${n}`:"Out of range at this pace"}
+    else s="—";
+    if(m===CFG.BREAK&&gActual){const g=gameReached(gGames,CFG.RECORD);if(g)s+=`<br>Gretzky: game ${g} (215)`}
+    else if(gAt)s+=`<br>Gretzky: game ${gAt}`;
+    return `<div class="mile ${at?"done":""}"><div class="n">${m}</div><div class="s">${s}</div></div>`;
+  }).join("");
+}
+function gEst(n){return Math.min(CFG.RECORD,Math.round(n*CFG.RECORD/CFG.G_GAMES))}
+function renderCompare(){
+  const W=$("gWarn");
+  if(gActual){W.style.display="none"}
+  else{W.style.display="block";W.textContent="Gretzky's game-by-game archive couldn't be loaded, so this comparison uses his season-average pace (2.69 points per game) instead of his actual game totals."}
+  $("legG").textContent=gActual?"Gretzky 1985–86":"Gretzky 1985–86 (season-average pace)";
+  const count=Math.max(games.length,gActual?gGames.length:0);
+  if(!count){$("compareLog").innerHTML=`<tr class="empty"><td colspan="10">Comparison data unavailable.</td></tr>`;return}
+  const rows=[];
+  for(let i=0;i<count;i++){
+    const a=games[i],b=gActual?gGames[i]:null;
+    const gt=gActual?(b?b.total:null):gEst(i+1);
+    const gap=a&&gt!==null?a.total-gt:null;
+    const oppTxt=x=>x?`${x.home==="R"?"@ ":x.home==="H"?"vs ":""}${esc(x.opp)}`:"—";
+    rows.push(`<tr><td>${i+1}</td><td>${a?dateFmt(a.date):"—"}</td><td>${oppTxt(a)}</td><td>${a?`${a.goals}-${a.assists}-${a.points}`:"—"}</td><td><b>${a?a.total:"—"}</b></td>`+
+      `<td>${b?dateFmt(b.date):"—"}</td><td>${oppTxt(b)}</td><td>${b?`${b.goals}-${b.assists}-${b.points}`:"—"}</td><td><b>${gt===null?"—":(gActual?gt:"≈"+gt)}</b></td>`+
+      `<td class="${gap===null?"":gap>=0?"pos":"neg"}">${gap===null?"—":gap>0?"+"+gap:gap}</td></tr>`);
+  }
+  $("compareLog").innerHTML=rows.join("");
+}
+
+/* ---------- CHART ---------- */
+function drawChart(){
+  const c=$("chart"),ctx=c.getContext&&c.getContext("2d");if(!ctx)return;
+  const rect=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+  if(!rect.width)return;
+  c.width=rect.width*dpr;c.height=rect.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+  const w=rect.width,h=rect.height,p={l:44,r:18,t:16,b:32},pw=w-p.l-p.r,ph=h-p.t-p.b,SG=CFG.SEASON_GAMES;
+  ctx.clearRect(0,0,w,h);
+  const gp=games.length,pts=gp?games[gp-1].total:0,ppg=gp?pts/gp:0;
+  const mCum=[0,...games.map(g=>g.total)];
+  const proj=gp?Array.from({length:SG+1},(_,n)=>n<gp?null:pts+ppg*(n-gp)):[];
+  const gCum=gActual?[0,...gGames.map(g=>g.total)]:Array.from({length:CFG.G_GAMES+1},(_,n)=>n*CFG.RECORD/CFG.G_GAMES);
+  const topVal=Math.max(230,proj.length?Math.ceil(proj[SG]||0):0,pts);
+  const ymax=Math.ceil((topVal+8)/50)*50;
+  const X=n=>p.l+n/SG*pw,Y=v=>p.t+ph-v/ymax*ph;
+  view={p,pw,ph,SG,X,Y,mCum,gCum,w,h};
+  ctx.font="11px Inter,system-ui";ctx.textBaseline="middle";
+  for(let v=0;v<=ymax;v+=50){ctx.strokeStyle=C.grid;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(p.l,Y(v));ctx.lineTo(w-p.r,Y(v));ctx.stroke();ctx.fillStyle=C.muted;ctx.textAlign="right";ctx.fillText(v,p.l-8,Y(v))}
+  ctx.textAlign="center";ctx.textBaseline="top";
+  for(let n=0;n<=SG;n+=12){ctx.fillStyle=C.muted;ctx.fillText(n,X(n),h-p.b+10)}
+  ctx.fillText(SG,X(SG),h-p.b+10);
+  // record line
+  ctx.setLineDash([5,5]);ctx.strokeStyle="rgba(255,255,255,.7)";ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(p.l,Y(CFG.BREAK));ctx.lineTo(w-p.r,Y(CFG.BREAK));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle="#fff";ctx.textAlign="right";ctx.textBaseline="bottom";ctx.fillText("RECORD 216",w-p.r-4,Y(CFG.BREAK)-4);
+  // gretzky
+  ctx.beginPath();gCum.forEach((v,n)=>n?ctx.lineTo(X(n),Y(v)):ctx.moveTo(X(n),Y(v)));
+  ctx.strokeStyle=C.ice;ctx.lineWidth=2.4;if(!gActual)ctx.setLineDash([2,5]);ctx.stroke();ctx.setLineDash([]);
+  // mcdavid area + line
+  if(gp){
+    const grad=ctx.createLinearGradient(0,p.t,0,p.t+ph);grad.addColorStop(0,"rgba(255,76,0,.38)");grad.addColorStop(1,"rgba(255,76,0,0)");
+    ctx.beginPath();mCum.forEach((v,n)=>n?ctx.lineTo(X(n),Y(v)):ctx.moveTo(X(n),Y(v)));ctx.lineTo(X(gp),Y(0));ctx.lineTo(X(0),Y(0));ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+    ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(X(gp),Y(pts));ctx.lineTo(X(SG),Y(proj[SG]));ctx.strokeStyle="rgba(255,122,61,.75)";ctx.lineWidth=2;ctx.stroke();ctx.setLineDash([]);
+    ctx.beginPath();mCum.forEach((v,n)=>n?ctx.lineTo(X(n),Y(v)):ctx.moveTo(X(n),Y(v)));ctx.strokeStyle=C.orange;ctx.lineWidth=3.2;ctx.lineJoin="round";ctx.stroke();
+    ctx.beginPath();ctx.arc(X(gp),Y(pts),9,0,7);ctx.fillStyle="rgba(255,76,0,.28)";ctx.fill();
+    ctx.beginPath();ctx.arc(X(gp),Y(pts),4.5,0,7);ctx.fillStyle="#fff";ctx.fill();
+  }
+  if(lastTip!==null)drawGuide(ctx,lastTip);
+}
+function drawGuide(ctx,n){
+  const {p,X,Y,ph}=view;ctx.strokeStyle="rgba(255,255,255,.35)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(X(n),p.t);ctx.lineTo(X(n),p.t+ph);ctx.stroke();
+  const m=view.mCum[n],g=view.gCum[Math.min(n,view.gCum.length-1)];
+  if(m!==undefined){ctx.beginPath();ctx.arc(X(n),Y(m),4.5,0,7);ctx.fillStyle=C.orange;ctx.fill()}
+  if(g!==undefined&&n<view.gCum.length){ctx.beginPath();ctx.arc(X(n),Y(g),4.5,0,7);ctx.fillStyle=C.ice;ctx.fill()}
+}
+function chartHover(ev){
+  if(!view.X)return;
+  const c=$("chart"),r=c.getBoundingClientRect(),pt=ev.touches?ev.touches[0]:ev,x=pt.clientX-r.left;
+  let n=Math.round((x-view.p.l)/view.pw*view.SG);n=Math.max(1,Math.min(view.SG,n));
+  lastTip=n;drawChart();
+  const m=view.mCum[n],g=n<view.gCum.length?view.gCum[n]:view.gCum[view.gCum.length-1];
+  const tip=$("tip");
+  let html=`<b>Game ${n}</b><br>`;
+  html+=m!==undefined?`<span style="color:#ff9a66">McDavid:</span> ${m}<br>`:`<span style="color:#ff9a66">McDavid:</span> not played yet<br>`;
+  html+=`<span style="color:#7cc4ff">Gretzky${gActual?"":" (avg)"}:</span> ${gActual?g:Math.round(g)}`;
+  if(m!==undefined)html+=`<br>${m-Math.round(g)>=0?"<span class='pos'>+":"<span class='neg'>"}${m-Math.round(g)}</span> McDavid`;
+  tip.innerHTML=html;tip.style.display="block";
+  const tw=tip.offsetWidth;let left=view.X(n)+14;if(left+tw>r.width)left=view.X(n)-tw-14;
+  tip.style.left=Math.max(4,left)+"px";tip.style.top="14px";
+}
+function chartLeave(){lastTip=null;$("tip").style.display="none";drawChart()}
+
+/* ---------- LOAD ---------- */
+function setStatus(kind,text){$("live").className="live "+(kind||"");$("liveText").textContent=text}
+let loading=false;
+async function load(){
+  if(loading)return;loading=true;
+  $("error").style.display="none";setStatus("","Updating…");
+  const [m,g]=await Promise.all([getJSON(API_M,"chase.mcdavid.v2"),getJSON(API_G,"chase.gretzky.v2",true)]);
+  gGames=g?withTotals(normalizeLog(g.data)):[];
+  gActual=gGames.length>=40&&gGames.reduce((s,x)=>s+x.points,0)>150; // sanity check: looks like a real 85-86 log
+  if(m){
+    render(m.data);
+    if(m.live){setStatus("","Live NHL feed · updated "+new Date().toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}));$("updated").textContent="Last updated "+new Date().toLocaleString()}
+    else{setStatus("stale","Showing saved data");$("updated").textContent="Saved copy from "+new Date(m.t).toLocaleString();
+      $("error").style.display="block";$("error").textContent="The live NHL feed didn't respond, so this is the last saved copy. It will retry automatically."}
+  }else{
+    games=[];gActual=gActual;render({});
+    setStatus("off","Feed unavailable");
+    $("error").style.display="block";$("error").textContent="Couldn't reach the NHL stats feed. Check your connection and hit Refresh; it also retries every 5 minutes.";
+  }
+  loading=false;
+}
+
+/* ---------- INIT ---------- */
+loadPortrait("pMcdavid",CFG.IMAGES.mcdavid,CFG.CREDITS.mcdavid);
+loadPortrait("pGretzky",CFG.IMAGES.gretzky,CFG.CREDITS.gretzky);
+$("refresh").addEventListener("click",load);
+$("share").addEventListener("click",async()=>{
+  const d={title:document.title,text:"Can McDavid break Gretzky's 215-point record? Follow the chase live.",url:location.href};
+  try{if(navigator.share)await navigator.share(d);else{await navigator.clipboard.writeText(location.href);$("share").textContent="Link copied ✓";setTimeout(()=>$("share").textContent="Share",1800)}}catch(e){}
+});
+const cv=$("chart");
+cv.addEventListener("mousemove",chartHover);cv.addEventListener("mouseleave",chartLeave);
+cv.addEventListener("touchstart",chartHover,{passive:true});cv.addEventListener("touchmove",chartHover,{passive:true});cv.addEventListener("touchend",chartLeave);
+window.addEventListener("resize",drawChart);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)load()});
+setInterval(()=>{if(!document.hidden)load()},300000);
+load();
+</script>
+</body>
+</html>
