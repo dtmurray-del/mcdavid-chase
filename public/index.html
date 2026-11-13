@@ -188,7 +188,7 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
 .seg button{padding:7px 12px;font-size:12px;border:0;background:transparent;border-radius:9px;color:var(--muted)}
 .seg button:hover{background:rgba(255,255,255,.08);color:#fff}
 .seg button.on{background:var(--orange);color:#fff}
-.dist-card{padding:22px}
+.dist-card{padding:24px 22px 22px}
 .dsum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
 .dc{padding:14px 16px;border-radius:16px;background:rgba(0,0,0,.22);border:1px solid var(--line)}
 .dc small{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
@@ -196,25 +196,38 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
 .dv b{font-size:38px;font-weight:900;line-height:1}
 .dv .m{color:var(--orange)}.dv .g{color:#7cc4ff}
 .dv span{font:600 11px var(--body);color:var(--muted);letter-spacing:.1em}
-.dleg{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:10px}
-.dleg i{display:inline-block;width:18px;height:8px;border-radius:4px;margin-right:7px;vertical-align:middle}
-.dr{display:grid;grid-template-columns:132px 1fr;gap:16px;align-items:center;padding:10px 0;border-top:1px solid rgba(255,255,255,.07)}
-.dl b{font:900 34px/1 var(--display)}
-.dl span{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.dbars{display:grid;gap:6px}
-.db{position:relative;height:26px;border-radius:8px;background:rgba(255,255,255,.05);overflow:hidden}
-.db i{position:absolute;inset:0 auto 0 0;border-radius:8px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
-.db.m i{background:linear-gradient(90deg,#c93a00,var(--orange))}
-.db.g i{background:linear-gradient(90deg,#3a8fd1,#7cc4ff)}
-.db em{position:absolute;left:10px;top:0;bottom:0;display:flex;align-items:center;gap:6px;font:800 14px var(--display);font-style:normal;letter-spacing:.04em;text-shadow:0 1px 6px rgba(0,0,0,.7)}
-.db em small{font:500 11px var(--body);color:rgba(255,255,255,.78)}
+.dleg{display:flex;gap:8px 22px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted);margin:0 0 20px}
+.dleg span{display:inline-flex;align-items:center;gap:8px}
+.dleg .pk{--d:12px}
+.dg{--c:6px}
+.dg-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));column-gap:var(--c)}
+.dg-row.stk{height:calc(var(--rows)*(var(--d) + var(--g)) - var(--g))}
+.stack{display:flex;flex-wrap:wrap;gap:var(--g);width:calc(var(--pr)*(var(--d) + var(--g)) - var(--g));max-width:100%;margin:0 auto;align-content:flex-start;height:100%}
+.stack.up{flex-wrap:wrap-reverse}
+.pk{display:block;flex:none;width:var(--d);height:var(--d);border-radius:50%}
+.pk.m{background:radial-gradient(circle at 35% 30%,#ffb089,#FF4C00 58%,#c93a00);box-shadow:0 0 12px rgba(255,76,0,.4)}
+.pk.g{background:radial-gradient(circle at 35% 30%,#eef8ff,#7cc4ff 58%,#3a8fd1);box-shadow:0 0 12px rgba(124,196,255,.3)}
+.pk.ghost{background:transparent;box-shadow:none;border:1.5px solid rgba(255,76,0,.8);opacity:.7}
+.dg.anim .pk{animation:pkin .5s cubic-bezier(.2,1.5,.4,1) both;animation-delay:calc(var(--i)*18ms)}
+@keyframes pkin{from{transform:scale(0);opacity:0}}
+.cn{text-align:center;font:900 38px/1 var(--display)}
+.cn small{font:700 13px var(--body);color:var(--muted);margin-left:4px}
+.cn.m{color:var(--orange)}.cn.g{color:#7cc4ff}.cn.z{opacity:.3}
+.dg-row.cnt:first-child{margin-bottom:12px}
+.dg-row.cnt:last-child{margin-top:12px}
+.dg-axis{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));column-gap:var(--c);align-items:center;margin:16px 0}
+.dg-axis:before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.22) 6%,rgba(255,255,255,.22) 94%,transparent)}
+.ax{position:relative;justify-self:center;min-width:48px;text-align:center;padding:5px 13px;border-radius:99px;background:#0a2a57;border:1px solid rgba(255,255,255,.18);font:900 26px/1 var(--display)}
+.dcap{text-align:center;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:2px}
 .dn{color:var(--muted);font-size:13px;padding:4px 0}
 .dnote{color:var(--muted);font-size:13px;margin:0 0 16px}
 @media(max-width:720px){
  .dsum{grid-template-columns:repeat(2,minmax(0,1fr))}
- .dist-card{padding:16px}
- .dr{grid-template-columns:78px 1fr;gap:10px}
- .dl b{font-size:28px}
+ .dist-card{padding:16px 12px}
+ .dg{--c:4px}
+ .cn{font-size:26px}
+ .cn small{display:block;margin:2px 0 0;font-size:11px}
+ .ax{min-width:34px;padding:4px 8px;font-size:20px}
  .dv b{font-size:32px}
  .seg button{padding:7px 10px;font-size:11px}
 }
@@ -669,35 +682,63 @@ async function load(){
 }
 
 /* ---------- MULTI-POINT GAMES ---------- */
-// Counts games by points scored (0 to 6+). Gretzky's side needs his 1985-86 game log from the NHL archive (gActual).
-let distMode="matched";
+// Dot plot: every dot is one game, stacked by points scored (0 to 6+). McDavid's stacks grow up from the line, Gretzky's grow down.
+// Gretzky's side needs his 1985-86 game log from the NHL archive (gActual).
+let distMode="matched",distAnim=true,distTimer;
 const BUCKETS=[0,1,2,3,4,5,6];
+const bLabel=i=>`${i===6?"6 or more":i} point${i===1?"":"s"}`;
 function distCounts(arr){const c=BUCKETS.map(()=>0);arr.forEach(g=>{c[Math.min(6,Math.max(0,num(g.points)))]++});return c}
+// spread McDavid's remaining games over the buckets at his current rate (largest-remainder, sums exactly to the games left)
+function project(c,n,total){
+  const rest=total-n;if(rest<=0||!n)return c.map(()=>0);
+  const raw=c.map(x=>x/n*rest),base=raw.map(Math.floor);
+  let left=rest-base.reduce((a,b)=>a+b,0);
+  raw.map((r,i)=>[r-base[i],i]).sort((a,b)=>b[0]-a[0]).slice(0,left).forEach(([,i])=>base[i]++);
+  return base;
+}
 function renderDist(){
   const el=$("dist");if(!el)return;
   const n=games.length;
   $("segMatched").textContent=n?`Same games (first ${n})`:"Same games played";
   if(!n){el.innerHTML=`<div class="dn">Waiting on McDavid's first games of the season.</div>`;return}
-  const m=distCounts(games),src=gActual?(distMode==="matched"?gGames.slice(0,n):gGames):null,g=src?distCounts(src):null;
-  const mt=n,gt=src?src.length:0,pct=(c,t)=>t?c/t*100:0;
-  const maxP=Math.max(1,...m.map(c=>pct(c,mt)),...(g?g.map(c=>pct(c,gt)):[0]));
+  const full=distMode==="full",SG=CFG.SEASON_GAMES,rest=Math.max(0,SG-n);
+  const m=distCounts(games),src=gActual?(full?gGames:gGames.slice(0,n)):null,g=src?distCounts(src):null,gt=src?src.length:0;
+  const mp=full?project(m,n,SG):m.map(()=>0),mTot=m.map((c,i)=>c+mp[i]);
+  const small=matchMedia("(max-width:720px)").matches,pr=small?3:5,gap=small?3:5;let d=small?11:15;
+  const maxC=Math.max(1,...mTot,...(g||[0]));
+  while(d>7&&Math.ceil(maxC/pr)*(d+gap)>240)d--;
+  const rows=Math.ceil(maxC/pr);
   const sum=(c,i)=>c.slice(i).reduce((a,b)=>a+b,0),best=a=>a.reduce((x,y)=>Math.max(x,num(y.points)),0);
   const chip=(label,mv,gv)=>`<div class="dc"><small>${label}</small><div class="dv"><b class="m">${mv}</b><span>VS</span><b class="g">${gv}</b></div></div>`;
-  const gv=f=>g?f:"—";
-  const bar=(cls,c,t)=>`<div class="db ${cls}"><i style="width:${(pct(c,t)/maxP*100).toFixed(1)}%"></i><em>${c}<small>${t?Math.round(pct(c,t))+"%":""}</small></em></div>`;
-  const rows=BUCKETS.map(i=>`<div class="dr"><div class="dl"><b>${i===6?"6+":i}</b><span>${i===1?"point game":"point games"}</span></div><div class="dbars">${bar("m",m[i],mt)}${g?bar("g",g[i],gt):""}</div></div>`).join("");
-  const note=!gActual?"Gretzky's game-by-game log isn't available from the NHL right now, so only McDavid's numbers are shown.":
-    distMode==="matched"?`Counting McDavid's ${n} games against Gretzky's first ${n} games of 1985–86.`:`Counting McDavid's ${n} games against all ${gt} of Gretzky's 1985–86 games. Bars show share of games played.`;
-  el.innerHTML=`<p class="dnote">${note}</p>
-   <div class="dsum">${chip("Multi-point games (2+)",sum(m,2),gv(sum(g||[],2)))}${chip("3+ point games",sum(m,3),gv(sum(g||[],3)))}${chip("Best game (points)",best(games),gv(best(src||[])))}${chip("Pointless games",m[0],gv(g&&g[0]))}</div>
-   <div class="dleg"><span><i style="background:#FF4C00"></i>McDavid 2026–27 (${mt} GP)</span>${g?`<span><i style="background:#7cc4ff"></i>Gretzky 1985–86 (${gt} GP)</span>`:""}</div>${rows}`;
+  const gv=f=>g?f:"—",tag=full&&rest?" · proj.":"";
+  const dots=(cls,solid,ghost,col)=>{let h="",k=0;for(let i=0;i<solid;i++)h+=`<i class="pk ${cls}" style="--i:${col*4+k++}"></i>`;for(let i=0;i<ghost;i++)h+=`<i class="pk ${cls} ghost" style="--i:${col*4+k++}"></i>`;return h};
+  const mCounts=BUCKETS.map(i=>`<div class="cn m${mTot[i]?"":" z"}">${m[i]}${mp[i]?`<small>+${mp[i]}</small>`:""}</div>`).join("");
+  const mStacks=BUCKETS.map(i=>`<div class="stack up" role="img" aria-label="McDavid: ${m[i]} games with ${bLabel(i)}${mp[i]?`, plus ${mp[i]} projected`:""}">${dots("m",m[i],mp[i],i)}</div>`).join("");
+  const axis=BUCKETS.map(i=>`<div class="ax">${i===6?"6+":i}</div>`).join("");
+  const gStacks=g?BUCKETS.map(i=>`<div class="stack" role="img" aria-label="Gretzky: ${g[i]} games with ${bLabel(i)}">${dots("g",g[i],0,i)}</div>`).join(""):"";
+  const gCounts=g?BUCKETS.map(i=>`<div class="cn g${g[i]?"":" z"}">${g[i]}</div>`).join(""):"";
+  const parts=["Every dot is one game."];
+  if(!gActual)parts.push("Gretzky's game-by-game log isn't available from the NHL right now, so only McDavid's games are shown.");
+  else parts.push(full?`Gretzky's are all ${gt} games of 1985–86.`:`McDavid's ${n} games so far against Gretzky's first ${n} of 1985–86.`);
+  if(full&&rest)parts.push(`Hollow dots project McDavid's remaining ${rest} games at his current rate, and the tiles use those projected totals.`);
+  el.innerHTML=`<p class="dnote">${parts.join(" ")}</p>
+   <div class="dsum">${chip("Multi-point games (2+)"+tag,sum(mTot,2),gv(sum(g||[],2)))}${chip("3+ point games"+tag,sum(mTot,3),gv(sum(g||[],3)))}${chip("Best game (points)",best(games),gv(best(src||[])))}${chip("Pointless games"+tag,mTot[0],gv(g&&g[0]))}</div>
+   <div class="dleg"><span><i class="pk m"></i>McDavid 2026–27 · ${n} GP</span>${full&&rest?`<span><i class="pk m ghost"></i>Projected · ${rest} GP</span>`:""}${g?`<span><i class="pk g"></i>Gretzky 1985–86 · ${gt} GP</span>`:""}</div>
+   <div class="dg${distAnim?" anim":""}" style="--d:${d}px;--g:${gap}px;--pr:${pr};--rows:${rows}">
+    <div class="dg-row cnt">${mCounts}</div>
+    <div class="dg-row stk">${mStacks}</div>
+    <div class="dg-axis">${axis}</div>
+    ${g?`<div class="dg-row stk">${gStacks}</div><div class="dg-row cnt">${gCounts}</div>`:""}
+   </div><div class="dcap">Points in a game</div>`;
+  distAnim=false;
 }
 $("distSeg").addEventListener("click",e=>{
   const b=e.target.closest("button[data-m]");if(!b)return;
-  distMode=b.dataset.m;
+  distMode=b.dataset.m;distAnim=true;
   $("distSeg").querySelectorAll("button").forEach(x=>{const on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-pressed",on)});
   renderDist();
 });
+window.addEventListener("resize",()=>{clearTimeout(distTimer);distTimer=setTimeout(renderDist,200)});
 
 /* ---------- LIVE GAME BANNER ---------- */
 // Shows Edmonton's game when one is live, about to start (today) or just finished.
