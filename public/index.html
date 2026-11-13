@@ -183,6 +183,41 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
  .value{font-size:42px}.ms{grid-template-columns:repeat(2,1fr)}
  .chart-wrap{height:300px}.ring-mid .n{font-size:64px}
 }
+/* ---- multi-point games ---- */
+.seg{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--line)}
+.seg button{padding:7px 12px;font-size:12px;border:0;background:transparent;border-radius:9px;color:var(--muted)}
+.seg button:hover{background:rgba(255,255,255,.08);color:#fff}
+.seg button.on{background:var(--orange);color:#fff}
+.dist-card{padding:22px}
+.dsum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.dc{padding:14px 16px;border-radius:16px;background:rgba(0,0,0,.22);border:1px solid var(--line)}
+.dc small{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.dv{display:flex;align-items:baseline;gap:10px;margin-top:6px;font-family:var(--display)}
+.dv b{font-size:38px;font-weight:900;line-height:1}
+.dv .m{color:var(--orange)}.dv .g{color:#7cc4ff}
+.dv span{font:600 11px var(--body);color:var(--muted);letter-spacing:.1em}
+.dleg{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:10px}
+.dleg i{display:inline-block;width:18px;height:8px;border-radius:4px;margin-right:7px;vertical-align:middle}
+.dr{display:grid;grid-template-columns:132px 1fr;gap:16px;align-items:center;padding:10px 0;border-top:1px solid rgba(255,255,255,.07)}
+.dl b{font:900 34px/1 var(--display)}
+.dl span{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.dbars{display:grid;gap:6px}
+.db{position:relative;height:26px;border-radius:8px;background:rgba(255,255,255,.05);overflow:hidden}
+.db i{position:absolute;inset:0 auto 0 0;border-radius:8px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.db.m i{background:linear-gradient(90deg,#c93a00,var(--orange))}
+.db.g i{background:linear-gradient(90deg,#3a8fd1,#7cc4ff)}
+.db em{position:absolute;left:10px;top:0;bottom:0;display:flex;align-items:center;gap:6px;font:800 14px var(--display);font-style:normal;letter-spacing:.04em;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+.db em small{font:500 11px var(--body);color:rgba(255,255,255,.78)}
+.dn{color:var(--muted);font-size:13px;padding:4px 0}
+.dnote{color:var(--muted);font-size:13px;margin:0 0 16px}
+@media(max-width:720px){
+ .dsum{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .dist-card{padding:16px}
+ .dr{grid-template-columns:78px 1fr;gap:10px}
+ .dl b{font-size:28px}
+ .dv b{font-size:32px}
+ .seg button{padding:7px 10px;font-size:11px}
+}
 /* ---- live game banner ---- */
 .gb{position:relative;margin:-10px 0 30px;border-radius:26px;overflow:hidden;border:1px solid rgba(255,76,0,.55);background:radial-gradient(720px 260px at 50% -45%,rgba(255,76,0,.42),transparent 70%),linear-gradient(160deg,#0a3a7d 0,#062a5c 48%,#041E42 100%);box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 60px rgba(255,76,0,.16),inset 0 1px 0 rgba(255,255,255,.14)}
 .gb[hidden]{display:none}
@@ -349,6 +384,13 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
   </div>
 </section>
 
+<section class="section" aria-labelledby="h-dist">
+  <div class="sh"><h2 id="h-dist">Multi-Point Games</h2>
+    <div class="seg" id="distSeg" role="group" aria-label="Comparison range"><button type="button" data-m="matched" class="on" aria-pressed="true" id="segMatched">Same games played</button><button type="button" data-m="full" aria-pressed="false">Gretzky full season</button></div>
+  </div>
+  <div class="card dist-card" id="dist"><div class="dn">Loading game log…</div></div>
+</section>
+
 <section class="section" aria-labelledby="h-ms">
   <div class="sh"><h2 id="h-ms">Milestones</h2><p>Reached or projected at the current rate</p></div>
   <div class="ms" id="milestones"></div>
@@ -506,6 +548,7 @@ function render(data){
 
   renderMilestones(pts,gp,ppg);
   renderCompare();
+  renderDist();
   drawChart();
 }
 function gameReached(arr,m){const i=arr.findIndex(g=>g.total>=m);return i<0?null:i+1}
@@ -624,6 +667,37 @@ async function load(){
   }
   loading=false;
 }
+
+/* ---------- MULTI-POINT GAMES ---------- */
+// Counts games by points scored (0 to 6+). Gretzky's side needs his 1985-86 game log from the NHL archive (gActual).
+let distMode="matched";
+const BUCKETS=[0,1,2,3,4,5,6];
+function distCounts(arr){const c=BUCKETS.map(()=>0);arr.forEach(g=>{c[Math.min(6,Math.max(0,num(g.points)))]++});return c}
+function renderDist(){
+  const el=$("dist");if(!el)return;
+  const n=games.length;
+  $("segMatched").textContent=n?`Same games (first ${n})`:"Same games played";
+  if(!n){el.innerHTML=`<div class="dn">Waiting on McDavid's first games of the season.</div>`;return}
+  const m=distCounts(games),src=gActual?(distMode==="matched"?gGames.slice(0,n):gGames):null,g=src?distCounts(src):null;
+  const mt=n,gt=src?src.length:0,pct=(c,t)=>t?c/t*100:0;
+  const maxP=Math.max(1,...m.map(c=>pct(c,mt)),...(g?g.map(c=>pct(c,gt)):[0]));
+  const sum=(c,i)=>c.slice(i).reduce((a,b)=>a+b,0),best=a=>a.reduce((x,y)=>Math.max(x,num(y.points)),0);
+  const chip=(label,mv,gv)=>`<div class="dc"><small>${label}</small><div class="dv"><b class="m">${mv}</b><span>VS</span><b class="g">${gv}</b></div></div>`;
+  const gv=f=>g?f:"—";
+  const bar=(cls,c,t)=>`<div class="db ${cls}"><i style="width:${(pct(c,t)/maxP*100).toFixed(1)}%"></i><em>${c}<small>${t?Math.round(pct(c,t))+"%":""}</small></em></div>`;
+  const rows=BUCKETS.map(i=>`<div class="dr"><div class="dl"><b>${i===6?"6+":i}</b><span>${i===1?"point game":"point games"}</span></div><div class="dbars">${bar("m",m[i],mt)}${g?bar("g",g[i],gt):""}</div></div>`).join("");
+  const note=!gActual?"Gretzky's game-by-game log isn't available from the NHL right now, so only McDavid's numbers are shown.":
+    distMode==="matched"?`Counting McDavid's ${n} games against Gretzky's first ${n} games of 1985–86.`:`Counting McDavid's ${n} games against all ${gt} of Gretzky's 1985–86 games. Bars show share of games played.`;
+  el.innerHTML=`<p class="dnote">${note}</p>
+   <div class="dsum">${chip("Multi-point games (2+)",sum(m,2),gv(sum(g||[],2)))}${chip("3+ point games",sum(m,3),gv(sum(g||[],3)))}${chip("Best game (points)",best(games),gv(best(src||[])))}${chip("Pointless games",m[0],gv(g&&g[0]))}</div>
+   <div class="dleg"><span><i style="background:#FF4C00"></i>McDavid 2026–27 (${mt} GP)</span>${g?`<span><i style="background:#7cc4ff"></i>Gretzky 1985–86 (${gt} GP)</span>`:""}</div>${rows}`;
+}
+$("distSeg").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-m]");if(!b)return;
+  distMode=b.dataset.m;
+  $("distSeg").querySelectorAll("button").forEach(x=>{const on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-pressed",on)});
+  renderDist();
+});
 
 /* ---------- LIVE GAME BANNER ---------- */
 // Shows Edmonton's game when one is live, about to start (today) or just finished.
