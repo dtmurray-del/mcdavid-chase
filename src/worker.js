@@ -13,6 +13,8 @@ const ALLOWED = [
   // McDavid's current season, or a historical season:
   //   player/<id>/game-log/now   or   player/<id>/game-log/19851986/2
   { re: /^player\/\d+\/game-log\/(now|\d{8}\/\d)$/, ttl: (p) => (p.endsWith("/now") ? 60 : 86400) },
+  // Today's scoreboard (live banner): score/now  or  score/2026-11-13
+  { re: /^score\/(now|\d{4}-\d{2}-\d{2})$/, ttl: () => 10 },
 ];
 
 async function proxy(path) {

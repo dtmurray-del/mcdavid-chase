@@ -103,7 +103,7 @@ button.primary:hover{background:var(--orange2)}
 .portrait.has-img figcaption:not(:empty){display:block}
 .pname{font:800 32px/1 var(--display);text-transform:uppercase}
 .pmeta{color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:5px 0 14px}
-.pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .pstats div{background:rgba(0,0,0,.22);border-radius:10px;padding:8px 6px;text-align:center}
 .pstats b{display:block;font:800 24px/1 var(--display)}
 .pstats span{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -167,9 +167,9 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
 @media(max-width:960px){
  .hero{grid-template-columns:1fr}
  .faceoff{grid-template-columns:1fr}
- .vs{grid-auto-flow:column;gap:14px;padding:4px 0}
+ .vs{grid-auto-flow:column;gap:14px;padding:4px 0;align-items:center;justify-content:center}
  .vs .d{max-width:none}
- .player.g{grid-template-columns:150px 1fr}.player.g .portrait{order:0}
+ .player.g{grid-template-columns:150px 1fr}.player.g .portrait{order:-1}
  .grid4{grid-template-columns:repeat(2,1fr)}
  .grid3{grid-template-columns:1fr}
  .ms{grid-template-columns:repeat(3,1fr)}
@@ -179,10 +179,86 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
  .player,.player.g{grid-template-columns:104px 1fr;padding:14px;gap:14px}
  .mono{font-size:60px}.pname{font-size:26px}
  .pstats b{font-size:20px}
+ .pstats{gap:5px}.pstats div{padding:8px 2px}.pstats span{font-size:9px;letter-spacing:.04em}.pmeta{letter-spacing:.06em}
  .value{font-size:42px}.ms{grid-template-columns:repeat(2,1fr)}
  .chart-wrap{height:300px}.ring-mid .n{font-size:64px}
 }
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+/* ---- live game banner ---- */
+.gb{position:relative;margin:-10px 0 30px;border-radius:26px;overflow:hidden;border:1px solid rgba(255,76,0,.55);background:radial-gradient(720px 260px at 50% -45%,rgba(255,76,0,.42),transparent 70%),linear-gradient(160deg,#0a3a7d 0,#062a5c 48%,#041E42 100%);box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 60px rgba(255,76,0,.16),inset 0 1px 0 rgba(255,255,255,.14)}
+.gb[hidden]{display:none}
+.gb:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(115deg,transparent 0 22px,rgba(255,255,255,.03) 22px 23px)}
+.gb.is-live:after{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,var(--orange),#fff,var(--orange),transparent);background-size:200% 100%;animation:gbsweep 2.4s linear infinite}
+@keyframes gbsweep{to{background-position:-200% 0}}
+.gb.is-pre{border-color:rgba(124,196,255,.45);box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 50px rgba(124,196,255,.1),inset 0 1px 0 rgba(255,255,255,.14)}
+.gb.is-final{border-color:var(--line);box-shadow:0 20px 60px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.1)}
+.gb-in{position:relative;padding:18px 24px 22px}
+.gb-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ice)}
+.gb-ctx{flex:1;min-width:0}
+.gb-upd{color:var(--muted);letter-spacing:.1em}
+.gb-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:99px;font-weight:800;letter-spacing:.18em;color:#fff;background:rgba(255,255,255,.12)}
+.gb-pill.p-live{background:#e11d2e;box-shadow:0 0 24px rgba(225,29,46,.55)}
+.gb-pill.p-live i{width:8px;height:8px;border-radius:50%;background:#fff;animation:gbblink 1.1s ease-in-out infinite}
+@keyframes gbblink{50%{opacity:.25}}
+.gb-pill.p-pre{background:rgba(124,196,255,.2);color:#cfe6ff}
+.gb-pill.p-win{background:rgba(89,227,160,.18);color:var(--green)}
+.gb-demo{padding:4px 9px;border-radius:6px;background:#fff;color:#041E42;font-weight:800;letter-spacing:.14em}
+.gb-main{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;margin:18px 0 4px}
+.gb-team{display:flex;align-items:center;gap:16px;min-width:0}
+.gb-team.home{flex-direction:row-reverse;text-align:right}
+.gb-badge{flex:none;width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font:900 30px/1 var(--display);letter-spacing:.02em;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.26);color:#e6f0ff}
+.gb-team.edm .gb-badge{background:linear-gradient(145deg,#0a3a7d,#041E42);border-color:var(--orange);color:var(--orange);box-shadow:0 0 0 5px rgba(255,76,0,.16),0 0 34px rgba(255,76,0,.5)}
+.gb-tn b{display:block;font:800 32px/1 var(--display);text-transform:uppercase}
+.gb-tn span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.gb-mid{text-align:center}
+.gb-score{display:flex;align-items:center;justify-content:center;gap:16px;font:900 clamp(66px,9vw,116px)/.85 var(--display)}
+.gb-score i{font-style:normal;opacity:.35;font-size:.55em}
+.gb-score b.e{color:var(--orange);text-shadow:0 0 44px rgba(255,76,0,.65)}
+.gb-clock{margin-top:12px;font:800 21px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;color:#fff}
+.gb-start{font:900 clamp(40px,6vw,64px)/1 var(--display)}
+.gb-sog{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin-top:16px;font:800 20px/1 var(--display)}
+.gb-sog .split{display:flex;gap:4px;height:10px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.08)}
+.gb-sog .split i{display:block;height:100%;transition:flex .8s}
+.gb-sog .split i.e{background:var(--orange)}
+.gb-sog .split i.o{background:#7cc4ff}
+.gb-sogl{text-align:center;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+.gb-foot{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
+.mcd{display:flex;align-items:center;gap:14px;padding:11px 16px;border-radius:16px;background:rgba(0,0,0,.28);border:1px solid var(--line)}
+.mcd .n{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;background:var(--orange);color:var(--navy);font:900 22px/1 var(--display);transform:skew(-8deg)}
+.mcd small{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.mcd strong{font:900 34px/1 var(--display)}
+.mcd .ga{font-size:12px;color:var(--ice);letter-spacing:.06em}
+.mcd.hot{border-color:var(--orange);background:linear-gradient(160deg,rgba(255,76,0,.3),rgba(255,76,0,.06))}
+.mcd.pop{animation:gbpop 1.2s ease-out 2}
+@keyframes gbpop{40%{transform:scale(1.06);box-shadow:0 0 36px rgba(255,76,0,.7)}}
+.gb-goals{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:13px;min-width:0}
+.gb-goals li{display:grid;grid-template-columns:44px minmax(0,auto) 1fr auto;gap:10px;align-items:baseline;padding:7px 11px;border-radius:10px;background:rgba(255,255,255,.04)}
+.gb-goals li.e{background:rgba(255,76,0,.12)}
+.gb-goals em{font-style:normal;font:800 14px/1 var(--display);letter-spacing:.08em;color:var(--ice)}
+.gb-goals li.e em{color:var(--orange2)}
+.gb-goals span{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gb-goals time{color:var(--muted);font-size:11px;letter-spacing:.08em;white-space:nowrap}
+.gb-none{color:var(--muted);font-size:13px;padding:8px 0}
+.gb-goal{position:absolute;inset:0;z-index:2;display:none;place-items:center;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(255,76,0,.6),rgba(255,76,0,0) 68%)}
+.gb-goal b{font:900 clamp(40px,9vw,110px)/1 var(--display);letter-spacing:.04em;text-transform:uppercase;color:#fff;text-shadow:0 0 46px var(--orange),0 6px 30px rgba(0,0,0,.5);text-align:center;padding:0 12px}
+.gb.goal .gb-goal{display:grid;animation:gbgoal 4.5s ease-out forwards}
+@keyframes gbgoal{0%{opacity:0;transform:scale(.8)}8%{opacity:1;transform:scale(1)}75%{opacity:1}100%{opacity:0}}
+@media(max-width:720px){
+ .gb{border-radius:20px;margin-bottom:24px}
+ .gb-in{padding:14px 14px 16px}
+ .gb-main{gap:6px;margin-top:14px}
+ .gb-team,.gb-team.home{flex-direction:column;text-align:center;gap:8px}
+ .gb-badge{width:58px;height:58px;font-size:21px}
+ .gb-tn b{font-size:22px}
+ .gb-score{font-size:58px;gap:6px}
+ .gb-clock{font-size:14px;letter-spacing:.08em}
+ .gb-start{font-size:34px}
+ .gb-clock[data-start]{font-size:12px;letter-spacing:.05em;line-height:1.3;max-width:120px;margin-left:auto;margin-right:auto}
+ .gb-mid{min-width:0}
+ .gb-foot{grid-template-columns:1fr;gap:12px}
+ .gb-goals li{grid-template-columns:38px 1fr auto}
+ .gb-goals li span{grid-column:2/4;grid-row:2}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}.gb.goal .gb-goal{display:none!important}}
 </style>
 </head>
 <body>
@@ -196,6 +272,8 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
     <button id="refresh" class="primary" type="button">↻ Refresh</button>
   </div>
 </header>
+
+<section id="gameBanner" class="gb" hidden aria-label="Edmonton Oilers game"></section>
 
 <section class="hero">
   <div>
@@ -547,6 +625,135 @@ async function load(){
   loading=false;
 }
 
+/* ---------- LIVE GAME BANNER ---------- */
+// Shows Edmonton's game when one is live, about to start (today) or just finished.
+// Add ?demo=live | pre | final | none to the URL to preview each state (&t=30 skips ahead 30s in the live demo).
+const GB=$("gameBanner"),TEAM="EDM",BASE_TITLE=document.title;
+const API_S=urlsFor("score/now");
+const QS=new URLSearchParams(location.search),DEMO=QS.get("demo"),DEMO_T0=Date.now()-num(QS.get("t"))*1000;
+const LIVE_S=["LIVE","CRIT"],PRE_S=["FUT","PRE"],FIN_S=["FINAL","OFF"];
+const tn=o=>o==null?"":typeof o==="object"?(o.default||""):String(o);
+const ord=n=>["","1ST","2ND","3RD"][n]||(n?n+"TH":"");
+const clockTxt=t=>new Date(t).toLocaleTimeString([],{hour:"numeric",minute:"2-digit"});
+const gb={id:null,edm:null,pts:null,state:null,game:null,goalUntil:0,mcdUntil:0,done:{},ok:0};
+let gbTimer;
+
+async function fetchLive(urls){ // live scores must never come from a stale cache, so no saved-copy fallback here
+  for(const url of urls){
+    try{
+      const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),8000);
+      const r=await fetch(url,{cache:"no-store",signal:ctl.signal});clearTimeout(t);
+      if(!r.ok)throw 0;
+      return await r.json();
+    }catch(e){}
+  }
+  return null;
+}
+function periodLabel(d,fallback){d=d||{};if(d.periodType==="SO")return"SO";if(d.periodType==="OT")return"OT";return ord(d.number||fallback)}
+function pickEdm(data){
+  const list=((data&&data.games)||[]).filter(g=>[g.homeTeam,g.awayTeam].some(t=>t&&t.abbrev===TEAM));
+  const now=Date.now(),start=g=>new Date(g.startTimeUTC).getTime();
+  const live=list.find(g=>LIVE_S.includes(g.gameState));if(live)return live;
+  const pre=list.filter(g=>PRE_S.includes(g.gameState)&&start(g)-now<12*36e5).sort((a,b)=>start(a)-start(b))[0];if(pre)return pre;
+  return list.filter(g=>FIN_S.includes(g.gameState)&&now-start(g)>0&&now-start(g)<7*36e5).sort((a,b)=>start(b)-start(a))[0]||null;
+}
+function mcdTonight(g){
+  let G=0,A=0;
+  (g.goals||[]).forEach(x=>{if(x.playerId===CFG.PLAYER)G++;(x.assists||[]).forEach(a=>{if(a.playerId===CFG.PLAYER)A++})});
+  return{G,A,P:G+A};
+}
+function fmtDur(ms){const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60;return h?`${h}h ${m}m`:`${m}m ${String(r).padStart(2,"0")}s`}
+function countdownTxt(iso){const ms=new Date(iso)-Date.now();return ms>0?"Puck drop in "+fmtDur(ms):"Puck drop imminent"}
+function teamBlock(t,side){
+  const ab=t.abbrev||"";
+  return `<div class="gb-team ${side}${ab===TEAM?" edm":""}"><div class="gb-badge">${esc(ab)}</div><div class="gb-tn"><b>${esc(tn(t.name)||tn(t.commonName)||ab)}</b><span>${side==="home"?"Home":"Away"}</span></div></div>`;
+}
+function goalLi(x){
+  const who=tn(x.name)||[tn(x.firstName),tn(x.lastName)].filter(Boolean).join(" ")||"Goal";
+  const t=tn(x.teamAbbrev),per=x.periodDescriptor?periodLabel(x.periodDescriptor,x.period):ord(x.period);
+  const as=(x.assists||[]).map(s=>tn(s.name)).filter(Boolean).join(", ");
+  return `<li class="${t===TEAM?"e":""}"><em>${esc(t)}</em><b>${esc(who)}${x.goalsToDate!=null?` (${num(x.goalsToDate)})`:""}</b><span>${as?esc(as):"Unassisted"}</span><time>${per} ${esc(x.timeInPeriod||"")}</time></li>`;
+}
+function renderBanner(){
+  const g=gb.game;
+  if(!g){GB.hidden=true;GB.innerHTML="";GB.className="gb";document.title=BASE_TITLE;return}
+  const st=g.gameState,live=LIVE_S.includes(st),pre=PRE_S.includes(st),kind=live?"live":pre?"pre":"final";
+  const a=g.awayTeam||{},h=g.homeTeam||{},as=num(a.score),hs=num(h.score),edmHome=h.abbrev===TEAM;
+  const eS=edmHome?hs:as,oS=edmHome?as:hs,m=mcdTonight(g),c=g.clock||{},d=g.periodDescriptor||{},lab=periodLabel(d,g.period);
+  const scoreHtml=`<div class="gb-score"><b class="${a.abbrev===TEAM?"e":""}">${as}</b><i>:</i><b class="${h.abbrev===TEAM?"e":""}">${hs}</b></div>`;
+  let pill,mid,sog="",foot="";
+  if(live){
+    const clock=lab==="SO"?"SHOOTOUT":c.inIntermission?`${lab} INTERMISSION${c.timeRemaining?" · "+esc(c.timeRemaining):""}`:`${lab} · ${esc(c.timeRemaining||"--:--")}`;
+    pill=`<span class="gb-pill p-live"><i></i>LIVE</span>`;
+    mid=scoreHtml+`<div class="gb-clock">${clock}</div>`;
+    document.title=`${a.abbrev} ${as}–${hs} ${h.abbrev} · LIVE | THE CHASE`;
+  }else if(pre){
+    pill=`<span class="gb-pill p-pre">Game day</span>`;
+    mid=`<div class="gb-start">${clockTxt(g.startTimeUTC)}</div><div class="gb-clock" data-start="${esc(g.startTimeUTC)}">${countdownTxt(g.startTimeUTC)}</div>`;
+    document.title=BASE_TITLE;
+  }else{
+    const ext=d.periodType==="OT"||d.periodType==="SO"?"/"+d.periodType:"";
+    pill=`<span class="gb-pill ${eS>oS?"p-win":""}">${eS>oS?"Oilers win":"Final"}</span>`;
+    mid=scoreHtml+`<div class="gb-clock">FINAL${ext}</div>`;
+    document.title=BASE_TITLE;
+  }
+  if(!pre&&a.sog!=null&&h.sog!=null){
+    const as_=num(a.sog),hs_=num(h.sog);
+    sog=`<div class="gb-sog"><span>${as_}</span><div class="split"><i class="${a.abbrev===TEAM?"e":"o"}" style="flex:${as_||.0001}"></i><i class="${h.abbrev===TEAM?"e":"o"}" style="flex:${hs_||.0001}"></i></div><span>${hs_}</span></div><div class="gb-sogl">Shots on goal</div>`;
+  }
+  if(!pre){
+    const gl=(g.goals||[]).slice(-4).reverse();
+    foot=`<div class="gb-foot"><div class="mcd${m.P?" hot":""}${Date.now()<gb.mcdUntil?" pop":""}"><span class="n">97</span><div><small>McDavid tonight</small><strong>${m.P} PT${m.P===1?"":"S"}</strong></div><span class="ga">${m.G}G · ${m.A}A</span></div>${gl.length?`<ol class="gb-goals">${gl.map(goalLi).join("")}</ol>`:`<div class="gb-none">${live?"No goals yet. Puck's dropped.":"Scoreless."}</div>`}</div>`;
+  }else if(games.length){
+    const t=games[games.length-1].total,n=games.length;
+    foot=`<div class="gb-foot"><div class="mcd"><span class="n">97</span><div><small>McDavid coming in with</small><strong>${t} PTS</strong></div><span class="ga">${n} GP · ${(t/n).toFixed(2)} P/G</span></div><div class="gb-none">${t>=CFG.BREAK?"Record already broken.":`${CFG.BREAK-t} points to break Gretzky's record.`}</div></div>`;
+  }
+  const venue=tn(g.venue);
+  GB.className=`gb is-${kind}${Date.now()<gb.goalUntil?" goal":""}`;GB.hidden=false;
+  GB.innerHTML=`<div class="gb-goal" aria-hidden="true"><b>GOAL · OILERS</b></div><div class="gb-in"><div class="gb-top">${pill}<span class="gb-ctx">${esc(venue)}${venue?" · ":""}${edmHome?"Home game":"Road game"}</span>${DEMO?`<span class="gb-demo">Demo mode</span>`:""}${live&&gb.ok?`<span class="gb-upd">Updated ${new Date(gb.ok).toLocaleTimeString([],{hour:"numeric",minute:"2-digit",second:"2-digit"})}</span>`:""}</div><div class="gb-main">${teamBlock(a,"away")}<div class="gb-mid">${mid}</div>${teamBlock(h,"home")}</div>${sog}${foot}</div>`;
+}
+function applyGame(g){
+  if(!g){gb.game=null;gb.id=null;gb.state=null;renderBanner();return}
+  const edmHome=g.homeTeam.abbrev===TEAM,eS=num(edmHome?g.homeTeam.score:g.awayTeam.score),p=mcdTonight(g).P;
+  if(gb.id===g.id){
+    if(gb.edm!==null&&eS>gb.edm){gb.goalUntil=Date.now()+4500;setTimeout(renderBanner,4600)}
+    if(gb.pts!==null&&p>gb.pts){gb.mcdUntil=Date.now()+3000;setTimeout(renderBanner,3100)}
+  }
+  // game just ended: refresh the season numbers once the NHL has posted the final game log
+  if(LIVE_S.includes(gb.state)&&FIN_S.includes(g.gameState)&&!gb.done[g.id]){gb.done[g.id]=1;setTimeout(load,30000);setTimeout(load,180000)}
+  gb.id=g.id;gb.edm=eS;gb.pts=p;gb.state=g.gameState;gb.game=g;
+  renderBanner();
+}
+async function pollGame(){
+  clearTimeout(gbTimer);
+  const data=DEMO?mockScore(DEMO):await fetchLive(API_S);
+  if(data){gb.ok=Date.now();applyGame(pickEdm(data))}
+  const g=gb.game,soon=g&&PRE_S.includes(g.gameState)&&new Date(g.startTimeUTC)-Date.now()<45*6e4;
+  gbTimer=setTimeout(pollGame,DEMO?3000:(g&&LIVE_S.includes(g.gameState))||soon?15000:60000);
+}
+setInterval(()=>{const el=GB.querySelector("[data-start]");if(el)el.textContent=countdownTxt(el.dataset.start)},1000);
+
+/* demo data in the same shape as the NHL score feed (fictional players, except McDavid) */
+function mockScore(kind){
+  const base=(state,x)=>({id:2026020999,gameState:state,gameType:2,startTimeUTC:new Date(Date.now()-60000).toISOString(),venue:{default:"Rogers Place"},homeTeam:{abbrev:"EDM",name:{default:"Oilers"},score:0,sog:0},awayTeam:{abbrev:"CGY",name:{default:"Flames"},score:0,sog:0},goals:[],...x});
+  if(kind==="none")return{games:[]};
+  if(kind==="pre")return{games:[base("FUT",{startTimeUTC:new Date(Date.now()+(2*3600+14*60)*1e3).toISOString()})]};
+  const el=((Date.now()-DEMO_T0)/1000)%110,final=kind==="final"||el>=90,minute=final?60:Math.min(60,el/1.5);
+  const S=[{m:5.2,t:"CGY",p:[101,"R. Alder"],a:[]},{m:13.8,t:"EDM",p:[102,"T. Voss"],a:[[CFG.PLAYER,"McDavid"]]},{m:26.4,t:"EDM",p:[CFG.PLAYER,"McDavid"],a:[[102,"T. Voss"]]},{m:34.9,t:"CGY",p:[103,"K. Mercer"],a:[]},{m:48.6,t:"EDM",p:[104,"J. Calder"],a:[[CFG.PLAYER,"McDavid"],[102,"T. Voss"]]},{m:57.3,t:"EDM",p:[102,"T. Voss"],a:[[CFG.PLAYER,"McDavid"]]}];
+  const tally={},goals=[];let eS=0,cS=0;
+  S.filter(s=>s.m<=minute).forEach(s=>{
+    tally[s.p[0]]=(tally[s.p[0]]||0)+1;s.t==="EDM"?eS++:cS++;
+    const inP=s.m%20,mm=Math.floor(inP),ss=Math.floor((inP-mm)*60);
+    goals.push({period:Math.min(3,Math.floor(s.m/20)+1),periodDescriptor:{number:Math.min(3,Math.floor(s.m/20)+1),periodType:"REG"},timeInPeriod:`${String(mm).padStart(2,"0")}:${String(ss).padStart(2,"0")}`,playerId:s.p[0],name:{default:s.p[1]},goalsToDate:tally[s.p[0]]+6,teamAbbrev:s.t,assists:s.a.map(x=>({playerId:x[0],name:{default:x[1]},assistsToDate:9}))});
+  });
+  const rem=20-(minute%20),rm=Math.floor(rem),rs=Math.floor((rem-rm)*60),per=Math.min(3,Math.floor(minute/20)+1);
+  return{games:[base(final?"FINAL":"LIVE",{
+    homeTeam:{abbrev:"EDM",name:{default:"Oilers"},score:eS,sog:Math.round(minute*.62)+2},
+    awayTeam:{abbrev:"CGY",name:{default:"Flames"},score:cS,sog:Math.round(minute*.45)+1},
+    period:per,periodDescriptor:{number:per,periodType:"REG"},clock:{timeRemaining:`${String(rm).padStart(2,"0")}:${String(rs).padStart(2,"0")}`,inIntermission:false},
+    startTimeUTC:new Date(Date.now()-(final?3:minute/60*2.4)*36e5).toISOString(),goals})]};
+}
+
 /* ---------- INIT ---------- */
 loadPortrait("pMcdavid",CFG.IMAGES.mcdavid,CFG.CREDITS.mcdavid);
 loadPortrait("pGretzky",CFG.IMAGES.gretzky,CFG.CREDITS.gretzky);
@@ -559,9 +766,10 @@ const cv=$("chart");
 cv.addEventListener("mousemove",chartHover);cv.addEventListener("mouseleave",chartLeave);
 cv.addEventListener("touchstart",chartHover,{passive:true});cv.addEventListener("touchmove",chartHover,{passive:true});cv.addEventListener("touchend",chartLeave);
 window.addEventListener("resize",drawChart);
-document.addEventListener("visibilitychange",()=>{if(!document.hidden)load()});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){load();pollGame()}});
 setInterval(()=>{if(!document.hidden)load()},300000);
 load();
+pollGame();
 </script>
 </body>
 </html>
