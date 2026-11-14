@@ -15,6 +15,8 @@ const ALLOWED = [
   { re: /^player\/\d+\/game-log\/(now|\d{8}\/\d)$/, ttl: (p) => (p.endsWith("/now") ? 60 : 86400) },
   // Today's scoreboard (live banner): score/now  or  score/2026-11-13
   { re: /^score\/(now|\d{4}-\d{2}-\d{2})$/, ttl: () => 10 },
+  // Edmonton's season schedule (backup source for the game-day countdown)
+  { re: /^club-schedule-season\/[A-Z]{3}\/now$/, ttl: () => 300 },
 ];
 
 async function proxy(path) {

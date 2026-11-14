@@ -220,6 +220,7 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
  .seg button{padding:7px 10px;font-size:11px}
 }
 /* ---- live game banner ---- */
+.gb-dbg{margin:0 0 24px;padding:12px 14px;border-radius:12px;background:rgba(0,0,0,.4);border:1px dashed var(--orange);font:12px/1.55 ui-monospace,Menlo,Consolas,monospace;color:#cfe6ff;white-space:pre-wrap;word-break:break-word}
 .gb{position:relative;margin:-10px 0 30px;border-radius:26px;overflow:hidden;border:1px solid rgba(255,76,0,.55);background:radial-gradient(720px 260px at 50% -45%,rgba(255,76,0,.42),transparent 70%),linear-gradient(160deg,#0a3a7d 0,#062a5c 48%,#041E42 100%);box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 60px rgba(255,76,0,.16),inset 0 1px 0 rgba(255,255,255,.14)}
 .gb[hidden]{display:none}
 .gb:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(115deg,transparent 0 22px,rgba(255,255,255,.03) 22px 23px)}
@@ -310,6 +311,7 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
 </header>
 
 <section id="gameBanner" class="gb" hidden aria-label="Edmonton Oilers game"></section>
+<pre id="gbDebug" class="gb-dbg" hidden></pre>
 
 <section class="hero">
   <div>
@@ -725,14 +727,17 @@ const clockTxt=t=>new Date(t).toLocaleTimeString([],{hour:"numeric",minute:"2-di
 const gb={id:null,edm:null,pts:null,state:null,game:null,goalUntil:0,mcdUntil:0,done:{},ok:0};
 let gbTimer;
 
-async function fetchLive(urls){ // live scores must never come from a stale cache, so no saved-copy fallback here
+async function fetchLive(urls,log){ // live scores must never come from a stale cache, so no saved-copy fallback here
   for(const url of urls){
+    const tag=url.startsWith("/")?"proxy":"direct";
     try{
       const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),8000);
       const r=await fetch(url,{cache:"no-store",signal:ctl.signal});clearTimeout(t);
-      if(!r.ok)throw 0;
-      return await r.json();
-    }catch(e){}
+      if(!r.ok)throw new Error("HTTP "+r.status);
+      const j=await r.json();
+      if(log)log.push(tag+": ok");
+      return j;
+    }catch(e){if(log)log.push(tag+": "+(e&&e.message?e.message:"failed"))}
   }
   return null;
 }
@@ -749,7 +754,7 @@ function mcdTonight(g){
   (g.goals||[]).forEach(x=>{if(x.playerId===CFG.PLAYER)G++;(x.assists||[]).forEach(a=>{if(a.playerId===CFG.PLAYER)A++})});
   return{G,A,P:G+A};
 }
-function fmtDur(ms){const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60;return h?`${h}h ${m}m`:`${m}m ${String(r).padStart(2,"0")}s`}
+function fmtDur(ms){const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60;const p=n=>String(n).padStart(2,"0");return h?`${h}h ${p(m)}m ${p(r)}s`:`${m}m ${p(r)}s`}
 function countdownTxt(iso){const ms=new Date(iso)-Date.now();return ms>0?"Puck drop in "+fmtDur(ms):"Puck drop imminent"}
 function teamBlock(t,side){
   const ab=t.abbrev||"";
@@ -811,12 +816,48 @@ function applyGame(g){
   gb.id=g.id;gb.edm=eS;gb.pts=p;gb.state=g.gameState;gb.game=g;
   renderBanner();
 }
+// Backup source: Edmonton's season schedule. If the scoreboard feed is down or doesn't list the game, we can still show tonight's countdown.
+const API_SCH=urlsFor("club-schedule-season/EDM/now");
+let sched={t:0,data:null};
+async function nextFromSchedule(log){
+  if(Date.now()-sched.t>5*6e4){const d=await fetchLive(API_SCH,log);if(d)sched={t:Date.now(),data:d}}
+  const now=Date.now(),ms=g=>new Date(g.startTimeUTC)-now;
+  const list=((sched.data&&sched.data.games)||[]).filter(g=>PRE_S.includes(g.gameState)&&ms(g)<12*36e5&&ms(g)>-18e5);
+  list.sort((a,b)=>ms(a)-ms(b));
+  return list[0]||null;
+}
+function whyHidden(data){
+  if(!data)return "no data came back from the scoreboard feed.";
+  const all=data.games||[],list=all.filter(g=>[g.homeTeam,g.awayTeam].some(t=>t&&t.abbrev===TEAM));
+  if(!list.length)return `the scoreboard lists ${all.length} games for ${data.currentDate||"today"}, none with Edmonton.`;
+  return list.map(g=>`Edmonton game ${g.id}: state ${g.gameState}, puck drop in ${((new Date(g.startTimeUTC)-Date.now())/36e5).toFixed(1)} h`).join("; ")+" (needs FUT/PRE within 12 h, LIVE, or a final within 7 h).";
+}
+function renderDebug(){
+  const el=$("gbDebug");if(!el)return;
+  if(!QS.has("debug")){el.hidden=true;return}
+  const d=gb.dbg||{},g=d.g,data=d.data;
+  el.hidden=false;
+  el.textContent=[
+    "BANNER DEBUG (remove ?debug from the address to hide this)",
+    "Time now: "+new Date().toString(),
+    "Feeds: "+((d.log||[]).join(" | ")||"none"),
+    "Scoreboard date: "+(data&&data.currentDate||"?")+" · games listed: "+(data&&data.games?data.games.length:"?"),
+    "Banner: "+(g?`showing ${g.gameState} game ${g.awayTeam&&g.awayTeam.abbrev} @ ${g.homeTeam&&g.homeTeam.abbrev}, puck drop ${g.startTimeUTC} (via ${d.src})`:"hidden because "+whyHidden(data)),
+    d.err?"Error: "+d.err:""
+  ].filter(Boolean).join("\n");
+}
 async function pollGame(){
   clearTimeout(gbTimer);
-  const data=DEMO?mockScore(DEMO):await fetchLive(API_S);
-  if(data){gb.ok=Date.now();applyGame(pickEdm(data))}
-  const g=gb.game,soon=g&&PRE_S.includes(g.gameState)&&new Date(g.startTimeUTC)-Date.now()<45*6e4;
-  gbTimer=setTimeout(pollGame,DEMO?3000:(g&&LIVE_S.includes(g.gameState))||soon?15000:60000);
+  const log=[];let data=null,g=null,src="scoreboard feed",err="";
+  try{
+    data=DEMO?mockScore(DEMO):await fetchLive(API_S,log);
+    g=data?pickEdm(data):null;
+    if(!g&&!DEMO){const f=await nextFromSchedule(log);if(f){g=f;src="schedule feed (fallback)"}}
+    if(data||g){gb.ok=Date.now();applyGame(g)}
+  }catch(e){err=e&&e.message?e.message:String(e)}
+  gb.dbg={log,data,g,src,err};renderDebug();
+  const cur=gb.game,soon=cur&&PRE_S.includes(cur.gameState)&&new Date(cur.startTimeUTC)-Date.now()<45*6e4;
+  gbTimer=setTimeout(pollGame,DEMO?3000:(cur&&LIVE_S.includes(cur.gameState))||soon?15000:60000); // always reschedules, even after an error
 }
 setInterval(()=>{const el=GB.querySelector("[data-start]");if(el)el.textContent=countdownTxt(el.dataset.start)},1000);
 
