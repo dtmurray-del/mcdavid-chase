@@ -244,6 +244,10 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
 .gb-team.home{flex-direction:row-reverse;text-align:right}
 .gb-badge{flex:none;width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font:900 30px/1 var(--display);letter-spacing:.02em;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.26);color:#e6f0ff}
 .gb-team.edm .gb-badge{background:linear-gradient(145deg,#0a3a7d,#041E42);border-color:var(--orange);color:var(--orange);box-shadow:0 0 0 5px rgba(255,76,0,.16),0 0 34px rgba(255,76,0,.5)}
+.gb-badge{position:relative;overflow:hidden}
+.gb-team .gb-badge.has-logo{background:#f2f6fc;border-color:rgba(255,255,255,.9)}
+.gb-team.edm .gb-badge.has-logo{border-color:var(--orange)}
+.gb-badge img{display:block;width:100%;height:100%;object-fit:contain;padding:14%}
 .gb-tn b{display:block;font:800 32px/1 var(--display);text-transform:uppercase}
 .gb-tn span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .gb-mid{text-align:center}
@@ -756,9 +760,32 @@ function mcdTonight(g){
 }
 function fmtDur(ms){const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60),r=s%60;const p=n=>String(n).padStart(2,"0");return h?`${h}h ${p(m)}m ${p(r)}s`:`${m}m ${p(r)}s`}
 function countdownTxt(iso){const ms=new Date(iso)-Date.now();return ms>0?"Puck drop in "+fmtDur(ms):"Puck drop imminent"}
+// Team logos: drop files named nhl-<team-name>-logo.png into public/img/logos/. If a file isn't there the badge shows the team's abbreviation instead.
+const LOGO_DIR="/img/logos/";
+const TEAM_SLUGS={ANA:["anaheim-ducks"],BOS:["boston-bruins"],BUF:["buffalo-sabres"],CAR:["carolina-hurricanes"],CBJ:["columbus-blue-jackets"],CGY:["calgary-flames"],CHI:["chicago-blackhawks"],COL:["colorado-avalanche"],DAL:["dallas-stars"],DET:["detroit-red-wings"],EDM:["edmonton-oilers"],FLA:["florida-panthers"],LAK:["los-angeles-kings"],MIN:["minnesota-wild"],MTL:["montreal-canadiens"],NJD:["new-jersey-devils"],NSH:["nashville-predators"],NYI:["new-york-islanders"],NYR:["new-york-rangers"],OTT:["ottawa-senators"],PHI:["philadelphia-flyers"],PIT:["pittsburgh-penguins"],SEA:["seattle-kraken"],SJS:["san-jose-sharks"],STL:["st-louis-blues","st.-louis-blues","saint-louis-blues"],TBL:["tampa-bay-lightning"],TOR:["toronto-maple-leafs"],UTA:["utah-mammoth","utah-hockey-club"],VAN:["vancouver-canucks"],VGK:["vegas-golden-knights"],WPG:["winnipeg-jets"],WSH:["washington-capitals"]};
+TEAM_SLUGS.UTH=TEAM_SLUGS.UTA;
+const logoCache={},logoTried={};
+function resolveLogo(ab){
+  if(!ab||ab in logoCache)return;
+  logoCache[ab]=null;
+  const urls=(TEAM_SLUGS[ab]||[String(ab).toLowerCase()]).map(x=>`${LOGO_DIR}nhl-${x}-logo.png`);
+  logoTried[ab]=urls;
+  (function next(i){
+    if(i>=urls.length){renderDebug();return}
+    const im=new Image();
+    im.onload=()=>{logoCache[ab]=urls[i];renderBanner();renderDebug()};
+    im.onerror=()=>next(i+1);
+    im.src=urls[i];
+  })(0);
+}
+function logoReport(g){
+  if(!g)return "n/a";
+  return [g.awayTeam&&g.awayTeam.abbrev,g.homeTeam&&g.homeTeam.abbrev].filter(Boolean).map(ab=>logoCache[ab]?`${ab} ok (${logoCache[ab]})`:`${ab} not found (tried ${(logoTried[ab]||[]).join(", ")||"nothing yet"})`).join(" | ");
+}
 function teamBlock(t,side){
-  const ab=t.abbrev||"";
-  return `<div class="gb-team ${side}${ab===TEAM?" edm":""}"><div class="gb-badge">${esc(ab)}</div><div class="gb-tn"><b>${esc(tn(t.name)||tn(t.commonName)||ab)}</b><span>${side==="home"?"Home":"Away"}</span></div></div>`;
+  const ab=t.abbrev||"",name=tn(t.name)||tn(t.commonName)||ab,u=logoCache[ab];
+  const badge=u?`<div class="gb-badge has-logo"><img src="${esc(u)}" alt="${esc(name)} logo" width="120" height="120"></div>`:`<div class="gb-badge">${esc(ab)}</div>`;
+  return `<div class="gb-team ${side}${ab===TEAM?" edm":""}">${badge}<div class="gb-tn"><b>${esc(name)}</b><span>${side==="home"?"Home":"Away"}</span></div></div>`;
 }
 function goalLi(x){
   const who=tn(x.name)||[tn(x.firstName),tn(x.lastName)].filter(Boolean).join(" ")||"Goal";
@@ -771,6 +798,7 @@ function renderBanner(){
   if(!g){GB.hidden=true;GB.innerHTML="";GB.className="gb";document.title=BASE_TITLE;return}
   const st=g.gameState,live=LIVE_S.includes(st),pre=PRE_S.includes(st),kind=live?"live":pre?"pre":"final";
   const a=g.awayTeam||{},h=g.homeTeam||{},as=num(a.score),hs=num(h.score),edmHome=h.abbrev===TEAM;
+  [a.abbrev,h.abbrev].forEach(resolveLogo);
   const eS=edmHome?hs:as,oS=edmHome?as:hs,m=mcdTonight(g),c=g.clock||{},d=g.periodDescriptor||{},lab=periodLabel(d,g.period);
   const scoreHtml=`<div class="gb-score"><b class="${a.abbrev===TEAM?"e":""}">${as}</b><i>:</i><b class="${h.abbrev===TEAM?"e":""}">${hs}</b></div>`;
   let pill,mid,sog="",foot="";
@@ -841,6 +869,7 @@ function renderDebug(){
     "BANNER DEBUG (remove ?debug from the address to hide this)",
     "Time now: "+new Date().toString(),
     "Feeds: "+((d.log||[]).join(" | ")||"none"),
+    "Logos: "+logoReport(g),
     "Scoreboard date: "+(data&&data.currentDate||"?")+" · games listed: "+(data&&data.games?data.games.length:"?"),
     "Banner: "+(g?`showing ${g.gameState} game ${g.awayTeam&&g.awayTeam.abbrev} @ ${g.homeTeam&&g.homeTeam.abbrev}, puck drop ${g.startTimeUTC} (via ${d.src})`:"hidden because "+whyHidden(data)),
     d.err?"Error: "+d.err:""
