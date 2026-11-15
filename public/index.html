@@ -219,6 +219,40 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
  .pn small{font-size:10px;margin-top:3px}
  .seg button{padding:7px 10px;font-size:11px}
 }
+/* ---- career vs the league ---- */
+.lg-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.lg-hint{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.lg-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}
+.lg-msg{grid-column:1/-1;padding:22px;text-align:center;color:var(--muted);font-size:14px}
+.lg-msg button{margin-left:8px}
+.tm{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 4px 10px;border-radius:16px;background:var(--card);border:1px solid var(--line);cursor:pointer;font-weight:700;min-width:0}
+.tm:hover{border-color:rgba(255,255,255,.35)}
+.tm .b{position:relative;overflow:hidden;isolation:isolate;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:#fff;background-clip:padding-box;border:3px solid rgba(255,255,255,.3);color:var(--navy);font:900 19px/1 var(--display)}
+.tm .b img{position:absolute;top:0;left:0;width:100%;height:100%;display:block;object-fit:contain;padding:7%}
+.tm small{font:700 11px/1 var(--body);letter-spacing:.12em;color:var(--muted)}
+.tm b.p{font:900 18px/1 var(--display);color:var(--ice)}
+.tm.on{border-color:var(--orange);background:linear-gradient(160deg,rgba(255,76,0,.28),rgba(255,76,0,.05))}
+.tm.on .b{border-color:var(--orange)}
+.lg-detail{grid-column:1/-1;padding:22px;border-radius:22px;background:var(--card);border:1px solid var(--line)}
+.lg-detail.anim{animation:lgopen .28s ease-out}
+@keyframes lgopen{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.lg-head{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.lg-head .b{position:relative;overflow:hidden;isolation:isolate;display:grid;place-items:center;width:84px;height:84px;flex:none;border-radius:50%;background:#fff;background-clip:padding-box;border:3px solid var(--orange);color:var(--navy);font:900 28px/1 var(--display)}
+.lg-head .b img{position:absolute;top:0;left:0;width:100%;height:100%;display:block;object-fit:contain;padding:7%}
+.lg-head small{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.lg-head h3{font-size:38px;line-height:1}
+.lg-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.lg-row .c{text-align:center;padding:14px 4px 12px;border-radius:16px;background:rgba(0,0,0,.28);border:1px solid var(--line)}
+.lg-row .c b{display:block;font:900 40px/1 var(--display)}
+.lg-row .c small{display:block;margin-top:5px;font-size:10px;letter-spacing:.14em;color:var(--muted)}
+.lg-row .c.hi{border-color:var(--orange);background:linear-gradient(160deg,rgba(255,76,0,.28),rgba(255,76,0,.05))}
+.lg-row .c.hi b{color:var(--orange)}
+.lg-foot{display:flex;gap:6px 22px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:13px;color:var(--ice)}
+.lg-foot b{color:#fff}
+.lg-none{padding:6px 0;color:var(--muted);font-size:14px}
+@media(max-width:960px){.lg-grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media(max-width:720px){.lg-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.tm .b{width:50px;height:50px;font-size:17px}.lg-head{gap:12px;margin-bottom:12px}.lg-head h3{font-size:24px}.lg-head .b{width:54px;height:54px;font-size:18px}.lg-row{gap:6px}.lg-row .c{padding:10px 2px 8px}.lg-row .c b{font-size:25px}.lg-detail{padding:14px}.lg-foot{gap:6px 16px;margin-top:12px;padding-top:12px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){.lg-detail.anim{animation:none}}
 /* ---- live game banner ---- */
 .gb-dbg{margin:0 0 24px;padding:12px 14px;border-radius:12px;background:rgba(0,0,0,.4);border:1px dashed var(--orange);font:12px/1.55 ui-monospace,Menlo,Consolas,monospace;color:#cfe6ff;white-space:pre-wrap;word-break:break-word}
 .gb{position:relative;margin:-10px 0 30px;border-radius:26px;overflow:hidden;border:1px solid rgba(255,76,0,.55);background:radial-gradient(720px 260px at 50% -45%,rgba(255,76,0,.42),transparent 70%),linear-gradient(160deg,#0a3a7d 0,#062a5c 48%,#041E42 100%);box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 60px rgba(255,76,0,.16),inset 0 1px 0 rgba(255,255,255,.14)}
@@ -441,6 +475,12 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
   <div class="card table-card"><div class="ts"><table>
     <thead><tr><th>Game</th><th>Date</th><th>Opponent</th><th>Goals</th><th>Assists</th><th>Points</th><th>Total</th></tr></thead>
     <tbody id="log"><tr class="empty"><td colspan="7">Waiting for NHL game log…</td></tr></tbody></table></div></div>
+</section>
+
+<section class="section" aria-labelledby="h-lg">
+  <div class="sh"><h2 id="h-lg">Career vs. The League</h2><p>Tap a team to open McDavid's regular-season career numbers against them</p></div>
+  <div class="lg-bar"><div class="lg-hint" id="lgHint"></div><div class="seg" id="lgSort"><button class="on" data-s="az" type="button">A–Z</button><button data-s="pts" type="button">Most points</button><button data-s="ppg" type="button">Points per game</button></div></div>
+  <div class="lg-grid" id="lgGrid"><div class="lg-msg">Loading career numbers…</div></div>
 </section>
 
 <div class="warn" id="error" role="status"></div>
@@ -783,7 +823,7 @@ function resolveLogo(ab){
   (function next(i){
     if(i>=urls.length){renderDebug();return}
     const im=new Image();
-    im.onload=()=>{logoCache[ab]=urls[i];renderBanner();renderDebug()};
+    im.onload=()=>{logoCache[ab]=urls[i];renderBanner();renderDebug();lgSoon()};
     im.onerror=()=>next(i+1);
     im.src=urls[i];
   })(0);
@@ -810,8 +850,11 @@ function fullName(ab,fb){if(FULL_NAMES[ab])return FULL_NAMES[ab];const s=(TEAM_S
 function seasonIds(){const d=new Date(),y=d.getMonth()>=8?d.getFullYear():d.getFullYear()-1,ids=[];for(let s=2015;s<y;s++)ids.push(`${s}${s+1}`);return ids}
 function addLog(map,data){((data&&(data.gameLog||data.games))||[]).forEach(g=>{
   const o=g.opponentAbbrev;if(!o)return;
-  const t=map[o]||(map[o]={gp:0,g:0,a:0,p:0,pm:0});
-  t.gp++;t.g+=num(g.goals);t.a+=num(g.assists);t.p+=num(g.points??(num(g.goals)+num(g.assists)));t.pm+=num(g.plusMinus);
+  const t=map[o]||(map[o]={gp:0,g:0,a:0,p:0,pm:0,best:0,ld:"",lp:0});
+  const pts=num(g.points??(num(g.goals)+num(g.assists)));
+  t.gp++;t.g+=num(g.goals);t.a+=num(g.assists);t.p+=pts;t.pm+=num(g.plusMinus);
+  if(pts>t.best)t.best=pts;
+  if((g.gameDate||"")>=t.ld){t.ld=g.gameDate||"";t.lp=pts}
 })}
 async function loadVs(){
   if(VS.busy)return;VS.busy=true;
@@ -825,12 +868,17 @@ async function loadVs(){
       if(r){VS.cur={};addLog(VS.cur,r.data);VS.curT=Date.now()}
     }
   }catch(e){}
-  VS.busy=false;renderBanner();
+  VS.busy=false;VS.tried=true;
+  if(!VS.past||!VS.cur)setTimeout(loadVs,60000); // try again in a minute if any season didn't load
+  renderBanner();renderLeague();
 }
 function vsFor(ab){
   if(!VS.past||!VS.cur)return null;
-  const t={gp:0,g:0,a:0,p:0,pm:0};
-  [VS.past[ab],VS.cur[ab]].forEach(x=>{if(x)for(const k in t)t[k]+=x[k]});
+  const t={gp:0,g:0,a:0,p:0,pm:0,best:0,ld:"",lp:0};
+  [VS.past[ab],VS.cur[ab]].forEach(x=>{if(!x)return;
+    ["gp","g","a","p","pm"].forEach(k=>t[k]+=x[k]);
+    if(x.best>t.best)t.best=x.best;
+    if(x.ld>=t.ld){t.ld=x.ld;t.lp=x.lp}});
   return t;
 }
 function vsHtml(opp){
@@ -880,6 +928,60 @@ function renderBanner(){
   GB.className=`gb is-${kind}${Date.now()<gb.goalUntil?" goal":""}`;GB.hidden=false;
   GB.innerHTML=`<div class="gb-goal" aria-hidden="true"><b>GOAL · OILERS</b></div><div class="gb-in"><div class="gb-top">${pill}<span class="gb-ctx">${esc(venue)}${venue?" · ":""}${edmHome?"Home game":"Road game"}</span>${DEMO?`<span class="gb-demo">Demo mode</span>`:""}${live&&gb.ok?`<span class="gb-upd">Updated ${new Date(gb.ok).toLocaleTimeString([],{hour:"numeric",minute:"2-digit",second:"2-digit"})}</span>`:""}</div><div class="gb-main">${teamBlock(a,"away")}<div class="gb-mid">${mid}</div>${teamBlock(h,"home")}</div>${sog}${vsHtml(edmHome?a:h)}${foot}</div>`;
 }
+
+/* ---------- CAREER VS THE LEAGUE ---------- */
+// Tap a team and its career numbers open on that team's row. Regular season only (same data as the scoreboard strip).
+const LG_TEAMS=Object.keys(TEAM_SLUGS).filter(t=>t!=="EDM"&&t!=="UTH");
+let lgSel,lgSort="az",lgN=0,lgAnim=false,lgQ=false;
+const lgCols=()=>getComputedStyle($("lgGrid")).gridTemplateColumns.split(" ").length;
+const pmTxt=v=>v>0?"+"+v:String(v);
+function lgSoon(){if(lgQ)return;lgQ=true;requestAnimationFrame(()=>{lgQ=false;renderLeague()})}
+function lgBadge(ab){
+  const u=logoCache[ab];resolveLogo(ab);
+  return `<div class="b">${u?`<img src="${esc(u)}" alt="" width="120" height="120">`:esc(ab)}</div>`;
+}
+function lgDetail(){
+  const t=vsFor(lgSel),nm=fullName(lgSel,lgSel);
+  const head=`<div class="lg-head">${lgBadge(lgSel)}<div><small>McDavid career vs.</small><h3>${esc(nm)}</h3></div></div>`;
+  if(!t||!t.gp)return `<div class="lg-detail${lgAnim?" anim":""}" id="lgDetail">${head}<div class="lg-none">McDavid hasn't played them yet.</div></div>`;
+  const c=(l,v,h)=>`<div class="c${h?" hi":""}"><b>${v}</b><small>${l}</small></div>`;
+  const last=t.ld?new Date(t.ld+"T12:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"}):"";
+  return `<div class="lg-detail${lgAnim?" anim":""}" id="lgDetail">${head}<div class="lg-row">${c("GP",t.gp)}${c("G",t.g)}${c("A",t.a)}${c("PTS",t.p,1)}${c("+/-",pmTxt(t.pm))}</div>
+  <div class="lg-foot"><span><b>${(t.p/t.gp).toFixed(2)}</b> points per game</span><span>Best game: <b>${t.best} pt${t.best===1?"":"s"}</b></span>${last?`<span>Last meeting: <b>${esc(last)}</b> · ${t.lp} pt${t.lp===1?"":"s"}</span>`:""}</div></div>`;
+}
+function renderLeague(){
+  const grid=$("lgGrid");if(!grid)return;
+  if(!VS.past||!VS.cur){
+    grid.innerHTML=`<div class="lg-msg">${VS.tried?"Career numbers aren't available right now. Retrying automatically…":"Loading career numbers…"}</div>`;
+    $("lgHint").textContent="";return;
+  }
+  // first time we have data, open tonight's opponent
+  if(lgSel===undefined){
+    const g=gb.game,o=g&&(g.homeTeam.abbrev===TEAM?g.awayTeam.abbrev:g.homeTeam.abbrev);
+    lgSel=o&&LG_TEAMS.includes(o==="UTH"?"UTA":o)?(o==="UTH"?"UTA":o):null;
+  }
+  const L=LG_TEAMS.slice(),V=ab=>vsFor(ab)||{gp:0,p:0},ppg=ab=>{const v=V(ab);return v.gp?v.p/v.gp:-1};
+  if(lgSort==="pts")L.sort((a,b)=>V(b).p-V(a).p||fullName(a,a).localeCompare(fullName(b,b)));
+  else if(lgSort==="ppg")L.sort((a,b)=>ppg(b)-ppg(a));
+  else L.sort((a,b)=>fullName(a,a).localeCompare(fullName(b,b)));
+  $("lgHint").textContent=lgSort==="az"?"Sorted A–Z":lgSort==="pts"?"Most career points first":"Best points per game first";
+  const n=lgN=lgCols(),i=lgSel?L.indexOf(lgSel):-1,rowEnd=i<0?-1:Math.min(L.length,(Math.floor(i/n)+1)*n)-1;
+  grid.innerHTML=L.map((t,k)=>{
+    const v=V(t),val=lgSort==="ppg"?(v.gp?(v.p/v.gp).toFixed(2):"—"):(v.gp?v.p:"—");
+    return `<div class="tm${t===lgSel?" on":""}" role="button" tabindex="0" aria-expanded="${t===lgSel}" aria-label="${esc(fullName(t,t))}" data-t="${t}">${lgBadge(t)}<b class="p">${val}</b><small>${lgSort==="ppg"?"P/G":"PTS"}</small></div>${k===rowEnd?lgDetail():""}`;
+  }).join("");
+}
+function lgPick(el){
+  const id=el.dataset.t;lgSel=lgSel===id?null:id;lgAnim=true;renderLeague();lgAnim=false;
+  const d=$("lgDetail");if(d)d.scrollIntoView({behavior:reduce?"auto":"smooth",block:"nearest"});
+  const k=document.querySelector(`.tm[data-t="${id}"]`);if(k)k.focus({preventScroll:true});
+}
+$("lgGrid").addEventListener("click",e=>{const t=e.target.closest(".tm");if(t)lgPick(t)});
+$("lgGrid").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){const t=e.target.closest(".tm");if(t){e.preventDefault();lgPick(t)}}});
+$("lgSort").addEventListener("click",e=>{const b=e.target.closest("button[data-s]");if(!b)return;lgSort=b.dataset.s;$("lgSort").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));renderLeague()});
+addEventListener("resize",()=>{if(VS.past&&VS.cur&&lgCols()!==lgN)renderLeague()});
+loadVs();
+setInterval(()=>{if(!document.hidden)loadVs()},300000);
 function applyGame(g){
   if(!g){gb.game=null;gb.id=null;gb.state=null;renderBanner();return}
   const edmHome=g.homeTeam.abbrev===TEAM,eS=num(edmHome?g.homeTeam.score:g.awayTeam.score),p=mcdTonight(g).P;
