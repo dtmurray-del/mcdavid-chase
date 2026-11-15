@@ -818,7 +818,12 @@ const logoCache={},logoTried={};
 function resolveLogo(ab){
   if(!ab||ab in logoCache)return;
   logoCache[ab]=null;
-  const urls=(TEAM_SLUGS[ab]||[String(ab).toLowerCase()]).map(x=>`${LOGO_DIR}nhl-${x}-logo.png`);
+  // the usual name first (nhl-<team>-logo.png); if a file is named differently (capital letters, no "nhl-" prefix, another image type) try those too
+  const urls=[],seen={},add=u=>{if(!seen[u]){seen[u]=1;urls.push(u)}};
+  const T=x=>x.split("-").map(w=>w?w[0].toUpperCase()+w.slice(1):w).join("-");
+  const slugs=TEAM_SLUGS[ab]||[String(ab).toLowerCase()];
+  slugs.forEach(x=>add(`${LOGO_DIR}nhl-${x}-logo.png`));
+  slugs.forEach(x=>["png","webp","jpg","jpeg","svg"].forEach(e=>[`nhl-${x}-logo`,`${T(x)}-logo`,`${x}-logo`,`${T(x)}-Logo`,`nhl-${T(x)}-logo`,`${T(x)}`].forEach(b=>add(`${LOGO_DIR}${b}.${e}`))));
   logoTried[ab]=urls;
   (function next(i){
     if(i>=urls.length){renderDebug();return}
