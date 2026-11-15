@@ -262,6 +262,16 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
 .gb-sog .split i.e{background:var(--orange)}
 .gb-sog .split i.o{background:#7cc4ff}
 .gb-sogl{text-align:center;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+.gb-vs{margin-top:18px}
+.gb-vs h4{margin:0 0 9px;font:700 11px/1 inherit;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.gb-vs .row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.gb-vs .c{text-align:center;padding:9px 4px 8px;border-radius:14px;background:rgba(0,0,0,.28);border:1px solid var(--line)}
+.gb-vs .c b{display:block;font:900 28px/1 var(--display)}
+.gb-vs .c small{display:block;margin-top:4px;font-size:10px;letter-spacing:.14em;color:var(--muted)}
+.gb-vs .c.hi{border-color:var(--orange);background:linear-gradient(160deg,rgba(255,76,0,.28),rgba(255,76,0,.05))}
+.gb-vs .c.hi b{color:var(--orange)}
+.gb-vs-none{font-size:13px;color:var(--muted)}
+@media(max-width:720px){.gb-vs h4{font-size:10px;letter-spacing:.1em}.gb-vs .c b{font-size:23px}.gb-vs .row{gap:6px}}
 .gb-foot{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12)}
 .mcd{display:flex;align-items:center;gap:14px;padding:11px 16px;border-radius:16px;background:rgba(0,0,0,.28);border:1px solid var(--line)}
 .mcd .n{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;background:var(--orange);color:var(--navy);font:900 22px/1 var(--display);transform:skew(-8deg)}
@@ -793,12 +803,50 @@ function goalLi(x){
   const as=(x.assists||[]).map(s=>tn(s.name)).filter(Boolean).join(", ");
   return `<li class="${t===TEAM?"e":""}"><em>${esc(t)}</em><b>${esc(who)}${x.goalsToDate!=null?` (${num(x.goalsToDate)})`:""}</b><span>${as?esc(as):"Unassisted"}</span><time>${per} ${esc(x.timeInPeriod||"")}</time></li>`;
 }
+// Career numbers against tonight's opponent: McDavid's regular-season game logs, 2015-16 to now, added up per team.
+const VS={past:null,cur:null,curT:0,busy:false};
+const FULL_NAMES={STL:"St. Louis Blues",UTA:"Utah Mammoth",UTH:"Utah Mammoth"};
+function fullName(ab,fb){if(FULL_NAMES[ab])return FULL_NAMES[ab];const s=(TEAM_SLUGS[ab]||[])[0];return s?s.split("-").map(w=>w[0].toUpperCase()+w.slice(1)).join(" "):fb}
+function seasonIds(){const d=new Date(),y=d.getMonth()>=8?d.getFullYear():d.getFullYear()-1,ids=[];for(let s=2015;s<y;s++)ids.push(`${s}${s+1}`);return ids}
+function addLog(map,data){((data&&(data.gameLog||data.games))||[]).forEach(g=>{
+  const o=g.opponentAbbrev;if(!o)return;
+  const t=map[o]||(map[o]={gp:0,g:0,a:0,p:0,pm:0});
+  t.gp++;t.g+=num(g.goals);t.a+=num(g.assists);t.p+=num(g.points??(num(g.goals)+num(g.assists)));t.pm+=num(g.plusMinus);
+})}
+async function loadVs(){
+  if(VS.busy)return;VS.busy=true;
+  try{
+    if(!VS.past){
+      const ids=seasonIds(),res=await Promise.all(ids.map(id=>getJSON(urlsFor(`player/${CFG.PLAYER}/game-log/${id}/2`),`vs_${CFG.PLAYER}_${id}`,true)));
+      if(res.every(Boolean)){VS.past={};res.forEach(r=>addLog(VS.past,r.data))}
+    }
+    if(Date.now()-VS.curT>3*6e4){
+      const r=await getJSON(urlsFor(`player/${CFG.PLAYER}/game-log/now`),`vs_${CFG.PLAYER}_now`,false);
+      if(r){VS.cur={};addLog(VS.cur,r.data);VS.curT=Date.now()}
+    }
+  }catch(e){}
+  VS.busy=false;renderBanner();
+}
+function vsFor(ab){
+  if(!VS.past||!VS.cur)return null;
+  const t={gp:0,g:0,a:0,p:0,pm:0};
+  [VS.past[ab],VS.cur[ab]].forEach(x=>{if(x)for(const k in t)t[k]+=x[k]});
+  return t;
+}
+function vsHtml(opp){
+  const ab=opp.abbrev,name=fullName(ab,tn(opp.name)||ab),t=vsFor(ab);
+  if(!t)return "";
+  if(!t.gp)return `<div class="gb-vs"><h4>Career vs. ${esc(name)}</h4><div class="gb-vs-none">McDavid hasn't played them yet.</div></div>`;
+  const pm=t.pm>0?"+"+t.pm:String(t.pm),cell=(l,v,c)=>`<div class="c${c?" "+c:""}"><b>${v}</b><small>${l}</small></div>`;
+  return `<div class="gb-vs"><h4>Career vs. ${esc(name)}</h4><div class="row">${cell("GP",t.gp)}${cell("G",t.g)}${cell("A",t.a)}${cell("PTS",t.p,"hi")}${cell("+/-",pm)}</div></div>`;
+}
 function renderBanner(){
   const g=gb.game;
   if(!g){GB.hidden=true;GB.innerHTML="";GB.className="gb";document.title=BASE_TITLE;return}
   const st=g.gameState,live=LIVE_S.includes(st),pre=PRE_S.includes(st),kind=live?"live":pre?"pre":"final";
   const a=g.awayTeam||{},h=g.homeTeam||{},as=num(a.score),hs=num(h.score),edmHome=h.abbrev===TEAM;
   [a.abbrev,h.abbrev].forEach(resolveLogo);
+  if(!VS.past||!VS.cur)loadVs();
   const eS=edmHome?hs:as,oS=edmHome?as:hs,m=mcdTonight(g),c=g.clock||{},d=g.periodDescriptor||{},lab=periodLabel(d,g.period);
   const scoreHtml=`<div class="gb-score"><b class="${a.abbrev===TEAM?"e":""}">${as}</b><i>:</i><b class="${h.abbrev===TEAM?"e":""}">${hs}</b></div>`;
   let pill,mid,sog="",foot="";
@@ -830,7 +878,7 @@ function renderBanner(){
   }
   const venue=tn(g.venue);
   GB.className=`gb is-${kind}${Date.now()<gb.goalUntil?" goal":""}`;GB.hidden=false;
-  GB.innerHTML=`<div class="gb-goal" aria-hidden="true"><b>GOAL · OILERS</b></div><div class="gb-in"><div class="gb-top">${pill}<span class="gb-ctx">${esc(venue)}${venue?" · ":""}${edmHome?"Home game":"Road game"}</span>${DEMO?`<span class="gb-demo">Demo mode</span>`:""}${live&&gb.ok?`<span class="gb-upd">Updated ${new Date(gb.ok).toLocaleTimeString([],{hour:"numeric",minute:"2-digit",second:"2-digit"})}</span>`:""}</div><div class="gb-main">${teamBlock(a,"away")}<div class="gb-mid">${mid}</div>${teamBlock(h,"home")}</div>${sog}${foot}</div>`;
+  GB.innerHTML=`<div class="gb-goal" aria-hidden="true"><b>GOAL · OILERS</b></div><div class="gb-in"><div class="gb-top">${pill}<span class="gb-ctx">${esc(venue)}${venue?" · ":""}${edmHome?"Home game":"Road game"}</span>${DEMO?`<span class="gb-demo">Demo mode</span>`:""}${live&&gb.ok?`<span class="gb-upd">Updated ${new Date(gb.ok).toLocaleTimeString([],{hour:"numeric",minute:"2-digit",second:"2-digit"})}</span>`:""}</div><div class="gb-main">${teamBlock(a,"away")}<div class="gb-mid">${mid}</div>${teamBlock(h,"home")}</div>${sog}${vsHtml(edmHome?a:h)}${foot}</div>`;
 }
 function applyGame(g){
   if(!g){gb.game=null;gb.id=null;gb.state=null;renderBanner();return}
@@ -840,7 +888,7 @@ function applyGame(g){
     if(gb.pts!==null&&p>gb.pts){gb.mcdUntil=Date.now()+3000;setTimeout(renderBanner,3100)}
   }
   // game just ended: refresh the season numbers once the NHL has posted the final game log
-  if(LIVE_S.includes(gb.state)&&FIN_S.includes(g.gameState)&&!gb.done[g.id]){gb.done[g.id]=1;setTimeout(load,30000);setTimeout(load,180000)}
+  if(LIVE_S.includes(gb.state)&&FIN_S.includes(g.gameState)&&!gb.done[g.id]){gb.done[g.id]=1;setTimeout(load,30000);setTimeout(load,180000);setTimeout(()=>{VS.curT=0;loadVs()},45000);setTimeout(()=>{VS.curT=0;loadVs()},200000)}
   gb.id=g.id;gb.edm=eS;gb.pts=p;gb.state=g.gameState;gb.game=g;
   renderBanner();
 }
