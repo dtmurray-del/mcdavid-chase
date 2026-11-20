@@ -344,6 +344,25 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
  .gb-goals li span{grid-column:2/4;grid-row:2}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}.gb.goal .gb-goal{display:none!important}}
+
+/* ---------- analytics chapters ---------- */
+html{scroll-padding-top:62px}
+.xnav{position:sticky;top:0;z-index:40;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin:-6px -22px 18px;padding:0 22px;background:rgba(2,15,35,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.xnav::-webkit-scrollbar{display:none}
+.xnav a{flex:none;text-decoration:none;color:var(--muted);font:800 14px/1 var(--display);letter-spacing:.05em;text-transform:uppercase;padding:14px 9px;border-bottom:3px solid transparent;white-space:nowrap}
+.xnav a i{font-style:normal;color:var(--orange);margin-right:6px}
+.xnav a:hover{color:#fff}.xnav a.on{color:#fff;border-color:var(--orange)}
+.chap{margin:78px 0 4px;padding-top:6px;display:flex;align-items:baseline;gap:6px 14px;flex-wrap:wrap;border-top:1px solid var(--line)}
+.chap span{font:800 14px/1 var(--display);letter-spacing:.2em;color:var(--orange2);padding-top:18px}
+.chap h2{font-size:clamp(34px,5vw,54px);font-weight:900;line-height:1;padding-top:10px}
+.chap p{margin:0;flex-basis:100%;color:var(--muted);font-size:13px}
+.xh{display:block;margin-top:26px;min-height:40px}
+.xlegend{margin-top:44px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.03);color:var(--muted);font-size:12.5px}
+.xlegend b{color:var(--ice);letter-spacing:.12em;text-transform:uppercase;font-size:11px}
+.xlegend div{display:flex;gap:8px 20px;flex-wrap:wrap;margin:10px 0}
+.xlegend p{margin:0}
+.xchip{font-style:normal;display:inline-block;font:700 10px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border-radius:99px;border:1px dashed rgba(127,212,255,.45);color:#7fd4ff;margin-right:6px}
+@media(max-width:720px){.xnav{margin-left:-14px;margin-right:-14px;padding:0 14px}.chap{margin-top:60px}html{scroll-padding-top:56px}}
 </style>
 </head>
 <body>
@@ -358,6 +377,8 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
   </div>
 </header>
 
+<nav class="xnav" id="xnav" aria-label="Sections"><a href="#s1"><i>01</i>The Chase</a><a href="#s2"><i>02</i>Analytics Lab</a><a href="#s3"><i>03</i>McDavid vs. Gretzky</a><a href="#s4"><i>04</i>Record Watch</a><a href="#s5"><i>05</i>The Fun Zone</a><a href="#s6"><i>06</i>Historical Greatness</a></nav>
+<div id="s1"></div>
 <section id="gameBanner" class="gb" hidden aria-label="Edmonton Oilers game"></section>
 <pre id="gbDebug" class="gb-dbg" hidden></pre>
 
@@ -426,28 +447,7 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
   </div>
 </section>
 
-<section class="section" aria-labelledby="h-pace">
-  <div class="sh"><h2 id="h-pace">Record Math</h2><p id="requiredRate">Loading required scoring rate…</p></div>
-  <div class="grid3">
-    <div class="card scn"><span class="tag">To tie · 215</span><div class="label">Points needed</div><div class="value" id="needTie">—</div><div class="hint" id="needTieHint">&nbsp;</div></div>
-    <div class="card scn hl"><span class="tag">To break · 216</span><div class="label">Points needed</div><div class="value o" id="needed">—</div><div class="hint" id="needBreakHint">&nbsp;</div></div>
-    <div class="card scn"><span class="tag">Last 10 games</span><div class="label">Pace over a full season</div><div class="value" id="last10">—</div><div class="hint" id="last10Hint">&nbsp;</div></div>
-  </div>
-</section>
-
-<section class="section" aria-labelledby="h-dist">
-  <div class="sh"><h2 id="h-dist">Multi-Point Games</h2>
-    <div class="seg" id="distSeg" role="group" aria-label="Comparison range"><button type="button" data-m="matched" class="on" aria-pressed="true" id="segMatched">Same games played</button><button type="button" data-m="full" aria-pressed="false">Gretzky full season</button></div>
-  </div>
-  <div class="card dist-card" id="dist"><div class="dn">Loading game log…</div></div>
-</section>
-
-<section class="section" aria-labelledby="h-ms">
-  <div class="sh"><h2 id="h-ms">Milestones</h2><p>Reached or projected at the current rate</p></div>
-  <div class="ms" id="milestones"></div>
-</section>
-
-<section class="section" aria-labelledby="h-chart">
+<div class="xh" data-x="x1"></div><section class="section" aria-labelledby="h-chart">
   <div class="sh"><h2 id="h-chart">Pace Chart</h2><p>Cumulative points by game number · hover or touch for detail</p></div>
   <div class="card chart-card">
     <div class="chart-wrap"><canvas id="chart" role="img" aria-label="Cumulative points chart comparing McDavid with Gretzky's 1985-86 season"></canvas><div class="tip" id="tip"></div></div>
@@ -460,7 +460,14 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
   </div>
 </section>
 
-<section class="section" aria-labelledby="h-h2h">
+<div class="chap" id="s2"><span>02</span><h2>The Analytics Lab</h2><p>Scoring breakdown and performance analytics</p></div><div class="xh" data-x="x2"></div><section class="section" aria-labelledby="h-dist">
+  <div class="sh"><h2 id="h-dist">Multi-Point Games</h2>
+    <div class="seg" id="distSeg" role="group" aria-label="Comparison range"><button type="button" data-m="matched" class="on" aria-pressed="true" id="segMatched">Same games played</button><button type="button" data-m="full" aria-pressed="false">Gretzky full season</button></div>
+  </div>
+  <div class="card dist-card" id="dist"><div class="dn">Loading game log…</div></div>
+</section>
+
+<div class="xh" data-x="x2b"></div><div class="chap" id="s3"><span>03</span><h2>McDavid vs. Gretzky</h2><p>Matched by game number, not calendar date</p></div><section class="section" aria-labelledby="h-h2h">
   <div class="sh"><h2 id="h-h2h">McJesus vs. The Great One</h2><p>Matched by game number, not calendar date</p></div>
   <div class="warn" id="gWarn"></div>
   <p class="note">Each row lines up McDavid's game number with Gretzky's same game from 1985–86. Totals show who was ahead after that game.</p>
@@ -470,7 +477,7 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
     <tbody id="compareLog"><tr class="empty"><td colspan="10">Loading the head-to-head game log…</td></tr></tbody></table></div></div>
 </section>
 
-<section class="section" aria-labelledby="h-log">
+<div class="xh" data-x="x3"></div><section class="section" aria-labelledby="h-log">
   <div class="sh"><h2 id="h-log">Every Shift In The Chase</h2><p id="tableCount">Game log</p></div>
   <div class="card table-card"><div class="ts"><table>
     <thead><tr><th>Game</th><th>Date</th><th>Opponent</th><th>Goals</th><th>Assists</th><th>Points</th><th>Total</th></tr></thead>
@@ -483,6 +490,21 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
   <div class="lg-grid" id="lgGrid"><div class="lg-msg">Loading career numbers…</div></div>
 </section>
 
+<div class="chap" id="s4"><span>04</span><h2>Record Watch</h2><p>Required scoring rate, milestones and the pressure meter</p></div><section class="section" aria-labelledby="h-pace">
+  <div class="sh"><h2 id="h-pace">Record Math</h2><p id="requiredRate">Loading required scoring rate…</p></div>
+  <div class="grid3">
+    <div class="card scn"><span class="tag">To tie · 215</span><div class="label">Points needed</div><div class="value" id="needTie">—</div><div class="hint" id="needTieHint">&nbsp;</div></div>
+    <div class="card scn hl"><span class="tag">To break · 216</span><div class="label">Points needed</div><div class="value o" id="needed">—</div><div class="hint" id="needBreakHint">&nbsp;</div></div>
+    <div class="card scn"><span class="tag">Last 10 games</span><div class="label">Pace over a full season</div><div class="value" id="last10">—</div><div class="hint" id="last10Hint">&nbsp;</div></div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="h-ms">
+  <div class="sh"><h2 id="h-ms">Milestones</h2><p>Reached or projected at the current rate</p></div>
+  <div class="ms" id="milestones"></div>
+</section>
+
+<div class="xh" data-x="x4"></div><div class="chap" id="s5"><span>05</span><h2>The Fun Zone</h2><p>Hat tricks, streaks, big nights and the odd numbers</p></div><div class="xh" data-x="x5"></div><div class="chap" id="s6"><span>06</span><h2>Historical Greatness</h2><p>Gretzky's four 200-point seasons, the career comparison and the all-time list</p></div><div class="xh" data-x="x6"></div><div class="xlegend"><b>How to read the data labels</b><div><span><i class="xchip">Reference</i> fixed historical figures from public NHL records</span><span><i class="xchip">Play-by-play</i> needs official play-by-play, shown as unavailable until connected</span><span><i class="xchip">EDGE</i> NHL EDGE tracking data, not connected yet</span><span><i class="xchip">Saved copy</i> the last good numbers, shown when the NHL feed is down</span></div><p>Everything else is calculated live from the NHL game logs and refreshed every 5 minutes. Nothing is estimated or made up.</p></div>
 <div class="warn" id="error" role="status"></div>
 
 <footer class="footer">
@@ -1082,6 +1104,469 @@ document.addEventListener("visibilitychange",()=>{if(!document.hidden){load();po
 setInterval(()=>{if(!document.hidden)load()},300000);
 load();
 pollGame();
+</script>
+<script>
+/* ---------- ANALYTICS CHAPTERS (self-contained; the code above is untouched) ---------- */
+(function(){
+window.__XCSS=" :host{display:block;color:#fff;font:15px/1.55 var(--body);font-variant-numeric:tabular-nums;--amber:#ffc46b;--red:#ff6b6b;--sky:#7fd4ff;--navy:#041E42;--navy2:#062a5c;--navy3:#0a3a7d;--deep:#020f23;--ice:#d6e9ff;--green:#59e3a0;--card:rgba(255,255,255,.05);--display:\"Barlow Condensed\",\"Arial Narrow\",Impact,system-ui,sans-serif;--body:Inter,system-ui,-apple-system,\"Segoe UI\",sans-serif;   --navy:#041E42;--navy2:#062a5c;--navy3:#0a3a7d;--deep:#020f23;   --orange:#FF4C00;--orange2:#ff7a3d;--ice:#d6e9ff;--white:#fff;   --muted:#9db3d1;--line:rgba(255,255,255,.12);--card:rgba(255,255,255,.05);   --green:#59e3a0;--amber:#ffc46b;--red:#ff6b6b;--sky:#7fd4ff;   --display:\"Barlow Condensed\",\"Arial Narrow\",Impact,system-ui,sans-serif;   --body:Inter,system-ui,-apple-system,\"Segoe UI\",sans-serif; } *{box-sizing:border-box} h1,h2,h3,h4{font-family:var(--display);text-transform:uppercase;margin:0} a{color:var(--orange2)} :focus-visible{outline:2px solid var(--orange);outline-offset:3px;border-radius:6px} button{font:inherit;font-weight:700;font-size:13px;color:var(--white);background:rgba(255,255,255,.07);border:1px solid var(--line);padding:9px 14px;border-radius:10px;cursor:pointer;transition:.15s} button:hover{background:rgba(255,76,0,.18);border-color:var(--orange)} button.primary{background:var(--orange);border-color:var(--orange)} button[disabled]{opacity:.6;cursor:wait} .sub{margin:30px 0 12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap} .sub h3{font-size:24px;font-weight:800;letter-spacing:.02em} .sub small{color:var(--muted);font-size:12px} .card{background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:20px;box-shadow:0 20px 60px #0005;padding:20px;min-width:0} .card h4{font-size:19px;font-weight:800;letter-spacing:.03em;margin-bottom:4px} .card .why{margin:0 0 14px;color:var(--muted);font-size:12.5px} .grid{display:grid;gap:14px} .g2{grid-template-columns:repeat(2,minmax(0,1fr))} .g3{grid-template-columns:repeat(3,minmax(0,1fr))} .g4{grid-template-columns:repeat(4,minmax(0,1fr))} .stack>*+*{margin-top:14px} .mt{margin-top:14px}  /* data-status chips */ .chip{display:inline-flex;align-items:center;gap:5px;font:700 10px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border-radius:99px;border:1px solid var(--line);color:var(--muted);vertical-align:middle;white-space:nowrap} .chip.live{color:var(--green);border-color:rgba(89,227,160,.5)} .chip.sample{color:var(--orange2);border-color:rgba(255,122,61,.6);background:rgba(255,76,0,.08)} .chip.ref{color:var(--ice);border-color:rgba(214,233,255,.35)} .chip.pbp,.chip.edge{color:var(--sky);border-color:rgba(127,212,255,.45);border-style:dashed} .chip.na{color:var(--muted);border-style:dashed} .cardhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}  /* stat tiles */ .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px} .tile{padding:13px 10px 11px;border-radius:16px;background:rgba(0,0,0,.26);border:1px solid var(--line);text-align:center;min-width:0} .tile b{display:block;font:900 34px/1 var(--display)} .tile small{display:block;margin-top:5px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)} .tile.hi{border-color:var(--orange);background:linear-gradient(160deg,rgba(255,76,0,.28),rgba(255,76,0,.05))} .tile.hi b{color:var(--orange)} .tile.mute b{color:var(--muted)} .o{color:var(--orange)}.ice{color:var(--sky)}.gr{color:var(--green)}.mu{color:var(--muted)}  /* tables */ .ts{overflow-x:auto;-webkit-overflow-scrolling:touch} table{width:100%;border-collapse:collapse;font-size:14px} th{font:700 10.5px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:right;padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap} td{padding:10px 12px;text-align:right;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap} th:first-child,td:first-child{text-align:left} tr:last-child td{border-bottom:0} td.l,th.l{text-align:left} tr.me td{background:rgba(255,76,0,.1)} td.proj{color:var(--muted);font-style:italic} .maxh{max-height:460px;overflow:auto} .maxh th{position:sticky;top:0;background:#0b2447;z-index:1}  .seg{display:inline-flex;gap:4px;padding:4px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--line);flex-wrap:wrap} .seg button{padding:7px 12px;font-size:12px;border:0;background:transparent;border-radius:9px;color:var(--muted)} .seg button:hover{background:rgba(255,255,255,.08);color:#fff} .seg button.on{background:var(--orange);color:#fff} .tabs{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}  /* charts */ .chart{position:relative;width:100%;touch-action:pan-y} .chart svg{display:block;width:100%;height:auto;overflow:visible} .tipbox{position:absolute;z-index:5;pointer-events:none;min-width:150px;padding:10px 12px;border-radius:12px;background:rgba(2,15,35,.96);border:1px solid var(--line);font-size:12.5px;box-shadow:0 10px 30px #000a;opacity:0;transition:opacity .1s} .tipbox.on{opacity:1} .tipbox b{display:block;margin-bottom:4px;font:800 15px/1 var(--display);letter-spacing:.06em;text-transform:uppercase} .tipbox div{display:flex;justify-content:space-between;gap:14px} .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px} .legend button{display:inline-flex;align-items:center;gap:8px;padding:6px 11px;font-size:12px} .legend button.off{opacity:.45} .sw{width:11px;height:11px;border-radius:3px;display:inline-block} .axis text{fill:var(--muted);font:11px var(--body)} .donuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px} .donut{text-align:center} .donut svg{width:100%;max-width:230px;height:auto} .donut .who{font:800 20px/1 var(--display);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px} .dl{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:6px;font-size:13px}  /* hero scoreboard */ .score{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:center} .big{font:900 clamp(86px,15vw,170px)/.85 var(--display);letter-spacing:-.01em} .big small{font-size:.28em;color:var(--muted);letter-spacing:.06em;margin-left:6px} .kick{margin:10px 0 0;color:var(--ice)} .track{position:relative;height:10px;border-radius:99px;background:rgba(255,255,255,.1);margin:34px 6px 34px} .track i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,var(--navy3),var(--orange))} .track u{position:absolute;top:-6px;width:2px;height:22px;background:rgba(255,255,255,.4);text-decoration:none} .track u span{position:absolute;top:26px;left:50%;transform:translateX(-50%);font:700 11px var(--body);color:var(--muted);white-space:nowrap} .track u.rec{background:var(--orange);width:3px} .track u.rec span{color:var(--orange2)} .games10{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px} .gm{padding:10px 4px;border-radius:14px;background:rgba(0,0,0,.26);border:1px solid var(--line);text-align:center;min-width:0} .gm small{display:block;font-size:10px;color:var(--muted);letter-spacing:.08em} .gm b{display:block;font:900 28px/1.05 var(--display)} .gm span{display:block;font-size:11px;color:var(--ice)} .gm.z b{color:var(--muted)}  /* gauge */ .gauge{max-width:420px;margin:auto} .gauge svg{width:100%;height:auto} .gstatus{text-align:center;font:900 30px/1 var(--display);letter-spacing:.04em;text-transform:uppercase;margin-top:8px} .gsub{text-align:center;color:var(--muted);font-size:12.5px;margin-top:6px} input[type=range]{width:100%;accent-color:var(--orange)} .msz{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px} .ms{padding:16px;border-radius:18px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.025));border:1px solid var(--line);min-width:0} .ms .t{font:900 44px/1 var(--display)} .ms .s{margin-top:8px;font-size:12.5px;color:var(--muted)} .ms .s b{color:#fff} .ms.done{border-color:var(--green)} .ms.done .t{color:var(--green)} .ms.rec{border-color:var(--orange)} .ms.rec .t{color:var(--orange)}  /* lists */ .list{list-style:none;margin:0;padding:0} .list li{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px} .list li:last-child{border:0} .list li span:last-child{font-weight:700;text-align:right} .cmp{display:grid;grid-template-columns:1fr auto 1fr;gap:8px 12px;align-items:center;text-align:center} .cmp b{font:900 30px/1 var(--display)} .cmp b.m{color:var(--orange)}.cmp b.g{color:var(--sky)} .cmp small{color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase} .cmp .hd{font:800 13px var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)} .lock{display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:14px;border:1px dashed rgba(127,212,255,.4);background:rgba(127,212,255,.04);color:var(--muted);font-size:13px} .lock b{color:var(--ice);font:800 16px var(--display);letter-spacing:.05em;text-transform:uppercase} .empty{padding:18px;text-align:center;color:var(--muted);font-size:14px} .note{margin:12px 0 0;font-size:12px;color:var(--muted)} .pds{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px} .pds .tile b{font-size:24px}  .footer .legendrow{display:flex;gap:10px 18px;flex-wrap:wrap;margin:12px 0 16px} .footer .legendrow span{display:flex;align-items:center;gap:8px}  @media(max-width:960px){   .g4{grid-template-columns:repeat(2,minmax(0,1fr))}   .g3{grid-template-columns:repeat(2,minmax(0,1fr))}   .msz{grid-template-columns:repeat(3,minmax(0,1fr))}   .score{grid-template-columns:1fr}   .games10{grid-template-columns:repeat(5,minmax(0,1fr))} } @media(max-width:720px){   .wrap{padding:0 16px 50px}   .rib,.nav{padding-left:16px;padding-right:16px}   .g2,.g3,.g4{grid-template-columns:1fr}   .msz{grid-template-columns:repeat(2,minmax(0,1fr))}   .card{padding:16px;border-radius:18px}   .tile b{font-size:28px}   .donuts{gap:8px}   .section{margin-top:46px}   table{font-size:13px}th,td{padding:9px 8px}   .rib .txt{display:none}   html{scroll-padding-top:104px}   .track u:nth-child(4) span{display:none}   .track u.rec span{top:46px;transform:translateX(-100%)!important}   .track{margin-bottom:56px} } #paceTable th,#paceTable td{padding-left:8px;padding-right:8px} @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}} .notice{margin-bottom:14px;padding:10px 14px;border-radius:12px;border:1px dashed var(--orange);background:rgba(0,0,0,.28);color:var(--ice);font-size:13px}#advGrid>.card:last-child:nth-child(odd){grid-column:1/-1}#rates{grid-template-columns:repeat(3,minmax(0,1fr))}@media(max-width:420px){#rates{grid-template-columns:repeat(2,minmax(0,1fr))}}";window.__XBLOCKS={"x1": "<div id=\"xnote\"></div>\n<div class=\"sub\" style=\"margin-top:0\"><h3>Last 10 games</h3><small>Points in each of his most recent games</small></div>\n<div class=\"games10\" id=\"last10x\"></div>\n<div class=\"sub\"><h3>Gretzky pace test</h3><small>Points after the same number of games played</small></div>\n<div class=\"grid g2\"><div class=\"card\"><div class=\"ts\"><table id=\"paceTable\"></table></div><p class=\"note\" id=\"paceNote\"></p></div><div class=\"card\" id=\"paceSide\"></div></div>", "x2": "<div class=\"grid g2\">\n<div class=\"card\"><div class=\"cardhead\"><div><h4>Goals vs. assists</h4><p class=\"why\">How each player's points were made</p></div></div><div class=\"donuts\" id=\"donuts\"></div></div>\n<div class=\"card\" id=\"ppCard\"></div><div class=\"card\" id=\"gwCard\"></div><div class=\"card\" id=\"consCard\"></div></div>\n<div class=\"card mt\"><div class=\"cardhead\"><div><h4>Shooting efficiency</h4><p class=\"why\">Rolling five-game shooting percentage, McDavid</p></div></div><div id=\"shootTiles\" class=\"tiles\"></div><div class=\"chart mt\" id=\"shootChart\"></div></div>", "x2b": "<div class=\"sub\" style=\"margin-top:0\"><h3>Advanced analytics</h3><small>NHL EDGE and official play-by-play. Nothing is estimated, so anything not connected yet is labelled.</small></div><div class=\"grid g2\" id=\"advGrid\"></div>", "x3": "<div class=\"tabs\"><div class=\"seg\" id=\"vsSeg\"><button data-t=\"gbg\" type=\"button\">Game by game</button><button class=\"on\" data-t=\"diff\" type=\"button\">Cumulative gap</button><button data-t=\"seasons\" type=\"button\">Season comparison</button><button data-t=\"career\" type=\"button\">Career</button></div><span id=\"vsNote\" class=\"mu\" style=\"font-size:12px\"></span></div><div class=\"card\" id=\"vsBody\"></div>", "x4": "<div class=\"grid g2\">\n<div class=\"card\"><div class=\"cardhead\"><div><h4>Record pressure meter</h4><p class=\"why\">Where the season is headed at the pace shown, scaled 170 to 250 points</p></div></div><div class=\"gauge\" id=\"gauge\"></div></div>\n<div class=\"card\"><div class=\"cardhead\"><div><h4>The scoring rate</h4><p class=\"why\">Points per game: what he is doing against what he needs</p></div></div><div class=\"tiles\" id=\"rates\"></div>\n<div class=\"mt\"><label for=\"what\" class=\"mu\" style=\"font-size:12.5px\">What if he scores <b id=\"whatV\" class=\"o\"></b> points per game from here? <button type=\"button\" id=\"whatReset\" style=\"padding:3px 9px;font-size:11px;margin-left:6px\">Reset</button></label><input id=\"what\" type=\"range\" min=\"1\" max=\"3.5\" step=\"0.01\"><div class=\"gsub\" id=\"whatOut\"></div></div></div></div>", "x5": "<div class=\"grid g3\" id=\"funGrid\"></div>\n<div class=\"grid g2 mt\"><div class=\"card\"><div class=\"cardhead\"><div><h4>Calendar race</h4><p class=\"why\">Points by month, McDavid this season against Gretzky in 1985\u201386</p></div></div><div class=\"chart\" id=\"calChart\"></div><div class=\"legend\" id=\"calLegend\"></div></div><div class=\"card\" id=\"contribCard\"></div></div>", "x6": "<div class=\"grid g4\" id=\"fourSeasons\"></div>\n<div class=\"grid g2 mt\"><div class=\"card\" id=\"club\"></div><div class=\"card\" id=\"careerCard\"></div></div>\n<div class=\"sub\"><h3>Same age, same stage</h3><small>McDavid and Gretzky by age (as of Feb 1), season by season</small></div>\n<div class=\"card\"><div class=\"tabs\"><div class=\"seg\" id=\"ageSeg\"><button class=\"on\" data-t=\"cum\" type=\"button\">Career progression</button><button data-t=\"tbl\" type=\"button\">By season</button></div></div><div id=\"ageBody\"></div></div>\n<div class=\"grid g2 mt\"><div class=\"card\" id=\"greatest\"></div><div class=\"card\" id=\"records\"></div></div>"};
+/* ================= helpers ================= */
+const ROOTS=[];
+const $=(s,r)=>{if(r)return r.querySelector(s);for(const x of ROOTS){const e=x.querySelector(s);if(e)return e}return null};
+const $$=(s,r)=>r?[...r.querySelectorAll(s)]:ROOTS.flatMap(x=>[...x.querySelectorAll(s)]);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const has=v=>v!==undefined&&v!==null&&!Number.isNaN(v);
+const N=v=>Number.isFinite(+v)?+v:0;
+const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
+const f1=v=>(Math.round(v*10)/10).toFixed(1),f2=v=>(Math.round(v*100)/100).toFixed(2);
+const sgn=v=>v>0?"+"+v:String(v);
+const dateOf=d=>new Date(d+"T12:00:00");
+const fmtD=d=>dateOf(d).toLocaleDateString("en-US",{month:"short",day:"numeric"});
+const fmtDY=d=>dateOf(d).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONTH_ORDER=[9,10,11,0,1,2,3]; // Oct..Apr
+const XC={MC:CFG.PLAYER,WG:CFG.GRETZKY,SG:CFG.SEASON_GAMES,REC:CFG.RECORD,BREAK:CFG.BREAK,WG_GP:CFG.G_GAMES};
+const COL={mc:"#FF4C00",wg:"#7fd4ff",proj:"#ffc46b"};
+
+/* ---------- fixed historical reference (public NHL records) ---------- */
+// [season, GP, G, A]; Gretzky's 1995-96 is LA + St. Louis combined (62+18 GP)
+const REF_WG=[["1979-80",79,51,86],["1980-81",80,55,109],["1981-82",80,92,120],["1982-83",80,71,125],["1983-84",74,87,118],["1984-85",80,73,135],["1985-86",80,52,163],["1986-87",79,62,121],["1987-88",64,40,109],["1988-89",78,54,114],["1989-90",73,40,102],["1990-91",78,41,122],["1991-92",74,31,90],["1992-93",45,16,49],["1993-94",81,38,92],["1994-95",48,11,37],["1995-96",80,23,79],["1996-97",82,25,72],["1997-98",82,23,67],["1998-99",70,9,53]];
+// McDavid through last season; the current season always comes from the live log
+const REF_MC=[["2015-16",45,16,32],["2016-17",82,30,70],["2017-18",82,41,67],["2018-19",78,41,75],["2019-20",64,34,63],["2020-21",56,33,72],["2021-22",80,44,79],["2022-23",82,64,89],["2023-24",76,32,100],["2024-25",67,26,74],["2025-26",82,48,90]];
+const rp=r=>r[2]+r[3];
+const FOUR=["1981-82","1983-84","1984-85","1985-86"];
+const OPPS=["CGY","VAN","SEA","LAK","ANA","SJS","VGK","COL","WPG","DAL","MIN","STL","CHI","NSH","UTA","TOR","MTL","OTT","BOS","BUF","DET","FLA","TBL","CAR","NJD","NYR","NYI","PHI","PIT","WSH","CBJ"];
+
+/* ================= state ================= */
+const ST={sample:new URLSearchParams(location.search).has("sample"),ready:false,err:false,stale:false,mc:[],wg:[],wgOK:false,tgOK:false,vsTab:"diff",ageTab:"cum",what:null,fun:{explode:"mc"}};
+
+/* ================= sample data (preview only) ================= */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function spread(R,total,n,cap){const w=Array.from({length:n},()=>.25+R()*R()*2.4),W=sum(w,x=>x),a=Array(n).fill(0);let placed=0,guard=0;while(placed<total&&guard++<200000){let r=R()*W,i=0;for(;i<n-1&&r>w[i];i++)r-=w[i];if(a[i]<cap){a[i]++;placed++}}return a}
+function sampleLog(o){
+  for(let seed=o.seed;;seed++){
+    const R=rng(seed),g=spread(R,o.G,o.n,o.capG),a=spread(R,o.A,o.n,o.capA),p=g.map((x,i)=>x+a[i]);
+    const zeros=p.filter(x=>x===0).length;
+    if(Math.max(...p)>o.maxP||zeros<o.zMin||zeros>o.zMax||Math.max(...g)<o.hat)continue;
+    const dates=[],t0=Date.UTC(o.y,o.m,o.d),span=(Date.UTC(o.y2,o.m2,o.d2)-t0)/(o.n-1);
+    for(let i=0;i<o.n;i++)dates.push(new Date(t0+span*i).toISOString().slice(0,10));
+    const opp=OPPS.slice().sort(()=>R()-.5);
+    const log=g.map((gl,i)=>({n:i+1,date:dates[i],opp:opp[i%opp.length],g:gl,a:a[i],p:p[i]}));
+    if(o.full){
+      let tot=0;
+      log.forEach(r=>{r.sh=Math.max(r.g,Math.round(2+R()*5));tot+=r.sh;r.pm=Math.round(R()*5-1.5);
+        r.ppg=Math.min(r.g,r.g&&R()<.3?1:0);r.ppp=Math.min(r.p,r.ppg+(R()<.42*r.a?1:0));r.shg=0;r.shp=0;r.gwg=0;r.otg=0;
+        r.tg=Math.max(r.p,2+Math.round(R()*3)+(r.p>=4?1:0))});
+      const sc=log.filter(r=>r.g>0);
+      if(sum(log,r=>r.ppg)<3)sc.slice(0,4).forEach(r=>{r.ppg=1;r.ppp=Math.max(r.ppp,1)});
+      [3,9,15,20].forEach(i=>{const r=sc[i%sc.length];if(r)r.gwg=1});
+      sc[Math.min(sc.length-1,11)].otg=1;
+    }
+    return log;
+  }
+}
+function buildSample(){
+  // Shaped to match McDavid's real 2026-27 totals so far (23 GP, 13 G, 42 A, 55 P) and Gretzky's real 1985-86 totals (80 GP, 52 G, 163 A, 215 P).
+  // Individual games are generated, so dates, opponents and game-by-game splits are illustrative only.
+  const mc=sampleLog({seed:11,n:23,G:13,A:42,capG:4,capA:4,maxP:6,zMin:1,zMax:3,hat:3,y:2026,m:9,d:8,y2:2026,m2:10,d2:18,full:true});
+  const wg=sampleLog({seed:5,n:80,G:52,A:163,capG:4,capA:6,maxP:7,zMin:2,zMax:6,hat:3,y:1985,m:9,d:10,y2:1986,m2:3,d2:6,full:false});
+  return {mc,wg};
+}
+
+/* ================= live data ================= */
+function norm(rows,full){
+  return (rows||[]).slice().sort((a,b)=>a.gameDate<b.gameDate?-1:1).map((r,i)=>{
+    const o={n:i+1,date:r.gameDate,opp:r.opponentAbbrev,g:N(r.goals),a:N(r.assists),p:has(r.points)?N(r.points):N(r.goals)+N(r.assists)};
+    if(full)["plusMinus","shots","powerPlayGoals","powerPlayPoints","shorthandedGoals","shorthandedPoints","gameWinningGoals","otGoals"].forEach(k=>{});
+    o.pm=has(r.plusMinus)?N(r.plusMinus):undefined;o.sh=has(r.shots)?N(r.shots):undefined;
+    o.ppg=has(r.powerPlayGoals)?N(r.powerPlayGoals):undefined;o.ppp=has(r.powerPlayPoints)?N(r.powerPlayPoints):undefined;
+    o.shg=has(r.shorthandedGoals)?N(r.shorthandedGoals):undefined;o.shp=has(r.shorthandedPoints)?N(r.shorthandedPoints):undefined;
+    o.gwg=has(r.gameWinningGoals)?N(r.gameWinningGoals):undefined;o.otg=has(r.otGoals)?N(r.otGoals):undefined;
+    return o;
+  });
+}
+async function fetchAll(){
+  const [m,w,s]=await Promise.all([
+    getJSON(urlsFor(`player/${XC.MC}/game-log/now`),"chase.x.mc.v1"),
+    getJSON(urlsFor(`player/${XC.WG}/game-log/19851986/2`),"chase.x.wg.v1",true),
+    getJSON(urlsFor("club-schedule-season/EDM/now"),"chase.x.sch.v1")]);
+  if(!m||!m.data||!m.data.gameLog)return null;
+  const mc=norm(m.data.gameLog,true);
+  let wg=w&&w.data&&w.data.gameLog?norm(w.data.gameLog,false):[];
+  if(!(wg.length>=40&&sum(wg,r=>r.p)>150))wg=[]; // same sanity check as the main page: must look like a real 1985-86 log
+  let tgOK=false;const sg=s&&s.data&&s.data.games;
+  if(sg){
+    const by={};sg.filter(g=>["OFF","FINAL"].includes(g.gameState)).forEach(g=>{const home=g.homeTeam.abbrev==="EDM";by[g.gameDate]=N((home?g.homeTeam:g.awayTeam).score)});
+    mc.forEach(r=>{if(has(by[r.date]))r.tg=by[r.date]});tgOK=mc.length>0&&mc.every(r=>has(r.tg));
+  }
+  return {mc,wg,tgOK,stale:!m.live};
+}
+
+/* ================= calculations (all from the game logs) ================= */
+const cum=a=>{let t=0;return a.map(r=>t+=r.p)};
+const dist=a=>{const c=[0,0,0,0,0,0,0];a.forEach(r=>c[Math.min(6,r.p)]++);return c};
+function runs(a,test){let best=0,cur=0;a.forEach(r=>{if(test(r)){cur++;best=Math.max(best,cur)}else cur=0});return best}
+function tail(a,test){let c=0;for(let i=a.length-1;i>=0&&test(a[i]);i--)c++;return c}
+function status(proj){
+  if(proj>=230)return {k:"comfortable",label:"Comfortable pace",color:"var(--green)",why:"Projects to 230 or more"};
+  if(proj>=XC.BREAK)return {k:"record",label:"Record-breaking pace",color:"var(--sky)",why:"Projects to 216 or more"};
+  if(proj>=200)return {k:"challenging",label:"Challenging pace",color:"var(--amber)",why:"Projects to 200 to 215"};
+  return {k:"behind",label:"Falling behind",color:"var(--red)",why:"Projects to under 200"};
+}
+function seasonLabel(){const l=ST.mc[ST.mc.length-1];if(!l)return "2026-27";const d=dateOf(l.date),y=d.getMonth()>=7?d.getFullYear():d.getFullYear()-1;return y+"-"+String(y+1).slice(2)}
+function M(){
+  const mc=ST.mc,wg=ST.wg,n=mc.length,cm=cum(mc),cw=cum(wg);
+  const pts=n?cm[n-1]:0,g=sum(mc,r=>r.g),a=sum(mc,r=>r.a),rest=Math.max(0,XC.SG-n);
+  const ppg=n?pts/n:0,proj=pts+ppg*rest;
+  const req=pts>=XC.BREAK?0:rest?(XC.BREAK-pts)/rest:Infinity;
+  const k=x=>{const s=mc.slice(-Math.min(x,n));return s.length?sum(s,r=>r.p)/s.length:0};
+  return {mc,wg,n,cm,cw,pts,g,a,rest,ppg,proj,req,l5:k(5),l10:k(10),st:status(proj),tgOK:ST.tgOK,wgPts:cw.length?cw[cw.length-1]:0,season:seasonLabel()};
+}
+/* ---------- data-status chips ---------- */
+const chip=(k,t)=>`<span class="chip ${k}">${t||({live:"Live",sample:"Sample",ref:"Reference",pbp:"Play-by-play",edge:"EDGE · not connected",na:"Unavailable"}[k])}</span>`;
+const dm=()=>ST.sample?chip("sample"):ST.stale?chip("na","Saved copy"):"";
+const lockCard=(title,why,chipK,body)=>`<div class="lock"><span>${chip(chipK)}</span><b>${esc(title)}</b><span>${body}</span></div>`;
+
+/* ================= chart toolkit (plain SVG, no libraries) ================= */
+const tip=(el)=>{let t=$(".tipbox",el);if(!t){t=document.createElement("div");t.className="tipbox";el.appendChild(t)}return t};
+function placeTip(el,t,px,html){t.innerHTML=html;t.classList.add("on");const w=t.offsetWidth,W=el.clientWidth;t.style.left=Math.max(0,Math.min(W-w,px+14))+"px";t.style.top="6px"}
+function lineChart(el,o){
+  const W=Math.max(280,el.clientWidth||600),H=o.h||300,m={l:46,r:16,t:14,b:30},iw=W-m.l-m.r,ih=H-m.t-m.b;
+  const sx=x=>m.l+(x-o.xmin)/((o.xmax-o.xmin)||1)*iw,sy=y=>m.t+ih-(y-o.ymin)/((o.ymax-o.ymin)||1)*ih;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label)}"><g class="axis">`;
+  o.yt.forEach(v=>{s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${sy(v)}" y2="${sy(v)}" stroke="rgba(255,255,255,.08)"/><text x="${m.l-8}" y="${sy(v)+4}" text-anchor="end">${o.fy?o.fy(v):v}</text>`});
+  o.xt.forEach(v=>{s+=`<text x="${sx(v)}" y="${H-8}" text-anchor="middle">${o.fx?o.fx(v):v}</text>`});
+  (o.hl||[]).forEach(h=>{s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${sy(h.y)}" y2="${sy(h.y)}" stroke="${h.color}" stroke-dasharray="3 5" opacity=".8"/><text x="${W-m.r}" y="${sy(h.y)-6}" text-anchor="end" style="fill:${h.color}">${esc(h.label)}</text>`});
+  s+=`</g>`;
+  const vis=o.series.filter(x=>x.show!==false&&x.data.length);
+  vis.forEach(x=>{
+    if(x.area){const d=x.data.map(p=>`${sx(p[0])},${sy(p[1])}`).join(" ");s+=`<polygon points="${sx(x.data[0][0])},${sy(o.ymin)} ${d} ${sx(x.data[x.data.length-1][0])},${sy(o.ymin)}" fill="${x.color}" opacity=".12"/>`}
+    s+=`<polyline fill="none" stroke="${x.color}" stroke-width="${x.w||3}" stroke-linejoin="round" stroke-linecap="round" ${x.dash?`stroke-dasharray="${x.dash}"`:""} points="${x.data.map(p=>`${sx(p[0])},${sy(p[1])}`).join(" ")}"/>`;
+  });
+  s+=`<line id="cx" y1="${m.t}" y2="${m.t+ih}" stroke="rgba(255,255,255,.35)" opacity="0"/>`;
+  vis.forEach((x,i)=>{s+=`<circle class="dt" data-i="${i}" r="5" fill="${x.color}" stroke="#020f23" stroke-width="2" opacity="0"/>`});
+  s+=`<rect x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent" class="hit"/></svg>`;
+  el.innerHTML=s;const svg=$("svg",el),t=tip(el),cx=$("#cx",svg),dots=$$(".dt",svg);
+  const maps=vis.map(x=>{const mp={};x.data.forEach(p=>mp[p[0]]=p[1]);return mp});
+  const move=e=>{
+    const r=svg.getBoundingClientRect(),k=r.width/W,px=(e.clientX-r.left)/k;
+    let xv=Math.round(o.xmin+(px-m.l)/iw*(o.xmax-o.xmin));xv=Math.max(o.xmin,Math.min(o.xmax,xv));
+    const vals=vis.map((x,i)=>({s:x,y:maps[i][xv]}));
+    if(!vals.some(v=>has(v.y))){t.classList.remove("on");cx.setAttribute("opacity",0);dots.forEach(d=>d.setAttribute("opacity",0));return}
+    cx.setAttribute("x1",sx(xv));cx.setAttribute("x2",sx(xv));cx.setAttribute("opacity",1);
+    dots.forEach((d,i)=>{const y=maps[i][xv];if(has(y)){d.setAttribute("cx",sx(xv));d.setAttribute("cy",sy(y));d.setAttribute("opacity",1)}else d.setAttribute("opacity",0)});
+    const rows=vals.filter(v=>has(v.y)).map(v=>`<div><span style="color:${v.s.color}">${esc(v.s.name)}</span><b style="font:700 13px var(--body)">${o.fy2?o.fy2(v.y):(o.fy?o.fy(v.y):v.y)}</b></div>`).join("");
+    placeTip(el,t,sx(xv)*k,`<b>${o.xName||"Game"} ${o.fx?o.fx(xv):xv}</b>${rows}${o.extra?o.extra(xv,vals):""}`);
+  };
+  const hit=$(".hit",svg);hit.addEventListener("pointermove",move);hit.addEventListener("pointerdown",move);
+  hit.addEventListener("pointerleave",e=>{if(e.pointerType==="touch")return;t.classList.remove("on");cx.setAttribute("opacity",0);dots.forEach(d=>d.setAttribute("opacity",0))});
+}
+function colChart(el,o){ // grouped columns, number labels, hover tooltip
+  const W=Math.max(280,el.clientWidth||600),H=o.h||280,m={l:36,r:10,t:22,b:30},iw=W-m.l-m.r,ih=H-m.t-m.b;
+  const mx=Math.max(1,...o.series.flatMap(s=>s.vals.map(v=>v||0))),step=mx<=40?10:mx<=80?20:25,top=Math.ceil(mx/step)*step||step,sy=v=>m.t+ih-v/top*ih;
+  const gw=iw/o.cats.length,bw=Math.min(34,(gw-14)/o.series.length);
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label)}"><g class="axis">`;
+  for(let v=0;v<=top;v+=step){s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${sy(v)}" y2="${sy(v)}" stroke="rgba(255,255,255,.08)"/><text x="${m.l-6}" y="${sy(v)+4}" text-anchor="end">${v}</text>`}
+  o.cats.forEach((c,i)=>{s+=`<text x="${m.l+gw*i+gw/2}" y="${H-9}" text-anchor="middle">${esc(c)}</text>`});
+  s+=`</g>`;
+  o.cats.forEach((c,i)=>{o.series.forEach((se,j)=>{
+    const v=se.vals[i];if(!has(v))return;const x=m.l+gw*i+gw/2-(o.series.length*bw)/2+j*bw+2,h=ih-(sy(v)-m.t);
+    s+=`<rect x="${x}" y="${sy(v)}" width="${bw-4}" height="${Math.max(0,h)}" rx="5" fill="${se.color}"/>`;
+    if(v>0)s+=`<text x="${x+(bw-4)/2}" y="${sy(v)-6}" text-anchor="middle" style="fill:#fff;font:700 11px var(--body)">${v}</text>`;
+  })});
+  o.cats.forEach((c,i)=>{s+=`<rect class="hit" data-i="${i}" x="${m.l+gw*i}" y="${m.t}" width="${gw}" height="${ih}" fill="transparent"/>`});
+  s+=`</svg>`;el.innerHTML=s;const svg=$("svg",el),t=tip(el);
+  $$(".hit",svg).forEach(h=>{const show=e=>{const i=+h.dataset.i,k=svg.getBoundingClientRect().width/W;
+    placeTip(el,t,(m.l+gw*i+gw/2)*k,`<b>${esc(o.cats[i])}</b>`+o.series.map(se=>`<div><span style="color:${se.color}">${esc(se.name)}</span><b style="font:700 13px var(--body)">${has(se.vals[i])?se.vals[i]+" pts"+(se.gp&&has(se.gp[i])?" · "+se.gp[i]+" GP":""):"—"}</b></div>`).join(""))};
+    h.addEventListener("pointermove",show);h.addEventListener("pointerdown",show);h.addEventListener("pointerleave",e=>{if(e.pointerType!=="touch")t.classList.remove("on")})});
+}
+function donut(parts,centre,sub){
+  const R=70,C=2*Math.PI*R,tot=sum(parts,p=>p.v)||1;let off=0,s=`<svg viewBox="0 0 200 200" role="img" aria-label="${esc(centre+" "+sub)}"><circle cx="100" cy="100" r="${R}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="24"/>`;
+  parts.forEach(p=>{const L=p.v/tot*C;s+=`<circle cx="100" cy="100" r="${R}" fill="none" stroke="${p.color}" stroke-width="24" stroke-dasharray="${L} ${C-L}" stroke-dashoffset="${-off}" transform="rotate(-90 100 100)"><title>${esc(p.label)}: ${p.v}</title></circle>`;off+=L});
+  return s+`<text x="100" y="104" text-anchor="middle" style="fill:#fff;font:900 44px var(--display)">${centre}</text><text x="100" y="126" text-anchor="middle" style="fill:var(--muted);font:600 11px var(--body);letter-spacing:.14em">${sub}</text></svg>`;
+}
+function gaugeSvg(v){
+  const lo=170,hi=250,cx=150,cy=150,R=118,t=x=>Math.max(0,Math.min(1,(x-lo)/(hi-lo))),pt=(tt,r)=>[cx+r*Math.cos(Math.PI*(1-tt)),cy-r*Math.sin(Math.PI*(1-tt))];
+  const arc=(a,b,col)=>{const[p0,p1,q1,q0]=[pt(a,R),pt(b,R),pt(b,R-26),pt(a,R-26)];return `<path d="M${p0} A${R} ${R} 0 0 1 ${p1} L${q1} A${R-26} ${R-26} 0 0 0 ${q0} Z" fill="${col}" opacity=".92"/>`};
+  const segs=[[170,200,"#ff6b6b"],[200,216,"#ffc46b"],[216,230,"#7fd4ff"],[230,250,"#59e3a0"]];
+  let s=`<svg viewBox="0 0 300 238" role="img" aria-label="Pressure meter, projected finish ${Math.round(v)} points">`;
+  segs.forEach(g=>{s+=arc(t(g[0]),t(g[1]),g[2])});
+  [[200,"200"],[216,"216"],[230,"230"]].forEach(([x,l])=>{const[a,b]=[pt(t(x),R+4),pt(t(x),R-30)],c=pt(t(x),R+18);s+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#020f23" stroke-width="2"/><text x="${c[0]}" y="${c[1]+4}" text-anchor="middle" style="fill:var(--muted);font:700 11px var(--body)">${l}</text>`});
+  const n=pt(t(v),R-14);
+  s+=`<line x1="${cx}" y1="${cy}" x2="${n[0]}" y2="${n[1]}" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="9" fill="#fff"/>`;
+  s+=`<text x="${cx}" y="${cy+56}" text-anchor="middle" style="fill:#fff;font:900 44px var(--display)">${Math.round(v)}</text><text x="${cx}" y="${cy+74}" text-anchor="middle" style="fill:var(--muted);font:600 10px var(--body);letter-spacing:.16em">PROJECTED POINTS</text></svg>`;
+  return s;
+}
+
+/* ================= 01 THE CHASE ================= */
+const none=t=>`<div class="empty">${t}</div>`;
+function rLast10(m){
+  const el=$("#last10x");if(!el)return;if(!m.n){el.innerHTML=none("Waiting for McDavid's first game of the season.");return}
+  el.innerHTML=m.mc.slice(-10).map(r=>`<div class="gm ${r.p?"":"z"}"><small>${fmtD(r.date)}</small><b>${r.p}</b><span>${r.g}G ${r.a}A</span><small>${esc(r.opp||"")}</small></div>`).join("");
+}
+function rPace(m){
+  const el=$("#paceTable"),rows=[10,20,30,40,50,60,70],ok=m.cw.length>0;
+  const lead=(a,b)=>a>b?`<span class="o">McDavid</span>`:a<b?`<span class="ice">Gretzky</span>`:"Even";
+  let h=`<thead><tr><th>Games</th><th>McDavid</th><th>Gretzky</th><th>Gap</th><th>Ahead</th></tr></thead><tbody>`;
+  rows.forEach(k=>{
+    const real=m.n>=k,mv=real?m.cm[k-1]:Math.round(m.ppg*k),gv=ok&&m.cw.length>=k?m.cw[k-1]:null;
+    h+=`<tr><td>${k}</td><td class="${real?"":"proj"}">${m.n?(real?mv:"~"+mv+" proj."):"—"}</td><td>${gv===null?"—":gv}</td><td class="${real?"":"proj"}">${gv===null||!m.n?"—":sgn(mv-gv)}</td><td class="${real?"":"proj"}">${gv===null||!m.n?"—":lead(mv,gv)}</td></tr>`;
+  });
+  const fm=Math.round(m.proj),fg=ok?m.wgPts:null;
+  h+=`<tr class="me"><td>Final (${XC.SG} / ${XC.WG_GP} GP)</td><td class="proj">${m.n?"~"+fm+" proj.":"—"}</td><td>${fg===null?"—":fg}</td><td class="proj">${fg===null||!m.n?"—":sgn(fm-fg)}</td><td class="proj">${fg===null||!m.n?"—":lead(fm,fg)}</td></tr></tbody>`;
+  el.innerHTML=h;
+  $("#paceNote").innerHTML=`Italic rows are projections at McDavid's current ${f2(m.ppg)} points per game, not results. ${ok?"":"Gretzky's 1985–86 log is unavailable right now, so his column is blank."}`;
+}
+function rPaceSide(m){
+  const el=$("#paceSide");if(!el)return;
+  if(!m.n){el.innerHTML=none("Waiting for McDavid's first game of the season.");return}
+  const w=m.cw.length>=m.n?m.cw[m.n-1]:null,d=w===null?null:m.pts-w;
+  el.innerHTML=`<div class="cardhead"><div><h4>Same games, side by side</h4><p class="why">After game ${m.n} of each season</p></div>${dm()}</div>
+   <div class="tiles" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="tile hi"><b>${m.pts}</b><small>McDavid</small></div><div class="tile"><b>${w===null?"—":w}</b><small>Gretzky</small></div>
+   <div class="tile"><b class="${d>0?"gr":d<0?"ice":""}">${d===null?"—":sgn(d)}</b><small>Gap</small></div><div class="tile"><b>${Math.round(m.proj)}</b><small>On pace for (est.)</small></div></div>
+   <p class="note">The full game-by-game race is in the pace chart below.</p>`;
+}
+
+/* ================= 02 ANALYTICS LAB ================= */
+function split(arr){ // power-play / even-strength split, only if the feed carries it
+  if(!arr.length||!arr.every(r=>has(r.ppp)&&has(r.ppg)))return null;
+  const g=sum(arr,r=>r.g),a=sum(arr,r=>r.a),p=g+a,ppG=sum(arr,r=>r.ppg),ppP=sum(arr,r=>r.ppp),ppA=ppP-ppG;
+  const shOK=arr.every(r=>has(r.shp)&&has(r.shg)),shG=shOK?sum(arr,r=>r.shg):0,shP=shOK?sum(arr,r=>r.shp):0;
+  return {ppG,ppA,ppP,evG:g-ppG-shG,evA:a-ppA-(shP-shG),evP:p-ppP-shP,shOK};
+}
+function rAnalytics(m){
+  const wgOK=m.wg.length>0,gg=sum(m.wg,r=>r.g),ga=sum(m.wg,r=>r.a);
+  const dn=(who,col1,col2,g,a,tag)=>`<div class="donut"><div class="who" style="color:${col1}">${who}</div>${donut([{v:g,color:col1,label:"Goals"},{v:a,color:col2,label:"Assists"}],g+a,"POINTS")}<div class="dl"><span><i class="sw" style="background:${col1}"></i> ${g} goals · ${g+a?Math.round(g/(g+a)*100):0}%</span><span><i class="sw" style="background:${col2}"></i> ${a} assists · ${g+a?Math.round(a/(g+a)*100):0}%</span></div>${tag||""}</div>`;
+  $("#donuts").innerHTML=(m.n?dn("McDavid",COL.mc,"#ffb08a",m.g,m.a,`<div class="note">${dm()}</div>`):`<div class="donut">${none("No games yet")}</div>`)+(wgOK?dn("Gretzky 1985–86",COL.wg,"#2c6aa8",gg,ga,`<div class="note">${dm()}</div>`):`<div class="donut"><div class="who" style="color:${COL.wg}">Gretzky 1985–86</div>${none("Game log unavailable right now")}</div>`);
+
+  // power play
+  const sm=split(m.mc),sg=split(m.wg),cell=(x,k)=>x?x[k]:"—";
+  const rowsPP=[["Power-play goals","ppG"],["Power-play assists","ppA"],["Power-play points","ppP"],["Even-strength goals","evG"],["Even-strength assists","evA"],["Even-strength points","evP"]];
+  $("#ppCard").innerHTML=`<div class="cardhead"><div><h4>Power-play dominance</h4><p class="why">Where the points come from</p></div>${sm?dm():chip("na")}</div>`+
+    (sm?`<table><thead><tr><th>Situation</th><th>McDavid</th><th>Gretzky</th></tr></thead><tbody>${rowsPP.map(([l,k])=>`<tr><td>${l}</td><td><b class="o">${cell(sm,k)}</b></td><td>${cell(sg,k)}</td></tr>`).join("")}</tbody></table>`+
+    `<p class="note">${sg?"":"The 1985–86 game log doesn't carry power-play splits, so Gretzky is left blank instead of estimated. "}${sm.shOK?"":"Even-strength figures include short-handed points because the feed doesn't separate them. "}</p>`:none("This feed doesn't include power-play splits."));
+
+  // game-winning impact
+  const gwOK=m.mc.length&&m.mc.every(r=>has(r.gwg));
+  $("#gwCard").innerHTML=`<div class="cardhead"><div><h4>Game-winning impact</h4><p class="why">Goals that decided games</p></div>${gwOK?dm():chip("na")}</div>`+
+    (gwOK?`<div class="tiles"><div class="tile hi"><b>${sum(m.mc,r=>r.gwg)}</b><small>Game-winning goals</small></div><div class="tile"><b>${sum(m.mc,r=>r.otg||0)}</b><small>Overtime goals</small></div><div class="tile"><b>${m.mc.filter(r=>r.p>=2&&r.gwg>0).length}</b><small>Multi-point wins with the GWG</small></div></div>`+
+    `<div class="lock mt">${chip("pbp")}<b>Overtime points</b><span>The game log counts overtime goals but not overtime assists. Those come from the play-by-play pass.</span></div>`:none("This feed doesn't include game-winning goals."));
+
+  // consistency
+  const nz=a=>a.length?Math.round(a.filter(r=>r.p>0).length/a.length*100)+"%":"—";
+  $("#consCard").innerHTML=`<div class="cardhead"><div><h4>Scoring consistency</h4><p class="why">How often he gets on the board</p></div>${dm()}</div><div class="tiles" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="tile hi"><b>${nz(m.mc)}</b><small>McDavid · games with a point</small></div><div class="tile"><b>${nz(m.wg)}</b><small>Gretzky 1985–86</small></div></div><p class="note">The full breakdown by points in a game, 0 through 6+, is in Multi-Point Games just below.</p>`;
+
+  // shooting
+  const shOK=m.mc.length&&m.mc.every(r=>has(r.sh));
+  if(!shOK){$("#shootTiles").innerHTML="";$("#shootChart").innerHTML=none("This feed doesn't include shot totals.");return}
+  const S=sum(m.mc,r=>r.sh);
+  $("#shootTiles").innerHTML=`<div class="tile"><b>${S}</b><small>Shots</small></div><div class="tile hi"><b>${f1(m.g/S*100)}%</b><small>Shooting</small></div><div class="tile"><b>${f1(m.g/S*10)}</b><small>Goals per 10 shots</small></div><div class="tile"><b>${f1(S/m.n)}</b><small>Shots per game</small></div>`;
+  const pts=[];for(let i=4;i<m.n;i++){const w=m.mc.slice(i-4,i+1),s=sum(w,r=>r.sh),g=sum(w,r=>r.g);pts.push([i+1,s?Math.round(g/s*1000)/10:0])}
+  if(pts.length<2){$("#shootChart").innerHTML=none("The trend line appears after five games.");return}
+  const top=Math.ceil(Math.max(...pts.map(p=>p[1]),20)/10)*10;
+  lineChart($("#shootChart"),{label:"Rolling five-game shooting percentage",h:window.innerWidth<720?220:250,xmin:5,xmax:Math.max(m.n,6),ymin:0,ymax:top,yt:[0,top/2,top],xt:pts.map(p=>p[0]).filter((_,i,a)=>i%Math.ceil(a.length/8)===0),fy:v=>v+"%",xName:"Game",
+    series:[{id:"s",name:"5-game shooting %",color:COL.mc,data:pts,area:true}],hl:[{y:Math.round(m.g/S*1000)/10,label:"Season "+f1(m.g/S*100)+"%",color:"#9db3d1"}]});
+}
+function rAdvanced(m){
+  const ppa=m.mc.length&&m.mc.every(r=>has(r.ppp)&&has(r.ppg))?sum(m.mc,r=>r.ppp)-sum(m.mc,r=>r.ppg):null;
+  const tgN=m.tgOK?sum(m.mc,r=>r.tg):0;
+  $("#advGrid").innerHTML=
+   `<div class="card"><div class="cardhead"><div><h4>Speed demon</h4><p class="why">Skating speed and bursts</p></div>${chip("edge")}</div>
+     <div class="pds"><div class="tile mute"><b>—</b><small>Top speed</small></div><div class="tile mute"><b>—</b><small>Bursts 20+ mph</small></div><div class="tile mute"><b>—</b><small>Bursts 22+ mph</small></div><div class="tile mute"><b>—</b><small>Rush goals</small></div></div>
+     <p class="note">Built from the NHL EDGE skating-speed data when it's wired in. Rush goals need the play-by-play pass. Until then these stay blank.</p></div>`+
+   `<div class="card"><div class="cardhead"><div><h4>Playmaking masterclass</h4><p class="why">How the assists get made</p></div>${chip("pbp")}</div>
+     <div class="pds"><div class="tile ${ppa===null?"mute":"hi"}"><b>${ppa===null?"—":ppa}</b><small>Power-play assists</small></div><div class="tile mute"><b>—</b><small>Primary</small></div><div class="tile mute"><b>—</b><small>Secondary</small></div><div class="tile mute"><b>—</b><small>Passes to shots</small></div></div>
+     <p class="note">Power-play assists come straight from the game log${ppa===null?" (not in this feed)":""}. Primary and secondary assists come from the play-by-play. Passes leading to shots have no public source yet, so that tile stays blank.</p></div>`+
+   `<div class="card"><div class="cardhead"><div><h4>Offensive-zone dominance</h4><p class="why">Possession and zone time</p></div>${chip("edge")}</div>
+     <div class="pds"><div class="tile mute"><b>—</b><small>O-zone time</small></div><div class="tile mute"><b>—</b><small>Zone starts</small></div><div class="tile mute"><b>—</b><small>Points per O-zone min</small></div><div class="tile mute"><b>—</b><small>Possession</small></div></div>
+     <p class="note">Only shown if the NHL EDGE feed supplies it. Nothing here is estimated.</p></div>`;
+}
+
+/* ================= 03 McDAVID VS GRETZKY ================= */
+function rVs(m){
+  const el=$("#vsBody"),t=ST.vsTab,wgOK=m.wg.length>0;
+  $$("#vsSeg button").forEach(b=>{const on=b.dataset.t===t;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+  $("#vsNote").innerHTML=wgOK?"":"Gretzky's 1985–86 log is unavailable right now.";
+  if(t==="gbg"){
+    const rows=ST.vsAll?Math.max(m.n,m.wg.length):m.n;
+    if(!rows){el.innerHTML=none("No games to compare yet.");return}
+    let h=`<div class="ts maxh"><table><thead><tr><th>Game</th><th class="l">McDavid</th><th>Pts</th><th>Total</th><th class="l">Gretzky</th><th>Pts</th><th>Total</th><th>Gap</th></tr></thead><tbody>`;
+    for(let i=0;i<rows;i++){
+      const a=m.mc[i],b=m.wg[i],ca=m.cm[i],cb=m.cw[i],gap=has(ca)&&has(cb)?ca-cb:null;
+      h+=`<tr><td>${i+1}</td><td class="l">${a?`${fmtD(a.date)} · ${esc(a.opp||"")}`:"—"}</td><td>${a?`<b class="${a.p>=3?"o":""}">${a.p}</b>`:"—"}</td><td>${has(ca)?ca:"—"}</td><td class="l">${b?`${fmtD(b.date)} · ${esc(b.opp||"")}`:"—"}</td><td>${b?`<b class="${b.p>=3?"ice":""}">${b.p}</b>`:"—"}</td><td>${has(cb)?cb:"—"}</td><td class="${gap>0?"o":gap<0?"ice":""}">${gap===null?"—":sgn(gap)}</td></tr>`;
+    }
+    el.innerHTML=h+`</tbody></table></div><div class="tabs mt" style="margin-bottom:0"><span class="note" style="margin:0">Matched by game number. Gap is McDavid minus Gretzky after the same number of games. ${dm()}</span>${wgOK&&m.wg.length>m.n?`<button type="button" id="vsAll">${ST.vsAll?"Show matched games only":"Show Gretzky's full "+m.wg.length+" games"}</button>`:""}</div>`;
+  }else if(t==="diff"){
+    if(!m.n||!wgOK){el.innerHTML=none("Needs both game logs.");return}
+    const k=Math.min(m.n,m.cw.length),gaps=[];for(let i=0;i<k;i++)gaps.push(m.cm[i]-m.cw[i]);
+    const ahead=gaps.filter(x=>x>0).length,maxL=Math.max(...gaps),maxD=Math.min(...gaps),now=gaps[k-1];
+    el.innerHTML=`<div class="tiles"><div class="tile ${now>=0?"hi":""}"><b>${sgn(now)}</b><small>Gap now (game ${k})</small></div><div class="tile"><b>${ahead}</b><small>Games ahead of him</small></div><div class="tile"><b class="o">${sgn(maxL)}</b><small>Biggest lead</small></div><div class="tile"><b class="ice">${sgn(maxD)}</b><small>Biggest deficit</small></div></div><div class="chart mt" id="diffChart"></div><p class="note">Above zero, McDavid is ahead of Gretzky's 1985–86 pace after the same number of games. ${dm()}</p>`;
+    const lo=Math.min(-5,Math.floor(maxD/5)*5),hi=Math.max(5,Math.ceil(maxL/5)*5),yt=[];for(let y=lo;y<=hi;y+=5)yt.push(y);
+    lineChart($("#diffChart"),{label:"Points gap, McDavid minus Gretzky",h:window.innerWidth<720?240:290,xmin:1,xmax:Math.max(k,2),ymin:lo,ymax:hi,yt,xt:gaps.map((_,i)=>i+1).filter((_,i,a)=>i%Math.max(1,Math.ceil(a.length/10))===0),fy:v=>sgn(v),
+      series:[{id:"d",name:"Gap",color:COL.mc,data:gaps.map((y,i)=>[i+1,y]),area:true}],hl:[{y:0,label:"Even",color:"#9db3d1"}]});
+  }else if(t==="seasons"){
+    const cur=m.n?[m.season+" (so far)",m.n,m.g,m.a]:null,best=REF_MC.reduce((a,b)=>rp(b)>rp(a)?b:a);
+    const row=(who,c,r,cls)=>`<tr class="${cls||""}"><td class="l">${r[0]}</td><td class="l" style="color:${c}">${who}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><b>${rp(r)}</b></td><td>${f2(rp(r)/r[1])}</td></tr>`;
+    el.innerHTML=`<div class="ts"><table><thead><tr><th class="l">Season</th><th class="l">Player</th><th>GP</th><th>G</th><th>A</th><th>PTS</th><th>P/GP</th></tr></thead><tbody>`+
+     (cur?row("McDavid",COL.mc,cur,"me"):"")+(cur&&m.rest?`<tr class="me"><td class="l proj">${m.season} on pace</td><td class="l" style="color:${COL.mc}">McDavid</td><td class="proj">${XC.SG}</td><td class="proj">—</td><td class="proj">—</td><td class="proj"><b>~${Math.round(m.proj)}</b></td><td class="proj">${f2(m.ppg)}</td></tr>`:"")+
+     row("McDavid best",COL.mc,best)+FOUR.map(s=>REF_WG.find(r=>r[0]===s)).map(r=>row("Gretzky",COL.wg,r)).join("")+`</tbody></table></div><p class="note">Gretzky's four 200-point seasons against McDavid's best and his current pace. ${chip("ref")} ${cur?dm():""}</p>`;
+  }else{
+    const mcR=REF_MC.concat(m.n?[[m.season,m.n,m.g,m.a]]:[]);
+    const tot=a=>({gp:sum(a,r=>r[1]),g:sum(a,r=>r[2]),a:sum(a,r=>r[3])}),A=tot(mcR),B=tot(REF_WG),pp=x=>x.g+x.a;
+    const rows=[["Seasons",mcR.length,REF_WG.length],["Games played",A.gp,B.gp],["Goals",A.g,B.g],["Assists",A.a,B.a],["Points",pp(A),pp(B)],["Points per game",f2(pp(A)/A.gp),f2(pp(B)/B.gp)],["Points per 82 games",Math.round(pp(A)/A.gp*82),Math.round(pp(B)/B.gp*82)]];
+    el.innerHTML=`<div class="ts"><table><thead><tr><th class="l">NHL regular season</th><th style="color:${COL.mc}">McDavid</th><th style="color:${COL.wg}">Gretzky</th></tr></thead><tbody>${rows.map(r=>`<tr><td class="l">${r[0]}</td><td><b>${typeof r[1]==="number"?r[1].toLocaleString():r[1]}</b></td><td>${typeof r[2]==="number"?r[2].toLocaleString():r[2]}</td></tr>`).join("")}</tbody></table></div><p class="note">Gretzky's totals are his 20 NHL seasons (WHA not included). McDavid's include this season so far. ${chip("ref")}</p>`;
+  }
+}
+
+/* ================= 04 RECORD WATCH ================= */
+function rRecord(m){
+  const lo=1,hi=3.5,rate=ST.what===null?Math.min(hi,Math.max(lo,m.ppg)):ST.what,pj=m.pts+rate*m.rest,st=status(pj);
+  const sl=$("#what");if(!sl)return;sl.min=lo;sl.max=hi;if(sl.getRootNode().activeElement!==sl)sl.value=rate;
+  $("#whatV").textContent=f2(rate);
+  $("#rates").innerHTML=m.n?`<div class="tile"><b>${f2(m.ppg)}</b><small>Season P/GP</small></div><div class="tile hi"><b>${m.pts>=XC.BREAK?"0":isFinite(m.req)?f2(m.req):"—"}</b><small>Needed to reach 216</small></div><div class="tile"><b>${f2(m.l5)}</b><small>Last 5 games</small></div><div class="tile"><b>${f2(m.l10)}</b><small>Last 10 games</small></div><div class="tile"><b class="${m.ppg-m.req>=0?"gr":"ice"}">${isFinite(m.req)?sgn(Math.round((m.ppg-m.req)*100)/100):"—"}</b><small>Pace minus needed</small></div><div class="tile"><b>${Math.round(m.proj)}</b><small>Projected finish</small></div>`:none("Needs at least one game.");
+  $("#gauge").innerHTML=gaugeSvg(pj)+`<div class="gstatus" style="color:${st.color}">${st.label}</div><div class="gsub">${st.why}${ST.what===null?" · using his season rate":" · using the rate you picked"}</div>`;
+  const need=m.rest?(XC.BREAK-m.pts)/m.rest:0;
+  $("#whatOut").innerHTML=m.n?`At <b>${f2(rate)}</b> a game for the last ${m.rest} games he finishes on <b class="o">${Math.round(pj)}</b>. He needs <b>${m.pts>=XC.BREAK?"nothing more":f2(need)}</b> a game to reach 216.`:"";
+}
+
+/* ================= 05 THE FUN ZONE ================= */
+function fcard(title,why,tag,body){return `<div class="card"><div class="cardhead"><div><h4>${title}</h4><p class="why">${why}</p></div>${tag}</div>${body}</div>`}
+function rFun(m){
+  const wg=m.wg,ok=wg.length>0,mc=m.mc,n=m.n;
+  const cmp=(lab,a,b)=>`<b class="m">${a}</b><small>${lab}</small><b class="g">${b}</b>`;
+  const hatM=mc.filter(r=>r.g>=3),hatW=wg.filter(r=>r.g>=3);
+  const dM=dist(mc),dW=dist(wg);
+  // hot streak / zero nights
+  const curS=tail(mc,r=>r.p>0),bestS=runs(mc,r=>r.p>0),bestW=runs(wg,r=>r.p>0),multi=runs(mc,r=>r.p>=2);
+  const z=mc.filter(r=>r.p===0).length,zW=wg.filter(r=>r.p===0).length,drought=runs(mc,r=>r.p===0),droughtW=runs(wg,r=>r.p===0);
+  const ex=ST.fun.explode==="mc"?mc:wg,top=ex.slice().sort((a,b)=>b.p-a.p||b.g-a.g).slice(0,5);
+  const aW=sum(wg,r=>r.a);
+  const tag=dm();
+  $("#funGrid").innerHTML=
+   fcard("Hat trick watch","Three or more goals in a game",tag,
+     `<div class="tiles" style="grid-template-columns:repeat(2,1fr)"><div class="tile hi"><b>${hatM.length}</b><small>McDavid this season</small></div><div class="tile"><b>${ok?hatW.length:"—"}</b><small>Gretzky 1985–86</small></div></div>`+
+     (hatM.length?`<ul class="list mt">${hatM.map(r=>`<li><span>${fmtD(r.date)} · ${esc(r.opp||"")}</span><span class="o">${r.g} goals</span></li>`).join("")}</ul>`:`<p class="note">No hat tricks yet this season.</p>`))+
+   fcard("Multi-point madness","Games by points scored, numbers only",tag,
+     `<div class="cmp mt"><span class="hd o">McDavid</span><span></span><span class="hd" style="color:${COL.wg}">Gretzky</span>${[2,3,4,5,6].map(i=>cmp(i===6?"6+ pts":i+" pts",n?(i===6?dM[6]:dM[i]):"—",ok?(i===6?dW[6]:dW[i]):"—")).join("")}</div>`)+
+   fcard("The assist machine","How he sets the others up",tag,
+     `<div class="tiles" style="grid-template-columns:repeat(2,1fr)"><div class="tile hi"><b>${m.a}</b><small>Assists</small></div><div class="tile"><b>${n?f2(m.a/n):"—"}</b><small>Per game</small></div></div>
+      <div class="pds" style="grid-template-columns:repeat(2,1fr)"><div class="tile mute"><b>—</b><small>Primary</small></div><div class="tile mute"><b>—</b><small>Secondary</small></div></div>
+      <p class="note">${ok?`Gretzky 1985–86: ${aW} assists, ${f2(aW/wg.length)} per game. `:""}Primary and secondary come from the play-by-play, which the game log doesn't split.</p>`)+
+   fcard("The hot streak","Consecutive games with a point",tag,
+     `<ul class="list"><li><span>Current point streak</span><span class="${curS?"o":""}">${n?curS+(curS===1?" game":" games"):"—"}</span></li><li><span>Longest this season</span><span>${n?bestS+" games":"—"}</span></li><li><span>Longest in 1985–86</span><span>${ok?bestW+" games":"—"}</span></li><li><span>Multi-point games in a row</span><span>${n?multi:"—"}</span></li></ul><p class="note">The all-time record is Gretzky's 51-game streak in 1983–84. ${chip("ref")}</p>`)+
+   fcard("Zero-point nights","The games he got shut out",tag,
+     `<ul class="list"><li><span>Games without a point</span><span>${n?z:"—"}${ok?` <span class="mu">vs ${zW}</span>`:""}</span></li><li><span>Share of games</span><span>${n?Math.round(z/n*100)+"%":"—"}${ok?` <span class="mu">vs ${Math.round(zW/wg.length*100)}%</span>`:""}</span></li><li><span>Longest stretch</span><span>${n?drought+(drought===1?" game":" games"):"—"}${ok?` <span class="mu">vs ${droughtW}</span>`:""}</span></li></ul><p class="note">The grey figures are Gretzky's 1985–86 season.</p>`)+
+   fcard("First period assassin","Scoring by period",chip("pbp"),
+     `<div class="pds"><div class="tile mute"><b>—</b><small>1st</small></div><div class="tile mute"><b>—</b><small>2nd</small></div><div class="tile mute"><b>—</b><small>3rd</small></div><div class="tile mute"><b>—</b><small>OT</small></div></div><p class="note">Needs the period of every goal he scored or assisted on, which only the play-by-play has. It loads one game at a time and each finished game is cached for good. Goals and assists will show separately.</p>`)+
+   `<div class="card" style="grid-column:1/-1"><div class="tabs" style="margin-bottom:6px"><div class="cardhead" style="margin:0"><div><h4>The explosion games</h4><p class="why">Biggest single-game performances</p></div></div><div class="seg" id="exSeg"><button class="${ST.fun.explode==="mc"?"on":""}" data-p="mc" type="button">McDavid</button><button class="${ST.fun.explode==="wg"?"on":""}" data-p="wg" type="button">Gretzky 1985–86</button></div></div>`+
+   (top.length?`<div class="ts"><table><thead><tr><th class="l">Date</th><th class="l">Opponent</th><th>Goals</th><th>Assists</th><th>Points</th></tr></thead><tbody>${top.map(r=>`<tr><td class="l">${innerWidth<720?fmtD(r.date):fmtDY(r.date)}</td><td class="l">${esc(r.opp||"")}</td><td>${r.g}</td><td>${r.a}</td><td><b class="${ST.fun.explode==="mc"?"o":"ice"}">${r.p}</b></td></tr>`).join("")}</tbody></table></div>`:none("No games loaded for this player."))+`</div>`;
+  // calendar
+  const byMonth=(a)=>{const o={};a.forEach(r=>{const mo=dateOf(r.date).getMonth();(o[mo]=o[mo]||{p:0,gp:0});o[mo].p+=r.p;o[mo].gp++});return o};
+  const bm=byMonth(mc),bw=byMonth(wg),used=MONTH_ORDER.filter(x=>bm[x]||bw[x]);
+  if(!used.length)$("#calChart").innerHTML=none("No games yet.");
+  else colChart($("#calChart"),{label:"Points by month",h:window.innerWidth<720?250:290,cats:used.map(x=>MON[x]),series:[{name:"McDavid",color:COL.mc,vals:used.map(x=>bm[x]?bm[x].p:null),gp:used.map(x=>bm[x]?bm[x].gp:null)},{name:"Gretzky 1985–86",color:COL.wg,vals:used.map(x=>bw[x]?bw[x].p:null),gp:used.map(x=>bw[x]?bw[x].gp:null)}]});
+  $("#calLegend").innerHTML=`<button type="button" style="cursor:default"><i class="sw" style="background:${COL.mc}"></i>McDavid</button><button type="button" style="cursor:default"><i class="sw" style="background:${COL.wg}"></i>Gretzky 1985–86</button>`;
+  // contribution trend
+  const cc=$("#contribCard");
+  if(!(m.tgOK&&n)){cc.innerHTML=`<div class="cardhead"><div><h4>Goal contribution</h4><p class="why">Share of Edmonton's goals that involved him</p></div>${chip("na")}</div>${none("Needs Edmonton's game results from the schedule feed.")}`;return}
+  let cp=0,ct=0;const pts=mc.map((r,i)=>{cp+=r.p;ct+=r.tg;return [i+1,Math.round(cp/ct*1000)/10]});
+  cc.innerHTML=`<div class="cardhead"><div><h4>Goal contribution</h4><p class="why">Share of Edmonton's goals that involved him, game by game</p></div>${dm()}</div><div class="tiles"><div class="tile hi"><b>${Math.round(cp/ct*100)}%</b><small>Now</small></div><div class="tile"><b>${Math.round(Math.max(...pts.map(p=>p[1])))}%</b><small>Season high</small></div><div class="tile"><b>${Math.round(Math.min(...pts.map(p=>p[1])))}%</b><small>Season low</small></div></div><div class="chart mt" id="contribChart"></div><p class="note">Points divided by Edmonton's goals so far. One point is one goal he scored or assisted.</p>`;
+  const lo=Math.floor(Math.min(...pts.map(p=>p[1]))/10)*10,hi=Math.min(100,Math.ceil(Math.max(...pts.map(p=>p[1]))/10)*10+10);
+  lineChart($("#contribChart"),{label:"Share of Edmonton goals involving McDavid",h:window.innerWidth<720?200:220,xmin:1,xmax:Math.max(n,2),ymin:lo,ymax:hi,yt:[lo,(lo+hi)/2,hi],xt:pts.map(p=>p[0]).filter((_,i,a)=>i%Math.max(1,Math.ceil(a.length/8))===0),fy:v=>v+"%",series:[{id:"c",name:"Share of goals",color:COL.mc,data:pts,area:true}]});
+}
+
+/* ================= 06 HISTORICAL GREATNESS ================= */
+function mcSeasons(m){return REF_MC.concat(m.n?[[m.season,m.n,m.g,m.a]]:[])}
+function rHist(m){
+  const best=REF_MC.reduce((a,b)=>rp(b)>rp(a)?b:a);
+  $("#fourSeasons").innerHTML=FOUR.map(s=>{const r=REF_WG.find(x=>x[0]===s),rec=s==="1985-86";
+    return `<div class="card" style="${rec?"border-color:var(--orange)":""}"><div class="eyebrow" style="color:${rec?"var(--orange2)":"var(--muted)"}">${s}${rec?" · the record":""}</div><div class="big ${rec?"o":""}" style="font-size:84px;margin:8px 0 4px">${rp(r)}</div>
+      <ul class="list"><li><span>Games</span><span>${r[1]}</span></li><li><span>Goals</span><span>${r[2]}</span></li><li><span>Assists</span><span>${r[3]}</span></li><li><span>Points per game</span><span>${f2(rp(r)/r[1])}</span></li></ul>
+      <p class="note">${rec?"Game by game: see the pace chart and the head-to-head table.":"Season totals from public NHL records."} ${chip("ref")}</p></div>`}).join("");
+  const mcS=mcSeasons(m),c100=a=>a.filter(r=>rp(r)>=100),mc100=c100(REF_MC),wg100=c100(REF_WG);
+  const pills=a=>a.map(r=>`<span class="chip ref" title="${r[0]}">${rp(r)}</span>`).join(" ");
+  $("#club").innerHTML=`<div class="cardhead"><div><h4>The 100-point club</h4><p class="why">Seasons of 100 points or more</p></div>${chip("ref")}</div>
+    <div class="tiles" style="grid-template-columns:repeat(2,1fr)"><div class="tile hi"><b>${mc100.length}</b><small>McDavid</small></div><div class="tile"><b>${wg100.length}</b><small>Gretzky</small></div></div>
+    <div class="mt"><div class="eyebrow" style="color:var(--orange2);font-size:11px">McDavid</div><div class="legend">${pills(mc100)}${m.n?`<span class="chip sample" title="Current season on pace">${Math.round(m.proj)} · on pace</span>`:""}</div></div>
+    <div class="mt"><div class="eyebrow" style="color:var(--sky);font-size:11px">Gretzky</div><div class="legend">${pills(wg100)}</div></div>
+    <p class="note">Gretzky's 1995–96 combines his Los Angeles and St. Louis games (102 points).</p>`;
+  const A=mcS,B=REF_WG,t=a=>({gp:sum(a,r=>r[1]),g:sum(a,r=>r[2]),a:sum(a,r=>r[3])}),ta=t(A),tb=t(B),P=x=>x.g+x.a;
+  const rate=[["Goals per game",ta.g/ta.gp,tb.g/tb.gp],["Assists per game",ta.a/ta.gp,tb.a/tb.gp],["Points per game",P(ta)/ta.gp,P(tb)/tb.gp]];
+  $("#careerCard").innerHTML=`<div class="cardhead"><div><h4>Career scoring rate</h4><p class="why">Per game, over each player's whole NHL career</p></div>${chip("ref")}</div>
+   <div class="cmp mt"><span class="hd o">McDavid</span><span></span><span class="hd" style="color:${COL.wg}">Gretzky</span>${rate.map(([l,a,b])=>`<b class="m">${f2(a)}</b><small>${l}</small><b class="g">${f2(b)}</b>`).join("")}<b class="m">${P(ta).toLocaleString()}</b><small>Career points</small><b class="g">${P(tb).toLocaleString()}</b><b class="m">${ta.gp.toLocaleString()}</b><small>Games played</small><b class="g">${tb.gp.toLocaleString()}</b></div>
+   <p class="note">McDavid's include this season so far. Gretzky's are his 20 NHL seasons.</p>`;
+  rAge(m);
+  const best7=[[215,"Wayne Gretzky","1985–86"],[212,"Wayne Gretzky","1981–82"],[208,"Wayne Gretzky","1984–85"],[205,"Wayne Gretzky","1983–84"],[199,"Mario Lemieux","1988–89"],[196,"Wayne Gretzky","1982–83"],[183,"Wayne Gretzky","1986–87"]];
+  $("#greatest").innerHTML=`<div class="cardhead"><div><h4>Greatest scoring seasons</h4><p class="why">The top of the all-time list</p></div>${chip("ref")}</div><ul class="list">${best7.map((r,i)=>`<li><span><b class="mu" style="margin-right:10px">${i+1}</b>${r[1]} · ${r[2]}</span><span class="${r[1]==="Wayne Gretzky"?"ice":""}">${r[0]}</span></li>`).join("")}<li><span>McDavid's best · ${best[0]}</span><span class="o">${rp(best)}</span></li>${m.n?`<li><span>McDavid ${m.season} · on pace</span><span class="o">~${Math.round(m.proj)}</span></li>`:""}</ul><p class="note">Gretzky owns four of the top four. Nobody else has ever reached 200.</p>`;
+  $("#records").innerHTML=`<div class="cardhead"><div><h4>Historical NHL records</h4><p class="why">Single-season marks he is chasing, and the ones that stand</p></div>${chip("ref")}</div><ul class="list"><li><span>Most points in a season</span><span>215 · Gretzky 1985–86</span></li><li><span>Most goals in a season</span><span>92 · Gretzky 1981–82</span></li><li><span>Most assists in a season</span><span>163 · Gretzky 1985–86</span></li><li><span>Longest point streak</span><span>51 games · Gretzky 1983–84</span></li><li><span>Career points</span><span>2,857 · Gretzky</span></li><li><span>Seasons of 200+ points</span><span>4 · Gretzky only</span></li></ul>`;
+}
+function ageSeries(arr,pts){let c=0;return arr.map((r,i)=>{c+=rp(r);return [19+i,c]})}
+function rAge(m){
+  const mcS=mcSeasons(m),cA=ageSeries(mcS),cB=ageSeries(REF_WG),el=$("#ageBody"),t=ST.ageTab;
+  $$("#ageSeg button").forEach(b=>{const on=b.dataset.t===t;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+  const curAge=19+mcS.length-1;
+  if(t==="cum"){
+    const gapNow=cA[cA.length-1][1]-cB[cA.length-1][1];
+    el.innerHTML=`<div class="tiles" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))"><div class="tile hi"><b>${cA[cA.length-1][1].toLocaleString()}</b><small>McDavid at ${curAge}</small></div><div class="tile"><b>${cB[cA.length-1][1].toLocaleString()}</b><small>Gretzky at ${curAge}</small></div><div class="tile"><b class="${gapNow>=0?"gr":"ice"}">${sgn(gapNow)}</b><small>Difference at ${curAge}</small></div></div><div class="chart mt" id="ageChart"></div><p class="note">Cumulative NHL regular-season points by the age each player turned in that season (as of Feb 1). Both players' first NHL season was at 19. ${chip("ref")} ${m.n?dm():""}</p>`;
+    const ymax=Math.ceil(cB[cB.length-1][1]/500)*500,yt=[];for(let y=0;y<=ymax;y+=500)yt.push(y);
+    lineChart($("#ageChart"),{label:"Cumulative career points by age",h:window.innerWidth<720?270:320,xmin:19,xmax:38,ymin:0,ymax,yt,xt:[19,22,25,28,31,34,37],xName:"Age",fy:v=>v.toLocaleString(),fy2:v=>v.toLocaleString(),
+      series:[{id:"g",name:"Gretzky",color:COL.wg,data:cB},{id:"m",name:"McDavid",color:COL.mc,data:cA}],
+      extra:(x)=>{const a=cA.find(p=>p[0]===x),b=cB.find(p=>p[0]===x);return a&&b?`<div style="margin-top:6px;padding-top:6px;border-top:1px solid var(--line)"><span>Gap</span><b style="font:700 13px var(--body)" class="${a[1]>=b[1]?"o":"ice"}">${sgn(a[1]-b[1])}</b></div>`:""}});
+  }else{
+    el.innerHTML=`<div class="ts maxh"><table><thead><tr><th>Age</th><th class="l">McDavid</th><th>Pts</th><th>Total</th><th class="l">Gretzky</th><th>Pts</th><th>Total</th><th>Gap</th></tr></thead><tbody>${mcS.map((r,i)=>{const b=REF_WG[i],gap=cA[i][1]-cB[i][1],live=i===mcS.length-1&&m.n;return `<tr class="${live?"me":""}"><td>${19+i}</td><td class="l">${r[0]}${live?" (so far)":""}</td><td><b>${rp(r)}</b></td><td>${cA[i][1].toLocaleString()}</td><td class="l">${b[0]}</td><td>${rp(b)}</td><td>${cB[i][1].toLocaleString()}</td><td class="${gap>=0?"o":"ice"}">${sgn(gap)}</td></tr>`}).join("")}</tbody></table></div><p class="note">McDavid's current season is a partial total, so the final row will move. ${chip("ref")}</p>`;
+  }
+}
+
+/* ================= render + load + events ================= */
+const PLACE=["last10x","paceSide","donuts","ppCard","gwCard","consCard","shootChart","advGrid","vsBody","gauge","rates","funGrid","calChart","contribCard"];
+function renderAll(){
+  if(!ST.ready){
+    const msg=ST.err?"Couldn't load the NHL data right now. It retries automatically.":"Loading the numbers…";
+    PLACE.forEach(id=>{const e=$("#"+id);if(e)e.innerHTML=none(msg)});
+    const t=$("#paceTable");if(t)t.innerHTML=`<tbody><tr><td class="l" style="color:var(--muted)">${msg}</td></tr></tbody>`;
+    $("#shootTiles")&&($("#shootTiles").innerHTML="");
+    rHist(M());return;
+  }
+  const m=M();
+  rLast10(m);rPace(m);rPaceSide(m);rAnalytics(m);rAdvanced(m);rVs(m);rRecord(m);rFun(m);rHist(m);
+}
+async function loadAll(){
+  let r=null;try{r=await fetchAll()}catch(e){}
+  if(r){ST.mc=r.mc;ST.wg=r.wg;ST.wgOK=r.wg.length>0;ST.tgOK=r.tgOK;ST.stale=r.stale;ST.ready=true;ST.err=false}
+  else if(!ST.ready)ST.err=true;
+  renderAll();
+  if(!r&&!ST.sample)setTimeout(loadAll,60000);
+}
+function bind(root){
+  root.addEventListener("click",e=>{
+    const t=e.target.closest("button");if(!t)return;
+    if(t.closest("#vsSeg")){ST.vsTab=t.dataset.t;rVs(M())}
+    else if(t.id==="vsAll"){ST.vsAll=!ST.vsAll;rVs(M())}
+    else if(t.closest("#ageSeg")){ST.ageTab=t.dataset.t;rAge(M())}
+    else if(t.closest("#exSeg")){ST.fun.explode=t.dataset.p;rFun(M())}
+    else if(t.id==="whatReset"){ST.what=null;rRecord(M())}
+  });
+  root.addEventListener("input",e=>{if(e.target.id==="what"){ST.what=+e.target.value;rRecord(M())}});
+  root.addEventListener("pointerdown",e=>{$$(".tipbox.on").forEach(t=>{if(!t.parentElement.contains(e.target))t.classList.remove("on")})});
+}
+function init(){
+  const hosts=[...document.querySelectorAll(".xh")];if(!hosts.length)return;
+  hosts.forEach(h=>{const root=h.attachShadow({mode:"open"});root.innerHTML="<style>"+window.__XCSS+"</style>"+window.__XBLOCKS[h.dataset.x];ROOTS.push(root);bind(root)});
+  document.addEventListener("pointerdown",e=>{if(!e.composedPath().some(n=>ROOTS.includes(n)))$$(".tipbox.on").forEach(t=>t.classList.remove("on"))});
+  if(ST.sample){const s=buildSample();ST.mc=s.mc;ST.wg=s.wg;ST.wgOK=true;ST.tgOK=true;ST.ready=true;const n=$("#xnote");if(n)n.innerHTML='<div class="notice">SAMPLE DATA (?sample in the address). Every number in the new sections is generated for testing. Remove ?sample to see the real thing.</div>'}
+  renderAll();
+  if(!ST.sample){loadAll();setInterval(()=>{if(!document.hidden)loadAll()},300000);const rb=document.getElementById("refresh");if(rb)rb.addEventListener("click",loadAll);
+    let k0=0;setInterval(()=>{const k=Object.keys(gb.done).length;if(k!==k0){k0=k;setTimeout(loadAll,45000);setTimeout(loadAll,200000)}},30000)}
+  let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(renderAll,160)});
+  // section nav: highlight the chapter you are in
+  const links=[...document.querySelectorAll("#xnav a")],ids=links.map(a=>a.getAttribute("href").slice(1));
+  let ticking=false;const spy=()=>{ticking=false;let cur=ids[0];ids.forEach(id=>{const e=document.getElementById(id);if(e&&e.getBoundingClientRect().top<=140)cur=id});
+    links.forEach(a=>{const on=a.getAttribute("href")==="#"+cur;a.classList.toggle("on",on);if(on&&!a.dataset.seen){a.dataset.seen=1}});
+    const on=links.find(a=>a.classList.contains("on")),nav=document.getElementById("xnav");if(on&&nav&&innerWidth<=1100&&nav.scrollWidth>nav.clientWidth&&nav._cur!==cur){nav._cur=cur;nav.scrollTo({left:on.offsetLeft-24,behavior:"smooth"})}};
+  addEventListener("scroll",()=>{if(!ticking){ticking=true;requestAnimationFrame(spy)}},{passive:true});spy();
+}
+try{init()}catch(err){console.error("analytics sections failed to start",err)}
+
+})();
 </script>
 </body>
 </html>
