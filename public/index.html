@@ -1137,7 +1137,7 @@ const FOUR=["1981-82","1983-84","1984-85","1985-86"];
 const OPPS=["CGY","VAN","SEA","LAK","ANA","SJS","VGK","COL","WPG","DAL","MIN","STL","CHI","NSH","UTA","TOR","MTL","OTT","BOS","BUF","DET","FLA","TBL","CAR","NJD","NYR","NYI","PHI","PIT","WSH","CBJ"];
 
 /* ================= state ================= */
-const ST={sample:new URLSearchParams(location.search).has("sample"),ready:false,err:false,stale:false,mc:[],wg:[],wgOK:false,tgOK:false,vsTab:"diff",ageTab:"cum",what:null,fun:{explode:"mc"}};
+const ST={pb:{},pbErr:false,sample:new URLSearchParams(location.search).has("sample"),ready:false,err:false,stale:false,mc:[],wg:[],wgOK:false,tgOK:false,vsTab:"diff",ageTab:"cum",what:null,fun:{explode:"mc"}};
 
 /* ================= sample data (preview only) ================= */
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
@@ -1175,7 +1175,7 @@ function buildSample(){
 /* ================= live data ================= */
 function norm(rows,full){
   return (rows||[]).slice().sort((a,b)=>a.gameDate<b.gameDate?-1:1).map((r,i)=>{
-    const o={n:i+1,date:r.gameDate,opp:r.opponentAbbrev,g:N(r.goals),a:N(r.assists),p:has(r.points)?N(r.points):N(r.goals)+N(r.assists)};
+    const o={n:i+1,id:r.gameId,date:r.gameDate,opp:r.opponentAbbrev,g:N(r.goals),a:N(r.assists),p:has(r.points)?N(r.points):N(r.goals)+N(r.assists)};
     if(full)["plusMinus","shots","powerPlayGoals","powerPlayPoints","shorthandedGoals","shorthandedPoints","gameWinningGoals","otGoals"].forEach(k=>{});
     o.pm=has(r.plusMinus)?N(r.plusMinus):undefined;o.sh=has(r.shots)?N(r.shots):undefined;
     o.ppg=has(r.powerPlayGoals)?N(r.powerPlayGoals):undefined;o.ppp=has(r.powerPlayPoints)?N(r.powerPlayPoints):undefined;
@@ -1200,6 +1200,52 @@ async function fetchAll(){
   }
   return {mc,wg,tgOK,stale:!m.live};
 }
+
+
+/* ================= play-by-play (assists and periods) ================= */
+// One request per finished game, then cached in this browser for good. Each game is checked against the box score
+// (goals and assists must match the game log) and skipped if it doesn't, so nothing here is guessed.
+const PBK="chase.x.pbp.v1";
+function pbpLoadCache(){try{const c=JSON.parse(localStorage.getItem(PBK));if(c&&c.v===1)Object.keys(c.d).forEach(k=>{ST.pb[k]=c.d[k]})}catch(e){}}
+function pbpSave(){try{const d={};Object.keys(ST.pb).forEach(k=>{if(ST.pb[k].fin&&ST.pb[k].ok)d[k]=ST.pb[k]});localStorage.setItem(PBK,JSON.stringify({v:1,d}))}catch(e){}}
+async function pbpFetch(id){
+  for(const u of urlsFor(`gamecenter/${id}/play-by-play`)){
+    try{const c=new AbortController(),t=setTimeout(()=>c.abort(),10000);const r=await fetch(u,{signal:c.signal});clearTimeout(t);if(r.ok){const j=await r.json();if(j&&Array.isArray(j.plays))return j}}catch(e){}
+  }
+  return null;
+}
+function pbpSum(j,row){
+  const o={fin:j.gameState==="OFF"||j.gameState==="FINAL",g:[0,0,0,0],a:[0,0,0,0],a1:0,a2:0};
+  j.plays.forEach(p=>{
+    if(p.typeDescKey!=="goal")return;const pd=p.periodDescriptor||{};if(pd.periodType==="SO")return; // shootout goals aren't stats
+    const d=p.details||{},i=Math.min(4,Math.max(1,N(pd.number)))-1;
+    if(d.scoringPlayerId===XC.MC)o.g[i]++;
+    if(d.assist1PlayerId===XC.MC){o.a1++;o.a[i]++}
+    if(d.assist2PlayerId===XC.MC){o.a2++;o.a[i]++}
+  });
+  o.ok=sum(o.g,x=>x)===row.g&&o.a1+o.a2===row.a;
+  return o;
+}
+let pbBusy=false,pbT=null;
+async function loadPbp(){
+  if(pbBusy||ST.sample)return;pbBusy=true;
+  try{
+    const todo=ST.mc.filter(r=>r.id&&!(ST.pb[r.id]&&ST.pb[r.id].fin));let k=0,fail=0,done=0;
+    const work=async()=>{while(k<todo.length){const r=todo[k++],j=await pbpFetch(r.id);
+      if(!j){fail++;continue}
+      ST.pb[r.id]=pbpSum(j,r);done++;clearTimeout(pbT);pbT=setTimeout(()=>{rAdvanced(M());rFun(M())},400)}};
+    await Promise.all([work(),work(),work()]);
+    ST.pbErr=todo.length>0&&done===0&&fail>0;
+    pbpSave();rAdvanced(M());rFun(M());
+  }catch(e){}finally{pbBusy=false}
+}
+function PB(m){
+  const rows=m.mc.filter(r=>r.id),has_=r=>ST.pb[r.id],got=rows.filter(r=>has_(r)&&has_(r).ok);
+  const per=[0,1,2,3].map(i=>({g:sum(got,r=>ST.pb[r.id].g[i]),a:sum(got,r=>ST.pb[r.id].a[i])}));
+  return {total:m.n,n:got.length,bad:rows.filter(r=>has_(r)&&!has_(r).ok).length,a1:sum(got,r=>ST.pb[r.id].a1),a2:sum(got,r=>ST.pb[r.id].a2),per};
+}
+const pbChip=p=>p.n&&p.n===p.total?chip("pbp","Play-by-play"):p.n?chip("pbp","Play-by-play · "+p.n+" of "+p.total):chip("na","Play-by-play unavailable");
+const pbNote=p=>!p.total?"":p.n?`Based on ${p.n} of ${p.total} games${p.bad?`. ${p.bad===1?"1 game was":p.bad+" games were"} skipped because the play-by-play didn't match the official box score`:""}${p.n+p.bad<p.total&&!ST.pbErr?". Still loading the rest":""}.`:ST.pbErr?"The play-by-play couldn't be reached right now. It retries automatically.":"Loading the play-by-play, one game at a time…";
 
 /* ================= calculations (all from the game logs) ================= */
 const cum=a=>{let t=0;return a.map(r=>t+=r.p)};
@@ -1367,15 +1413,16 @@ function rAnalytics(m){
     series:[{id:"s",name:"5-game shooting %",color:COL.mc,data:pts,area:true}],hl:[{y:Math.round(m.g/S*1000)/10,label:"Season "+f1(m.g/S*100)+"%",color:"#9db3d1"}]});
 }
 function rAdvanced(m){
-  const ppa=m.mc.length&&m.mc.every(r=>has(r.ppp)&&has(r.ppg))?sum(m.mc,r=>r.ppp)-sum(m.mc,r=>r.ppg):null;
+  const pb=PB(m),hv=pb.n>0;
+  let ppa=m.mc.length&&m.mc.every(r=>has(r.ppp)&&has(r.ppg))?sum(m.mc,r=>r.ppp)-sum(m.mc,r=>r.ppg):null;if(ppa!==null&&ppa<0)ppa=null; // a negative count means the feed is inconsistent, so show nothing
   const tgN=m.tgOK?sum(m.mc,r=>r.tg):0;
   $("#advGrid").innerHTML=
    `<div class="card"><div class="cardhead"><div><h4>Speed demon</h4><p class="why">Skating speed and bursts</p></div>${chip("edge")}</div>
-     <div class="pds"><div class="tile mute"><b>—</b><small>Top speed</small></div><div class="tile mute"><b>—</b><small>Bursts 20+ mph</small></div><div class="tile mute"><b>—</b><small>Bursts 22+ mph</small></div><div class="tile mute"><b>—</b><small>Rush goals</small></div></div>
-     <p class="note">Built from the NHL EDGE skating-speed data when it's wired in. Rush goals need the play-by-play pass. Until then these stay blank.</p></div>`+
-   `<div class="card"><div class="cardhead"><div><h4>Playmaking masterclass</h4><p class="why">How the assists get made</p></div>${chip("pbp")}</div>
-     <div class="pds"><div class="tile ${ppa===null?"mute":"hi"}"><b>${ppa===null?"—":ppa}</b><small>Power-play assists</small></div><div class="tile mute"><b>—</b><small>Primary</small></div><div class="tile mute"><b>—</b><small>Secondary</small></div><div class="tile mute"><b>—</b><small>Passes to shots</small></div></div>
-     <p class="note">Power-play assists come straight from the game log${ppa===null?" (not in this feed)":""}. Primary and secondary assists come from the play-by-play. Passes leading to shots have no public source yet, so that tile stays blank.</p></div>`+
+     <div class="pds"><div class="tile mute"><b>—</b><small>Top speed</small></div><div class="tile mute"><b>—</b><small>Bursts 20+ mph</small></div><div class="tile mute"><b>—</b><small>Bursts 22+ mph</small></div></div>
+     <p class="note">Needs the NHL EDGE skating-speed feed, which isn't connected yet. Rush goals aren't published anywhere official, so there is no rush-goal number on this site.</p></div>`+
+   `<div class="card"><div class="cardhead"><div><h4>Playmaking masterclass</h4><p class="why">How the assists get made</p></div>${pbChip(pb)}</div>
+     <div class="pds"><div class="tile ${ppa===null?"mute":"hi"}"><b>${ppa===null?"—":ppa}</b><small>Power-play assists</small></div><div class="tile ${hv?"":"mute"}"><b>${hv?pb.a1:"—"}</b><small>Primary</small></div><div class="tile ${hv?"":"mute"}"><b>${hv?pb.a2:"—"}</b><small>Secondary</small></div><div class="tile mute"><b>—</b><small>Passes to shots</small></div></div>
+     <p class="note">Power-play assists come straight from the game log${ppa===null?" (not in this feed)":""}. Primary and secondary assists come from the official play-by-play. ${pbNote(pb)} Passes leading to shots have no public source, so that tile stays blank.</p></div>`+
    `<div class="card"><div class="cardhead"><div><h4>Offensive-zone dominance</h4><p class="why">Possession and zone time</p></div>${chip("edge")}</div>
      <div class="pds"><div class="tile mute"><b>—</b><small>O-zone time</small></div><div class="tile mute"><b>—</b><small>Zone starts</small></div><div class="tile mute"><b>—</b><small>Points per O-zone min</small></div><div class="tile mute"><b>—</b><small>Possession</small></div></div>
      <p class="note">Only shown if the NHL EDGE feed supplies it. Nothing here is estimated.</p></div>`;
@@ -1440,7 +1487,7 @@ function rFun(m){
   const z=mc.filter(r=>r.p===0).length,zW=wg.filter(r=>r.p===0).length,drought=runs(mc,r=>r.p===0),droughtW=runs(wg,r=>r.p===0);
   const ex=ST.fun.explode==="mc"?mc:wg,top=ex.slice().sort((a,b)=>b.p-a.p||b.g-a.g).slice(0,5);
   const aW=sum(wg,r=>r.a);
-  const tag=dm();
+  const tag=dm(),pb=PB(m);
   $("#funGrid").innerHTML=
    fcard("Hat trick watch","Three or more goals in a game",tag,
      `<div class="tiles" style="grid-template-columns:repeat(2,1fr)"><div class="tile hi"><b>${hatM.length}</b><small>McDavid this season</small></div><div class="tile"><b>${ok?hatW.length:"—"}</b><small>Gretzky 1985–86</small></div></div>`+
@@ -1449,14 +1496,14 @@ function rFun(m){
      `<div class="cmp mt"><span class="hd o">McDavid</span><span></span><span class="hd" style="color:${COL.wg}">Gretzky</span>${[2,3,4,5,6].map(i=>cmp(i===6?"6+ pts":i+" pts",n?(i===6?dM[6]:dM[i]):"—",ok?(i===6?dW[6]:dW[i]):"—")).join("")}</div>`)+
    fcard("The assist machine","How he sets the others up",tag,
      `<div class="tiles" style="grid-template-columns:repeat(2,1fr)"><div class="tile hi"><b>${m.a}</b><small>Assists</small></div><div class="tile"><b>${n?f2(m.a/n):"—"}</b><small>Per game</small></div></div>
-      <div class="pds" style="grid-template-columns:repeat(2,1fr)"><div class="tile mute"><b>—</b><small>Primary</small></div><div class="tile mute"><b>—</b><small>Secondary</small></div></div>
-      <p class="note">${ok?`Gretzky 1985–86: ${aW} assists, ${f2(aW/wg.length)} per game. `:""}Primary and secondary come from the play-by-play, which the game log doesn't split.</p>`)+
+      <div class="pds" style="grid-template-columns:repeat(2,1fr)"><div class="tile ${pb.n?"":"mute"}"><b>${pb.n?pb.a1:"—"}</b><small>Primary</small></div><div class="tile ${pb.n?"":"mute"}"><b>${pb.n?pb.a2:"—"}</b><small>Secondary</small></div></div>
+      <p class="note">${ok?`Gretzky 1985–86: ${aW} assists, ${f2(aW/wg.length)} per game. His primary and secondary split isn't available for 1985–86. `:""}${pbNote(pb)}</p>`)+
    fcard("The hot streak","Consecutive games with a point",tag,
      `<ul class="list"><li><span>Current point streak</span><span class="${curS?"o":""}">${n?curS+(curS===1?" game":" games"):"—"}</span></li><li><span>Longest this season</span><span>${n?bestS+" games":"—"}</span></li><li><span>Longest in 1985–86</span><span>${ok?bestW+" games":"—"}</span></li><li><span>Multi-point games in a row</span><span>${n?multi:"—"}</span></li></ul><p class="note">The all-time record is Gretzky's 51-game streak in 1983–84. ${chip("ref")}</p>`)+
    fcard("Zero-point nights","The games he got shut out",tag,
      `<ul class="list"><li><span>Games without a point</span><span>${n?z:"—"}${ok?` <span class="mu">vs ${zW}</span>`:""}</span></li><li><span>Share of games</span><span>${n?Math.round(z/n*100)+"%":"—"}${ok?` <span class="mu">vs ${Math.round(zW/wg.length*100)}%</span>`:""}</span></li><li><span>Longest stretch</span><span>${n?drought+(drought===1?" game":" games"):"—"}${ok?` <span class="mu">vs ${droughtW}</span>`:""}</span></li></ul><p class="note">The grey figures are Gretzky's 1985–86 season.</p>`)+
-   fcard("First period assassin","Scoring by period",chip("pbp"),
-     `<div class="pds"><div class="tile mute"><b>—</b><small>1st</small></div><div class="tile mute"><b>—</b><small>2nd</small></div><div class="tile mute"><b>—</b><small>3rd</small></div><div class="tile mute"><b>—</b><small>OT</small></div></div><p class="note">Needs the period of every goal he scored or assisted on, which only the play-by-play has. It loads one game at a time and each finished game is cached for good. Goals and assists will show separately.</p>`)+
+   fcard("First period assassin","Points by period, this season",pbChip(pb),
+     `<div class="pds">${["1st","2nd","3rd","OT"].map((l,i)=>`<div class="tile ${pb.n?(i===0?"hi":""):"mute"}"><b>${pb.n?pb.per[i].g+pb.per[i].a:"—"}</b><small>${l}${pb.n?` · ${pb.per[i].g}G ${pb.per[i].a}A`:""}</small></div>`).join("")}</div><p class="note">${pbNote(pb)} Gretzky's 1985–86 split by period isn't available.</p>`)+
    `<div class="card" style="grid-column:1/-1"><div class="tabs" style="margin-bottom:6px"><div class="cardhead" style="margin:0"><div><h4>The explosion games</h4><p class="why">Biggest single-game performances</p></div></div><div class="seg" id="exSeg"><button class="${ST.fun.explode==="mc"?"on":""}" data-p="mc" type="button">McDavid</button><button class="${ST.fun.explode==="wg"?"on":""}" data-p="wg" type="button">Gretzky 1985–86</button></div></div>`+
    (top.length?`<div class="ts"><table><thead><tr><th class="l">Date</th><th class="l">Opponent</th><th>Goals</th><th>Assists</th><th>Points</th></tr></thead><tbody>${top.map(r=>`<tr><td class="l">${innerWidth<720?fmtD(r.date):fmtDY(r.date)}</td><td class="l">${esc(r.opp||"")}</td><td>${r.g}</td><td>${r.a}</td><td><b class="${ST.fun.explode==="mc"?"o":"ice"}">${r.p}</b></td></tr>`).join("")}</tbody></table></div>`:none("No games loaded for this player."))+`</div>`;
   // calendar
@@ -1534,6 +1581,7 @@ async function loadAll(){
   if(r){ST.mc=r.mc;ST.wg=r.wg;ST.wgOK=r.wg.length>0;ST.tgOK=r.tgOK;ST.stale=r.stale;ST.ready=true;ST.err=false}
   else if(!ST.ready)ST.err=true;
   renderAll();
+  if(r)loadPbp();
   if(!r&&!ST.sample)setTimeout(loadAll,60000);
 }
 function bind(root){
@@ -1553,7 +1601,7 @@ function init(){
   hosts.forEach(h=>{const root=h.attachShadow({mode:"open"});root.innerHTML="<style>"+window.__XCSS+"</style>"+window.__XBLOCKS[h.dataset.x];ROOTS.push(root);bind(root)});
   document.addEventListener("pointerdown",e=>{if(!e.composedPath().some(n=>ROOTS.includes(n)))$$(".tipbox.on").forEach(t=>t.classList.remove("on"))});
   if(ST.sample){const s=buildSample();ST.mc=s.mc;ST.wg=s.wg;ST.wgOK=true;ST.tgOK=true;ST.ready=true;const n=$("#xnote");if(n)n.innerHTML='<div class="notice">SAMPLE DATA (?sample in the address). Every number in the new sections is generated for testing. Remove ?sample to see the real thing.</div>'}
-  renderAll();
+  pbpLoadCache();renderAll();
   if(!ST.sample){loadAll();setInterval(()=>{if(!document.hidden)loadAll()},300000);const rb=document.getElementById("refresh");if(rb)rb.addEventListener("click",loadAll);
     let k0=0;setInterval(()=>{const k=Object.keys(gb.done).length;if(k!==k0){k0=k;setTimeout(loadAll,45000);setTimeout(loadAll,200000)}},30000)}
   let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(renderAll,160)});

@@ -16,6 +16,10 @@ const ALLOWED = [
   // Today's scoreboard (live banner): score/now  or  score/2026-11-13
   { re: /^score\/(now|\d{4}-\d{2}-\d{2})$/, ttl: () => 10 },
   // Edmonton's season schedule (backup source for the game-day countdown)
+  // Official play-by-play for one game (primary/secondary assists, goals by period). Short edge cache; the page only keeps finished games.
+  { re: /^gamecenter\/\d+\/play-by-play$/, ttl: () => 300 },
+  // NHL EDGE tracking data (skating speed, zone time). Read-only; the site does not show these yet.
+  { re: /^edge\/skater-(detail|skating-speed-detail|zone-time|shot-speed-detail|skating-distance-detail)\/\d+\/now$/, ttl: () => 3600 },
   { re: /^club-schedule-season\/[A-Z]{3}\/now$/, ttl: () => 300 },
 ];
 
